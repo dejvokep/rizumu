@@ -1,0 +1,7 @@
+Názov tímu: AE
+Názov hry: rizumu
+Vývojové prostredie a prostriedky: Unity, C#, Photoshop
+
+Fonty:
+Zdroj: https://www.fontspace.com/timeburner-font-f15111
+Licencia: Freeware
