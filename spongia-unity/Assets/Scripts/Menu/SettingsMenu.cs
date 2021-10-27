@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class SettingsMenu : MonoBehaviour
 
 
     public Image mask; //Brightness Adjustment
+
+
+    public AudioMixer audioMixer;
+
 
     void Start()
     {
@@ -42,7 +47,6 @@ public class SettingsMenu : MonoBehaviour
     {
         UnityEngine.Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-        Debug.Log("Resolution: " + resolution.width + " x " + resolution.height);
     }
 
 
@@ -50,11 +54,23 @@ public class SettingsMenu : MonoBehaviour
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
-        Debug.Log("Fullscreen: " + isFullscreen);
     }
 
 
-    public void UpdateBrightness(float value) {
+    public void UpdateBrightness(float value)
+    {
         mask.color = new Color32((byte) 0, (byte) 0, (byte) 0, (byte) (100-value));
+    }
+
+
+    public void SetVolume(float value)
+    {
+        audioMixer.SetFloat("volume", value);
+    }
+
+
+    public void SetQuality(int qualityIndex)
+    {
+        UnityEngine.QualitySettings.SetQualityLevel(qualityIndex);
     }
 }
