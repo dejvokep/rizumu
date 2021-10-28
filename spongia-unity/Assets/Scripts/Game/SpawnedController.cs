@@ -7,15 +7,19 @@ using static Sector;
 public class SpawnedController : MonoBehaviour
 {
 
+    // Masks
+    public GameObject NEmask, SEmask, SWmask, NWmask;
     // Prefab to spawn
     public GameObject prefab;
+    // Player
+    public GameObject player;
 
-    // Size of one side of the spawned props in px (the prop must have square boundaries)
-    const int PROP_SIZE = 3;
+    // Offscreen spawn offset
+    const int OFFSCREEN_SPAWN_OFFSET = 3;
     // Move speed
     const float MOVE_SPEED = 1;
     // One-directional distance from the center when to despawn the prop
-    const float DESTROY_DISTANCE = 0.55F;
+    private float destroyDistance;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
@@ -25,13 +29,28 @@ public class SpawnedController : MonoBehaviour
     private double height, width;
 
     // Currently active (spawned) props
-    private Dictionary<GameObject, Sector> active;
+    private Dictionary<Sector, List<GameObject>> active;
+    // Keyboard keys by sector
+    private Dictionary<string, Sector> keyboardKeys;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Reset
-        active = new Dictionary<GameObject, Sector>();
+        // Create new
+        active = new Dictionary<Sector, List<GameObject>>();
+        // Iterate
+        foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
+            // Add sets
+            active.Add(sector, new List<GameObject>());
+        }
+
+        // Create new
+        keyboardKeys = new Dictionary<string, Sector>();
+        keyboardKeys.Add("a", Sector.NORTH_WEST);
+        keyboardKeys.Add("s", Sector.NORTH_EAST);
+        keyboardKeys.Add("d", Sector.SOUTH_WEST);
+        keyboardKeys.Add("f", Sector.SOUTH_EAST);
+
         // Screen dimensions (/2)
         Camera cam = Camera.main;
         height = 1f * cam.orthographicSize;
@@ -40,58 +59,75 @@ public class SpawnedController : MonoBehaviour
         double diagonalRadians = Math.PI * 45 / 180.0d;
         
         // Calculate x offset (horizontal)              a = tg(45) *  b
-        xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height + PROP_SIZE/2;
+        xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height + OFFSCREEN_SPAWN_OFFSET;
         // Calculate y offset (vertical)
-        yOffset = height + PROP_SIZE/2;
+        yOffset = height + OFFSCREEN_SPAWN_OFFSET;
 
-        Debug.Log("Printing sizes");
-        Debug.Log(height);
-        Debug.Log(width);
-        Spawn(Sector.NORTH_WEST);
+        // SPAWN PROP
+        // DEBUG ONLY!!!
+        Spawn(Sector.NORTH_WEST, 1);
     }
 
-    void Spawn(Sector sector) {
+    void Spawn(Sector sector, float length) {
         // Sector ID
         int sectorID = (int) sector;
         // Positions
         double x = (sectorID < 2 ? xOffset : -xOffset), y = (sectorID == 0 || sectorID == 3 ? yOffset : -yOffset);
         // Instantiate
-        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID)));
-        // 0 > -45
-        // 1 > -135
-        // 2 > 
+        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID))/*, GetMask(sector).transform*/);
+        // Change size
+        spawned.transform.localScale = new Vector2(1, length);
 
         // ADD ONCLICK TRIGGER (USE BUTTONS?)
 
         // Add
-        active.Add(spawned, sector);
+        active[sector].Add(spawned);
     }
 
-    void DeleteClicked(GameObject prop) {
+    private GameObject GetMask(Sector sector) {
+        return sector == NORTH_EAST ? NEmask : sector == NORTH_WEST ? NWmask : sector == SOUTH_EAST ? SEmask : SWmask;
+    }
 
+    public void Clicked(GameObject prop) {
+        Debug.Log(prop);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Keys
-        List<GameObject> props = new List<GameObject>(active.Keys);
-        // For each key
-        foreach (GameObject prop in props) {
-            // Transform
-            UnityEngine.Transform transform = prop.transform;
-            // Sector
-            Sector sector = active[prop];
-            // Move
-            transform.position = new Vector2(transform.position.x + MOVE_SPEED * SectorXDirection(sector) * Time.deltaTime, transform.position.y + MOVE_SPEED * SectorYDirection(sector) * Time.deltaTime);
+        /*// For each key
+        foreach (string key in keyboardKeys.Keys) {
+            // If the key is pressed
+            if (Input.GetKeyDown(key))
+            {
+                // Props
+                List<GameObject> props = active[keyboardKeys[key]];
+                // If there is an object
+                if (props.Count > 0) {
+                    // Destroy
+                    Destroy(props[0]);
+                    // Remove
+                    props.RemoveAt(0);
+                    Debug.Log(props);
+                }
+            }
+        }*/
 
-            // If to destroy
-            /*if (Math.Abs(transform.position.x) <= DESTROY_DISTANCE) {
-                // Destroy
-                Destroy(prop);
+        // For each sector
+        foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
+            // Keys
+            List<GameObject> props = new List<GameObject>(active[sector]);
+
+            // For each prop
+            foreach (GameObject prop in props) {
                 // Remove
-                active.Remove(prop);
-            }*/
+                if (prop.GetComponent<Prop>().Move()) {
+                    // Destroy
+                    Destroy(prop);
+                    // Remove
+                    active[sector].RemoveAt(0);
+                }
+            }
         }
     }
 

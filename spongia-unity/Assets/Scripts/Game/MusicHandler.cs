@@ -21,7 +21,7 @@ public class MusicHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Load file names
+        /*// Load file names
         string[] names = Directory.GetFiles("Assets/Resources/Mappings/");
         // All names
         foreach (string name in names) {
@@ -48,7 +48,7 @@ public class MusicHandler : MonoBehaviour
             }
 
             //Debug.Log(timestamps);
-        }
+        }*/
         
         
         
