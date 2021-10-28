@@ -37,7 +37,7 @@ public class Prop : MonoBehaviour
         Debug.Log(playerBounds);
     }
 
-    // Update is called once per frame
+    // ??? Update is called once per frame ???
     public bool Move()
     {
         // Transform
@@ -46,41 +46,22 @@ public class Prop : MonoBehaviour
         float newX = transform.position.x + MOVE_SPEED * SectorXDirection(sector) * Time.deltaTime;
         float newY = transform.position.y + MOVE_SPEED * SectorYDirection(sector) * Time.deltaTime;
 
-        // Distance
-        float distance = Vector2.Distance(playerBounds, new Vector2(Math.Abs(newX), Math.Abs(newY)));
         // Move
         transform.position = new Vector2(newX, newY);
 
-        /*// If touches the player
-        if (distance <= length/2) {
-            //Debug.Log("TOUCHED");
-            // Overflowing length
-            float overflow = length/2 - distance;  // 5PX
+        /*
+        if (dOBRE == papa)
+        {
+            neee.staci(ak, distance);
+            stop();
+        }
+        */
 
-            // ZMENSIT O 2.5px
-            // POSUNUT PROP SPAT O 2.5px
-            //
-            //
-
-            // Change scale 1/2
-            transform.localScale = new Vector2(1, transform.localScale.y - overflow/32);
-            length = transform.localScale.y;
-            // Move back 1/2
-            transform.position = new Vector2(newX -overflow/32*SectorXDirection(sector), newY -overflow/32*SectorYDirection(sector));
-
-            if (length < 0.1) {
-                return true;
-            }
-            // Destroy
-            //Destroy(prop);
-            // Remove
-            //active[sector].RemoveAt(0);
-        } else {
-            // Move
-            transform.position = new Vector2(newX, newY);
-        }*/
-
-        return false;
+        // Delete if prop surpasses playerBounds by 2*length to avoid square root
+        if ((int)sector < 2) 
+            return playerBounds.x > newX + length;
+        else
+            return -playerBounds.x < newX - length;
     }
 
     float SectorXDirection(Sector sector) {

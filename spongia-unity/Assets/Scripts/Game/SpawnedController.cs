@@ -77,6 +77,8 @@ public class SpawnedController : MonoBehaviour
         GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID))/*, GetMask(sector).transform*/);
         // Change size
         spawned.transform.localScale = new Vector2(1, length);
+        // Set sorting order in layer
+        spawned.GetComponent<SpriteRenderer>().sortingOrder = sectorID+1;
 
         // ADD ONCLICK TRIGGER (USE BUTTONS?)
 
