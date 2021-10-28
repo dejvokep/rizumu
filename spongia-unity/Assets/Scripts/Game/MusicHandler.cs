@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Globalization;
+using Newtonsoft.Json;
 
 public class MusicHandler : MonoBehaviour
 {
 
+    // Offset between object spawn <=> object at perfect click position (beat)
+    // MUST CORRESPOND TO MOVE SPEED SET IN THE CONTROLLER!!!
     const float SPAWN_TIME_OFFSET = 2;
+
+    // Controller used to spawn props etc...
+    public SpawnedController controller;
 
     // Mappings by track names
     private Dictionary<string, Dictionary<float, int>> mappings = new Dictionary<string, Dictionary<float, int>>();
@@ -26,20 +32,19 @@ public class MusicHandler : MonoBehaviour
             // Create reader
             StreamReader reader = new StreamReader(name);
             // Load JSON
-            SpawnTimestamps json = JsonUtility.FromJson<SpawnTimestamps>(reader.ReadToEnd());
+            Dictionary<string, int> json = JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.ReadToEnd());
             // Close
             reader.Close();
 
-            Debug.Log(json.timestamps.Count);
+            Debug.Log(json.Count);
+
 
             // Create dictionary
             Dictionary<float, int> timestamps = new Dictionary<float, int>();
             // All json entries
-            foreach (KeyValuePair<string, int> entry in json.timestamps) {
+            foreach (KeyValuePair<string, int> entry in json) {
                 // Parse and add
                 timestamps.Add(float.Parse(entry.Key, CultureInfo.InvariantCulture.NumberFormat) - SPAWN_TIME_OFFSET, entry.Value);
-                Debug.Log(float.Parse(entry.Key, CultureInfo.InvariantCulture.NumberFormat) - SPAWN_TIME_OFFSET);
-                Debug.Log(entry.Value);
             }
 
             //Debug.Log(timestamps);

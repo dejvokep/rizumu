@@ -32,8 +32,8 @@ public class MusicPlayer : MonoBehaviour
         source.outputAudioMixerGroup = mixer;
 
         // Play [DEBUG ONLY]
-        Play("tajne_zaznamy");
-        Invoke("Pause", 5);
+        //Play("tajne_zaznamy");
+        //Invoke("Pause", 5);
     }
 
     bool Play(string name) {
