@@ -11,7 +11,7 @@ public class SpawnedController : MonoBehaviour
     public GameObject prefab;
 
     // Size of one side of the spawned props in px (the prop must have square boundaries)
-    const int PROP_SIZE = 1;
+    const int PROP_SIZE = 3;
     // Move speed
     const float MOVE_SPEED = 1;
     // One-directional distance from the center when to despawn the prop
@@ -33,8 +33,9 @@ public class SpawnedController : MonoBehaviour
         // Reset
         active = new Dictionary<GameObject, Sector>();
         // Screen dimensions (/2)
-        height = 1080*0.0092/2;//Screen.height / 2;
-        width = 1920*0.0092/2;//Screen.width / 2;
+        Camera cam = Camera.main;
+        height = 1f * cam.orthographicSize;
+        width = height * cam.aspect;
         // Convert 45 deg to radians
         double diagonalRadians = Math.PI * 45 / 180.0d;
         
@@ -43,6 +44,7 @@ public class SpawnedController : MonoBehaviour
         // Calculate y offset (vertical)
         yOffset = height + PROP_SIZE/2;
 
+        Debug.Log("Printing sizes");
         Debug.Log(height);
         Debug.Log(width);
         Spawn(Sector.NORTH_WEST);
@@ -84,12 +86,12 @@ public class SpawnedController : MonoBehaviour
             transform.position = new Vector2(transform.position.x + MOVE_SPEED * SectorXDirection(sector) * Time.deltaTime, transform.position.y + MOVE_SPEED * SectorYDirection(sector) * Time.deltaTime);
 
             // If to destroy
-            if (Math.Abs(transform.position.x) <= DESTROY_DISTANCE) {
+            /*if (Math.Abs(transform.position.x) <= DESTROY_DISTANCE) {
                 // Destroy
                 Destroy(prop);
                 // Remove
                 active.Remove(prop);
-            }
+            }*/
         }
     }
 
