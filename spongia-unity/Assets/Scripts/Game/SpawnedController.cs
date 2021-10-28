@@ -11,16 +11,18 @@ public class SpawnedController : MonoBehaviour
     public GameObject prefab;
 
     // Size of one side of the spawned props in px (the prop must have square boundaries)
-    const int propSize = 100;
+    const int PROP_SIZE = 1;
     // Move speed
-    const float moveSpeed = 100;
+    const float MOVE_SPEED = 1;
+    // One-directional distance from the center when to despawn the prop
+    const float DESTROY_DISTANCE = 0.55F;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
 
     // Spawn offsets
     private double xOffset, yOffset;
-    private int height, width;
+    private double height, width;
 
     // Currently active (spawned) props
     private Dictionary<GameObject, Sector> active;
@@ -31,15 +33,18 @@ public class SpawnedController : MonoBehaviour
         // Reset
         active = new Dictionary<GameObject, Sector>();
         // Screen dimensions (/2)
-        height = Screen.height / 2;
-        width = Screen.width / 2;
+        height = 1080*0.0092/2;//Screen.height / 2;
+        width = 1920*0.0092/2;//Screen.width / 2;
         // Convert 45 deg to radians
         double diagonalRadians = Math.PI * 45 / 180.0d;
         
         // Calculate x offset (horizontal)              a = tg(45) *  b
-        xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height + propSize/2;
+        xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height + PROP_SIZE/2;
         // Calculate y offset (vertical)
-        yOffset = height + propSize/2;
+        yOffset = height + PROP_SIZE/2;
+
+        Debug.Log(height);
+        Debug.Log(width);
         Spawn(Sector.NORTH_WEST);
     }
 
@@ -47,9 +52,12 @@ public class SpawnedController : MonoBehaviour
         // Sector ID
         int sectorID = (int) sector;
         // Positions
-        double x = width + (sectorID < 2 ? xOffset : -xOffset), y = height + (sectorID % 2 == 0 ? yOffset : yOffset);
+        double x = (sectorID < 2 ? xOffset : -xOffset), y = (sectorID == 0 || sectorID == 3 ? yOffset : -yOffset);
         // Instantiate
-        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3()));
+        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID)));
+        // 0 > -45
+        // 1 > -135
+        // 2 > 
 
         // ADD ONCLICK TRIGGER (USE BUTTONS?)
 
@@ -64,22 +72,33 @@ public class SpawnedController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // For each entry
-        foreach (KeyValuePair<GameObject, Sector> entry in active) {
+        // Keys
+        List<GameObject> props = new List<GameObject>(active.Keys);
+        // For each key
+        foreach (GameObject prop in props) {
             // Transform
-            UnityEngine.Transform transform = entry.Key.transform;
+            UnityEngine.Transform transform = prop.transform;
             // Sector
-            Sector sector = entry.Value;
-            // Update transform
-            transform.position = new Vector2(transform.position.x + moveSpeed * SectorXDirection(sector) * Time.deltaTime, transform.position.y + moveSpeed * SectorYDirection(sector) * Time.deltaTime);
+            Sector sector = active[prop];
+            // Move
+            transform.position = new Vector2(transform.position.x + MOVE_SPEED * SectorXDirection(sector) * Time.deltaTime, transform.position.y + MOVE_SPEED * SectorYDirection(sector) * Time.deltaTime);
+
+            // If to destroy
+            if (Math.Abs(transform.position.x) <= DESTROY_DISTANCE) {
+                // Destroy
+                Destroy(prop);
+                // Remove
+                active.Remove(prop);
+            }
         }
     }
 
     float SectorXDirection(Sector sector) {
-        return (int) sector < 2 ? 1 : -1;
+        return (int) sector < 2 ? -1 : 1;
     }
 
     float SectorYDirection(Sector sector) {
-        return (int) sector % 2 == 0 ? 1 : -1;
+        int sectorID = (int) sector;
+        return sectorID == 0 || sectorID == 3 ? -1 : 1;
     }
 }
