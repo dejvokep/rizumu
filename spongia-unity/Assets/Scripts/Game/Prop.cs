@@ -13,11 +13,12 @@ public class Prop : MonoBehaviour
     public float length;
     private Sector sector;
     // Move speed
-    const float MOVE_SPEED = 1;
     private double gridSize = 0;
 
     public float maxPoints, points = 0;
     public float startTime;
+
+    private float playerWidth;
 
     public TonePosition position = TonePosition.WAITING;
 
@@ -44,32 +45,42 @@ public class Prop : MonoBehaviour
             sector = Sector.NORTH_WEST;
 
         // Player width
-        float playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
+        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         // Set player bounds
         playerBounds = new Vector2(playerWidth, playerWidth);
         // Set grid size
         gridSize = length / SQRT_OF_TWO;
     }
 
-    public TonePosition Move()
+    public TonePosition Move(float time)
     {
         // Transform
         UnityEngine.Transform transform = gameObject.transform;
         // New coords
-        float newX = transform.position.x + MOVE_SPEED * SpawnedController.SectorXDirection(sector) * Time.deltaTime;
-        float newY = transform.position.y + MOVE_SPEED * SpawnedController.SectorYDirection(sector) * Time.deltaTime;
+        //float newX = transform.position.x + MOVE_SPEED * SpawnedController.SectorXDirection(sector) * Time.deltaTime;
+        //float newY = transform.position.y + MOVE_SPEED * SpawnedController.SectorYDirection(sector) * Time.deltaTime;
+
+        //Debug.Log(startTime);
+        
+        // pos > 0 ak je status WAITING
+        // pos 
+        float pos = playerWidth + ((float) gridSize/2) + (startTime - time) * SpawnedController.MOVE_SPEED;
 
         //Debug.Log("Delta X t=" + Time.deltaTime + " , moved=" + (Math.Abs(newX - transform.position.x)));
 
         // Move
-        transform.position = new Vector2(newX, newY);
+        transform.position = new Vector2(pos * -SpawnedController.SectorXDirection(sector), pos * -SpawnedController.SectorYDirection(sector));
+
+        // If waiting
+        if (startTime - time > 0)
+            return TonePosition.WAITING;
 
         // If east sector
         if ((int) sector < 2) {
             // If waiting
-            if (newX - gridSize/2 > playerBounds.x)
+            if (pos - gridSize/2 > playerBounds.x)
                 return position = TonePosition.WAITING;
-            else if (playerBounds.x > newX + gridSize/2)
+            else if (playerBounds.x > pos + gridSize/2)
                 // Just finished playing
                 return position = TonePosition.FINISHED;
             else
@@ -77,9 +88,9 @@ public class Prop : MonoBehaviour
                 return position = TonePosition.PLAYING;
         } else {
             // If waiting
-            if (newX + gridSize/2 < playerBounds.x)
+            if (-pos + gridSize/2 < playerBounds.x)
                 return position = TonePosition.WAITING;
-            else if (-playerBounds.x < newX - gridSize/2)
+            else if (-playerBounds.x < -pos - gridSize/2)
                 // Just finished playing
                 return position = TonePosition.FINISHED;
             else

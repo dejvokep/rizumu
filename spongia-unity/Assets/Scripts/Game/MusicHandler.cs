@@ -8,10 +8,6 @@ using Newtonsoft.Json;
 public class MusicHandler
 {
 
-    // Offset between object spawn <=> object at perfect click position (beat)
-    // MUST CORRESPOND TO MOVE SPEED SET IN THE CONTROLLER!!!
-    const float SPAWN_TIME_OFFSET = 2;
-
     // Controller
     public SpawnedController controller;
     // Loaded clip
@@ -44,8 +40,10 @@ public class MusicHandler
 
             // Full size of the prop (1/2)
             float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+            // Add
+            propData.Add(propData[0]);
             // Time where the prop will touch the player - how long it will take from the spawn position to that position
-            propData[0] = propData[0] - ((float) offset + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO)) - c.playerWidth) * SpawnedController.MOVE_SPEED;
+            propData[0] = propData[0] - ((float) offset + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO)) - c.playerWidth) / SpawnedController.MOVE_SPEED;
 
             // If earlier spawn time
             if (propData[0] < firstSpawn)
@@ -66,7 +64,7 @@ public class MusicHandler
             // Data
             List<float> propData = mappings[mappingIndex];
             // Spawn
-            controller.Spawn(SectorByID((int) propData[1]), propData[2], propData[0]);
+            controller.Spawn(SectorByID((int) propData[1]), propData[2], propData[3]);
             // Add
             mappingIndex += 1;
         }

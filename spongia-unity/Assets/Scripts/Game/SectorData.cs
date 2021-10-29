@@ -25,7 +25,7 @@ public class SectorData
         // For each prop
         foreach (Prop prop in props) {
             // Switch
-            switch(prop.Move()) {
+            switch(prop.Move(time)) {
                 case TonePosition.FINISHED:
                     // If can be despawned
                     if (prop.startTime + prop.length + THRESHOLD_BAD < time) {

@@ -27,12 +27,8 @@ public class SpawnedController : MonoBehaviour
     // Player
     public GameObject player;
 
-    // Offscreen spawn offset
-    const int OFFSCREEN_SPAWN_OFFSET = 3;
     // Move speed
-    public static float MOVE_SPEED = 1;
-    // One-directional distance from the center when to despawn the prop
-    private float destroyDistance;
+    public static float MOVE_SPEED = 2;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
@@ -108,6 +104,7 @@ public class SpawnedController : MonoBehaviour
     }
 
     void PlayMusic() {
+        //Debug.Log("Started playing at: " + currentTime);
         audioSource.Play();
     }
 
@@ -124,6 +121,7 @@ public class SpawnedController : MonoBehaviour
             x = -x;
         if (sectorID == 1 || sectorID == 2)
             y = -y;
+
 
         // Instantiate
         GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID))/*, GetMask(sector).transform*/);
@@ -156,9 +154,9 @@ public class SpawnedController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeText.text = (currentTime > 0 ? audioSource.time : currentTime).ToString("0.0000") + "s";
-        // Spawn
-        musicHandler.SpawnNext(currentTime > 0 ? audioSource.time : currentTime);
+        // Update current time
+        currentTime += Time.deltaTime;
+        timeText.text = (currentTime > 0 ? audioSource.time : currentTime).ToString("0.00") + "s";
 
         //Debug.Log(currentTime);
 
@@ -173,8 +171,8 @@ public class SpawnedController : MonoBehaviour
             // Update
             sectors[sector].Update(currentTime > 0 ? audioSource.time : currentTime);
         }
-        // Update current time
-        currentTime += Time.deltaTime;
+        // Spawn
+        musicHandler.SpawnNext(currentTime > 0 ? audioSource.time : currentTime);
     }
 
     public static float SectorXDirection(Sector sector) {
