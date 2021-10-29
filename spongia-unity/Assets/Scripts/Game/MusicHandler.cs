@@ -5,60 +5,75 @@ using System.IO;
 using System.Globalization;
 using Newtonsoft.Json;
 
-public class MusicHandler : MonoBehaviour
+public class MusicHandler
 {
 
     // Offset between object spawn <=> object at perfect click position (beat)
     // MUST CORRESPOND TO MOVE SPEED SET IN THE CONTROLLER!!!
     const float SPAWN_TIME_OFFSET = 2;
 
-    // Controller used to spawn props etc...
+    // Controller
     public SpawnedController controller;
+    // Loaded clip
+    public AudioClip audioClip;
 
     // Mappings by track names
-    private Dictionary<string, Dictionary<float, int>> mappings = new Dictionary<string, Dictionary<float, int>>();
+    private List<List<float>> mappings;
+    // Mapping index
+    private int mappingIndex = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        /*// Load file names
-        string[] names = Directory.GetFiles("Assets/Resources/Mappings/");
-        // All names
-        foreach (string name in names) {
-            // If ends with .meta
-            if (name.EndsWith(".meta"))
-                continue;
+    // The first spawn time time
+    public float firstSpawn = float.MaxValue;
 
-            // Create reader
-            StreamReader reader = new StreamReader(name);
-            // Load JSON
-            Dictionary<string, int> json = JsonConvert.DeserializeObject<Dictionary<string, int>>(reader.ReadToEnd());
-            // Close
-            reader.Close();
+    public MusicHandler(SpawnedController c) {
+        // Set
+        controller = c;
+        // Base offset
+        double offset = c.xOffset;
 
-            Debug.Log(json.Count);
+        // Create reader
+        StreamReader reader = new StreamReader("Assets/Resources/Mappings/" + SpawnedController.songName + ".json");
+        // Load JSON
+        mappings = JsonConvert.DeserializeObject<List<List<float>>>(reader.ReadToEnd());
+        // Close
+        reader.Close();
+        // For each prop
+        foreach (List<float> propData in mappings) {
+            // Tone length
+            float length = propData[2];
 
+            // Full size of the prop (1/2)
+            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+            // Time where the prop will touch the player - how long it will take from the spawn position to that position
+            propData[0] = propData[0] - ((float) offset + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO)) - c.playerWidth) * SpawnedController.MOVE_SPEED;
 
-            // Create dictionary
-            Dictionary<float, int> timestamps = new Dictionary<float, int>();
-            // All json entries
-            foreach (KeyValuePair<string, int> entry in json) {
-                // Parse and add
-                timestamps.Add(float.Parse(entry.Key, CultureInfo.InvariantCulture.NumberFormat) - SPAWN_TIME_OFFSET, entry.Value);
-            }
+            // If earlier spawn time
+            if (propData[0] < firstSpawn)
+                firstSpawn = propData[0];
+        }
 
-            //Debug.Log(timestamps);
-        }*/
-        
-        
-        
-        
-        //Debug.Log(json);
+        // Load the clip
+        audioClip = Resources.Load<AudioClip>("Music/" + SpawnedController.songName);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SpawnNext(float time) {
+        // If out of range
+        if (mappingIndex >= mappings.Count)
+            return;
+
+        // While should have been spawned already
+        while (mappingIndex < mappings.Count && mappings[mappingIndex][0] <= time) {
+            // Data
+            List<float> propData = mappings[mappingIndex];
+            // Spawn
+            controller.Spawn(SectorByID((int) propData[1]), propData[2], propData[0]);
+            // Add
+            mappingIndex += 1;
+        }
     }
+
+    private Sector SectorByID(int id) {
+        return id == 0 ? Sector.NORTH_EAST : id == 1 ? Sector.SOUTH_EAST : id == 2 ? Sector.SOUTH_WEST : Sector.NORTH_WEST;
+    }
+
 }
