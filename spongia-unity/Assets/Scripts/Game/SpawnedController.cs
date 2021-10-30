@@ -18,7 +18,8 @@ public class SpawnedController : MonoBehaviour
     // Audio source
     public AudioSource audioSource;
 
-    public Text timeText;
+    public Text timeText, pointText;
+    public Image progressBar;
 
     // Masks
     public GameObject NEmask, SEmask, SWmask, NWmask;
@@ -44,6 +45,10 @@ public class SpawnedController : MonoBehaviour
 
     private float currentTime;
     public float playerWidth;
+
+    private long points = 0;
+
+    private float songLength;
 
 
     // Start is called before the first frame update
@@ -91,6 +96,7 @@ public class SpawnedController : MonoBehaviour
         musicHandler = new MusicHandler(this);
         // Set clip
         audioSource.clip = musicHandler.audioClip;
+        songLength = audioSource.clip.length;
         // Set current time
         currentTime = (int) (musicHandler.firstSpawn - 1);
 
@@ -155,24 +161,29 @@ public class SpawnedController : MonoBehaviour
     void Update()
     {
         // Update current time
-        currentTime += Time.deltaTime;
-        timeText.text = (currentTime > 0 ? audioSource.time : currentTime).ToString("0.00") + "s";
+        currentTime = audioSource.isPlaying ? audioSource.time : currentTime + Time.deltaTime;
+        timeText.text = currentTime.ToString("0.00") + "s";
 
+        // If is playing
+        if (audioSource.isPlaying) {
+            progressBar.fillAmount = currentTime / songLength;
+        }
         //Debug.Log(currentTime);
 
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // If pressed
             if (Input.GetKeyDown(keyboardKeys[sector]))
-                sectors[sector].HandlePress(0);
+                points += sectors[sector].HandlePress(currentTime);
             else if (Input.GetKeyUp(keyboardKeys[sector]))
-                sectors[sector].HandleRelease(0);
+                points += sectors[sector].HandleRelease(currentTime);
 
             // Update
-            sectors[sector].Update(currentTime > 0 ? audioSource.time : currentTime);
+            sectors[sector].Update(currentTime);
         }
+        pointText.text = "Points: " + points.ToString();
         // Spawn
-        musicHandler.SpawnNext(currentTime > 0 ? audioSource.time : currentTime);
+        musicHandler.SpawnNext(currentTime);
     }
 
     public static float SectorXDirection(Sector sector) {

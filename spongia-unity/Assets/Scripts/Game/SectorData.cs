@@ -24,6 +24,9 @@ public class SectorData
         List<Prop> props = new List<Prop>(screen);
         // For each prop
         foreach (Prop prop in props) {
+            // Previous position
+            TonePosition previous = prop.position;
+
             // Switch
             switch(prop.Move(time)) {
                 case TonePosition.FINISHED:
@@ -37,9 +40,9 @@ public class SectorData
                         // Decrease offset
                         despawnOffset -= 1;
                         // Decrease index
-                        focusedIndex -= 1;
-                    } else {
-                        // Increase despawn offset
+                        focusedIndex = focusedIndex == -1 ? -1 : focusedIndex - 1;
+                    } else if (previous == TonePosition.PLAYING) {
+                        // Increase despawn offset -> the prop is now despawning
                         despawnOffset += 1;
                     }
                     break;
@@ -59,38 +62,70 @@ public class SectorData
     }
 
     public int HandlePress(float time) {
-        // If there are no props
+        // If there are no props at all
         if (screen.Count == 0) {
-            // Set focused at none
+            // Reset just in case
             focusedIndex = -1;
+            // Can not focus
             return 0;
         }
 
-        // If there are no props despawning
+        // If not -1, some is selected
+        if (focusedIndex != -1)
+            // Handle
+            return CalculatePointsStart(time, screen[focusedIndex]);
+
+        // NO PROP FOCUSED CURRENTLY
+
+        // If there are no props FINISHED
         if (despawnOffset == 0) {
-            // If too far away
-            if (PropStartTooAway(time, screen[0])) {
-                // No focus
-                focusedIndex = -1;
+            // The first prop
+            Prop first = screen[0];
+
+            // If too far away from the first prop, or pressed already
+            if (PropStartTooAway(time, first) || first.pressed)
                 // No points
                 return 0;
-            }
 
             // Focus at the first prop
             focusedIndex = 0;
+            first.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
-            return CalculatePointsStart(time, screen[focusedIndex]);
+            return CalculatePointsStart(time, first);
         }
 
-        // If the current prop is still playing
+        // THERE IS AT LEAST ONE PROP FINISHED (DESPAWNING)
+
+        // If there are no non-FINISHED props available (only FINISHED/DESPAWNING props)
+        if (screen.Count - despawnOffset == 0) {
+            // The last despawning prop
+            Prop prop = screen[despawnOffset - 1];
+
+            // If missed or pressed already
+            if (PropStartTooAway(time, prop) || prop.pressed)
+                // Can't focus
+                return 0;
+            
+            // Focus
+            focusedIndex = despawnOffset - 1;
+            prop.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
+            // Handle
+            return CalculatePointsStart(time, prop);
+        }
+
+        // THERE ARE AT LEAST 2 PROPS - AT LEAST ONE DESPAWNING (FINISHED) AND ONE WAITING
+
+        // If the first non-FINISHED prop is still PLAYING
         if (screen[despawnOffset].position == TonePosition.PLAYING) {
+            // At this time, the tone should not have been pressed, in such case the focused index would not be -1
             // Focus
             focusedIndex = despawnOffset;
+            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         }
 
-        // NO TONE PLAYING CURRENTLY, BUT THERE IS AT LEAST ONE DESPAWNING (FINISHED) AND ONE WAITING
+        // NO TONE PLAYING CURRENTLY, BUT THERE ARE AT LEAST 2 - AT LEAST ONE DESPAWNING (FINISHED) AND ONE WAITING
 
         // Calculate mid time between start of on screen vs first despawning prop
         float midDistance = (screen[despawnOffset].startTime + screen[despawnOffset - 1].startTime) / 2;
@@ -107,6 +142,7 @@ public class SectorData
 
             // Focus at the despawning
             focusedIndex = despawnOffset - 1;
+            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         } else {
@@ -120,6 +156,7 @@ public class SectorData
 
             // Focus at the first on screen
             focusedIndex = despawnOffset;
+            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         }
@@ -132,13 +169,18 @@ public class SectorData
 
         // Calculate points
         int points = CalculatePointsEnd(time, screen[focusedIndex]);
+        screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        screen[focusedIndex].pressed = true;
         // If despawning
         if (focusedIndex < despawnOffset)
             // Reset
             focusedIndex = -1;
-        else
-            // Move to next index
-            focusedIndex += 1;
+        else {
+            // Move to next index (or if no prop available, none)
+            focusedIndex = screen.Count > focusedIndex + 1 ? focusedIndex + 1 : -1;
+            if (focusedIndex > -1)
+                screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
+        }
         // Return
         return points;
     }
@@ -149,53 +191,29 @@ public class SectorData
 
     private int CalculatePointsStart(float time, Prop prop) {
         float diff = Math.Abs(prop.startTime - time);
+        Debug.Log(diff);
 
         if (diff <= THRESHOLD_GOOD)
             return 300;
-        else if (diff <= THRESHOLD_GOOD)
+        else if (diff <= THRESHOLD_AVERAGE)
             return 200;
-        else if (diff <= THRESHOLD_GOOD)
+        else if (diff <= THRESHOLD_BAD)
             return 50;
         else
             return 0;
     }
 
     private int CalculatePointsEnd(float time, Prop prop) {
-        float diff = Math.Abs(prop.startTime + prop.length - time);
+        float diff = Math.Abs(prop.startTime + prop.length/(float) Prop.SQRT_OF_TWO/SpawnedController.MOVE_SPEED - time);
 
         if (diff <= THRESHOLD_GOOD)
             return 300;
-        else if (diff <= THRESHOLD_GOOD)
+        else if (diff <= THRESHOLD_AVERAGE)
             return 200;
-        else if (diff <= THRESHOLD_GOOD)
+        else if (diff <= THRESHOLD_BAD)
             return 50;
         else
             return 0;
     }
-
-    /*// Find next prop, on key press
-    public Prop FindNextProp(float time) {
-        // If not out of range
-        if (nextIndex >= 0)
-            return FocusedProp();
-        
-        // If there are no props available
-        if (active.Length == 0)
-            return null;
-        
-        // Index
-        int i = 0;
-        // While not applicable (passed already)
-        while (active.Length > i && active[i].startTime < time - SpawnController.THRESHOLD_BAD)
-            i += 1;
-
-        // If out of range
-        if (active.Length <= i)
-            // No props available
-            return null;
-        
-        // Return the prop
-        nextIndex = i;
-        return FocusedProp();
-    }*/
+    
 }
