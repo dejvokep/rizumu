@@ -16,7 +16,7 @@ public class MusicHandler
     // Mappings by track names
     private List<List<float>> mappings;
     // Mapping index
-    private int mappingIndex = 0;
+    public int mappingIndex = 0;
 
     // The first spawn time time
     public float firstSpawn = float.MaxValue;
