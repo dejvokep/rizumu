@@ -20,7 +20,7 @@ public class SpawnedController : MonoBehaviour
         }
     }
 
-    private class Rank {
+    public class Rank {
         public float accuracy;
         public GameObject rank;
 
@@ -34,7 +34,7 @@ public class SpawnedController : MonoBehaviour
     // Move speed
     public static float MOVE_SPEED = 2;
     public static float DIAGONAL_MOVE_SPEED = MOVE_SPEED * (float) Prop.SQRT_OF_TWO;
-    public static string resumeConfirmKey = "p";
+    public static float DIFFICULTY_MULTIPLIER = 1;
 
     private Color32 SCORE_COLOR_GOOD = new Color32(0, 255, 0, 255);
     private Color32 SCORE_COLOR_AVERAGE = new Color32(0, 255, 255, 255);
@@ -67,7 +67,7 @@ public class SpawnedController : MonoBehaviour
     // Audio source
     public AudioSource audioSource;
 
-    public Text scoreText, multiplierText, comboText, accuracyText, resumeCountdownText;
+    public Text scoreText, multiplierText, comboText, accuracyText;
     public Image accuracyIndicator;
     public Image progressBar, hpBar;
 
@@ -77,7 +77,9 @@ public class SpawnedController : MonoBehaviour
     public GameObject player;
     public GameObject scoreEarnedPrefab, canvas;
 
-    public GameObject pauseMenu, resumeCountdownObject, endScreen, failScreen, rankD, rankS, rankA, rankB, rankC;
+    public GameObject pauseMenu, failScreen, gamePanel, rankD, rankS, rankA, rankB, rankC;
+
+    private EndScreen endScreen;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
@@ -110,17 +112,18 @@ public class SpawnedController : MonoBehaviour
     private float displayedAccuracy = 0;
     private int displayedHP = 100;
 
-    private bool pendingCountdown = false;
-    private const int resumeCountdownLength = 3;
-    private float resumeCountdown = 0;
     private int hp = START_HP;
 
-    private bool startedPlaying = false, finishedPlaying = false, failedPlaying = false;
+    public bool startedPlaying = false, finishedPlaying = false, failedPlaying = false, paused = false;
+
+    private PausePanel pausePanel;
 
     public static int FAIL_HP = 30;
     private int rankIndex;
 
     public static int START_HP = 100, MISS_HP = -30, CORRECT_HP = 20;
+
+    private int misses = 0;
 
 
 
@@ -136,8 +139,8 @@ public class SpawnedController : MonoBehaviour
         };
         rankIndex = RANKS.Count - 1;
 
-        resumeCountdownText = resumeCountdownObject.GetComponent<Text>();
         playerWidth = GameObject.Find("Player").GetComponent<Renderer>().bounds.size.x / 4;
+        endScreen = GetComponent<EndScreen>();
         // Create new data
         sectors = new Dictionary<Sector, SectorData>();
         // Iterate
@@ -217,20 +220,18 @@ public class SpawnedController : MonoBehaviour
             PlayMusic();
     }
 
-    private void Resume() {
-        // Close the menu
-        pauseMenu.SetActive(false);
-        // Set awaiting
-        pendingCountdown = true;
-        // Reset cooldown
-        resumeCountdown = (float) resumeCountdownLength;
-        // Enable
-        resumeCountdownObject.SetActive(true);
-        // Set the text
-        resumeCountdownText.text = "Resuming in " + ((int) resumeCountdown) + "...";
+    public void Pause() {
+        // Paused
+        paused = true;
+        // Cancel invoke
+        CancelInvoke();
+        // Pause the music
+        audioSource.Pause();
     }
 
-    private void ConfirmResume() {
+    public void Resume() {
+        // Not paused
+        paused = false;
         // If less than 0
         if (currentTime < 0)
             // Start playing when current time is 0
@@ -246,8 +247,7 @@ public class SpawnedController : MonoBehaviour
     }
 
     private void ShowEndScreen() {
-        // Show screen
-        endScreen.SetActive(true);
+        endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) ((float) score / maxScore * 100), (long) Math.Sqrt(score));
     }
 
     private void ShowFailScreen() {
@@ -257,6 +257,7 @@ public class SpawnedController : MonoBehaviour
 
     void PlayMusic() {
         audioSource.Stop();
+        audioSource.time = 175;
         audioSource.Play();
         startedPlaying = true;
     }
@@ -313,7 +314,7 @@ public class SpawnedController : MonoBehaviour
             return;
 
         // If HP lower than required
-        if (hp < FAIL_HP) {
+        if (hp < FAIL_HP && false) {
             // Failed
             failedPlaying = true;
             // Cancel invoke
@@ -331,44 +332,8 @@ public class SpawnedController : MonoBehaviour
             return;
         }
 
-        // If escape is down
-        if (Input.GetKeyDown("escape")) {
-            // If was paused
-            if (pauseMenu.activeSelf) {
-                // Resume
-                Resume();
-            } else {
-                // Open the menu
-                pauseMenu.SetActive(true);
-                // Cancel invoke
-                CancelInvoke();
-                // Pause the music
-                audioSource.Pause();
-                return;
-            }
-        }
-
-        // If the countdown is pending
-        if (pendingCountdown) {
-            // Decrease
-            resumeCountdown -= Time.deltaTime;
-            // If below or 0
-            if (resumeCountdown <= 0) {
-                // Disable
-                resumeCountdownObject.SetActive(false);
-                pendingCountdown = false;
-                // Resume
-                ConfirmResume();
-            } else {
-                // Set the text
-                resumeCountdownText.text = "Resuming in " + ((int) Math.Ceiling(resumeCountdown)) + "...";
-                // Return
-                return;
-            }
-        }
-
         // If paused
-        if (pauseMenu.activeSelf)
+        if (paused)
             return;
 
         // If finished playing
@@ -378,8 +343,8 @@ public class SpawnedController : MonoBehaviour
             // Update the bar
             progressBar.fillAmount = 1;
 
-            // Show end screen after 2 seconds
-            Invoke("ShowEndScreen", 2);
+            // Show end screen after 1 second
+            Invoke("ShowEndScreen", 1);
         }
 
         // Update current time
@@ -449,6 +414,8 @@ public class SpawnedController : MonoBehaviour
             // Reset combo and multiplier
             combo = 0;
             multiplierIndex = 0;
+            // Count miss
+            misses += 1;
             // Decrease HP
             hp = hp + MISS_HP >= 0 ? hp + MISS_HP : 0;
 
@@ -456,7 +423,7 @@ public class SpawnedController : MonoBehaviour
             // If not negative
             if (score >= 0) {
                 // Add score
-                this.score += (long) (score * multiplier);
+                this.score += (long) (score * multiplier * DIFFICULTY_MULTIPLIER);
                 // Add combo
                 this.combo += 1;
 
@@ -468,7 +435,7 @@ public class SpawnedController : MonoBehaviour
                 gameObject.transform.position = new Vector2(playerWidth * (1 + UnityEngine.Random.Range(-0.4f, 0.4f)) * -SectorXDirection(sector), playerWidth * (4 + UnityEngine.Random.Range(-0.2f, 0.4f)) * -SectorYDirection(sector));
                 // Set text
                 Text text = gameObject.GetComponent<Text>();
-                text.text = score.ToString();
+                text.text = (score * multiplier * DIFFICULTY_MULTIPLIER).ToString();
                 // Set color
                 if (score > 0) {
                     text.color = score == 300 ? SCORE_COLOR_GOOD : score == 200 ? SCORE_COLOR_AVERAGE : SCORE_COLOR_BAD;
@@ -501,7 +468,7 @@ public class SpawnedController : MonoBehaviour
         displayed - diff < target ? target : displayed - diff;
     }
 
-    private float animateFloat(float displayed, float target) {
+    public static float animateFloat(float displayed, float target) {
         float diff = Time.deltaTime * FLOAT_ANIMATION_RATE;
         return displayed < target ?
         displayed + diff > target ? target : displayed + diff :

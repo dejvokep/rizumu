@@ -42,13 +42,15 @@ public class SectorData
                     // If can be despawned
                     if (prop.startTime + prop.length + THRESHOLD_BAD < time) {
                         // If was not pressed
-                        if (!prop.pressed)
+                        if (!prop.pressed) {
                             // If still focused and pressed, add 300, if not pressed at all 600
                             controller.AddToMaxScore(prop.startedPressing ? 300 : 600);
-                        // If the despawning prop was focused
-                        if (!prop.pressed && prop.startedPressing)
                             // Reset combo
                             controller.HandleScore(Sector.NORTH_EAST, -1);
+                            // If did not start pressing
+                            if (!prop.startedPressing)
+                                controller.HandleScore(Sector.NORTH_EAST, -1);
+                        }
 
                         // Destroy
                         SpawnedController.Destroy(prop.gameObject);

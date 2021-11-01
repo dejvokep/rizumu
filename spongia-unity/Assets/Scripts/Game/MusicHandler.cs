@@ -70,6 +70,10 @@ public class MusicHandler
         }
     }
 
+    public int PropCount() {
+        return mappings.Count;
+    }
+
     private Sector SectorByID(int id) {
         return id == 0 ? Sector.NORTH_EAST : id == 1 ? Sector.SOUTH_EAST : id == 2 ? Sector.SOUTH_WEST : Sector.NORTH_WEST;
     }
