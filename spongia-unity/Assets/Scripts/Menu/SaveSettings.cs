@@ -6,15 +6,27 @@ using UnityEngine;
 public class SaveSettings
 {
     // Video
-    public int[] resolution;
-    public int qualityIndex = 5;
-    public float brightness = 80f;
-    public bool isFullscreen = true;
+    public int resolutionWidth;
+    public int resolutionHeight;
+    public int qualityIndex;
+    public float brightness;
+    public bool isFullscreen;
     // Audio
-    public float volume = -40f;
+    public float volume;
     // Controls
     // public List<string> primaryControls;
     // public List<string> secondaryControls;
+
+    public void Default()
+    {
+        resolutionWidth = 1920;
+        resolutionHeight = 1080;
+        qualityIndex = 5;
+        brightness = 80f;
+        isFullscreen = true;
+
+        volume = -40f;
+    }
 
     public string ToJson()
     {
