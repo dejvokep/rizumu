@@ -11,13 +11,6 @@ public class PlayButtonsController : MonoBehaviour
     {
         animator = objectWithAnimator.GetComponent<Animator>();
     }
-    void Update()
-    {
-        if (animator.GetBool("open") == true && Input.GetKeyDown(KeyCode.Escape))
-        {
-            animator.SetBool("open", false);
-        }
-    }
 
     public void PlayAnimation()
     {
