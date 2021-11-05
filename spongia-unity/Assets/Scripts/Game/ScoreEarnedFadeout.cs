@@ -9,7 +9,6 @@ public class ScoreEarnedFadeout : MonoBehaviour
     private const float FADE_DURATION = 1;
     private const float MOVE_SPEED = 0.2f;
 
-
     private Text text;
 
     // Start is called before the first frame update

@@ -8,7 +8,8 @@ public class PausePanel : MonoBehaviour
 {
 
     private SpawnedController controller;
-    private CanvasGroup canvasGroup;
+    private CanvasGroup canvasGroup, gamePanelGroup, targetGroup;
+    private SpriteRenderer playerRenderer;
 
     private float ANIMATION_RATE = 5;
 
@@ -17,7 +18,7 @@ public class PausePanel : MonoBehaviour
     private const int resumeCountdownLength = 3;
     private float resumeCountdown = 0;
 
-    public GameObject resumeCountdownObject, panel;
+    public GameObject gamePanel, player, resumeCountdownObject, panel;
     private Text resumeCountdownText;
 
     private bool paused = false;
@@ -27,6 +28,8 @@ public class PausePanel : MonoBehaviour
     {
         controller = GameObject.Find("SpawnedController").GetComponent<SpawnedController>();
         canvasGroup = panel.GetComponent<CanvasGroup>();
+        gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
+        playerRenderer = player.GetComponent<SpriteRenderer>();
         resumeCountdownText = resumeCountdownObject.GetComponent<Text>();
     }
 
@@ -56,6 +59,8 @@ public class PausePanel : MonoBehaviour
             animate();
             // Reset alpha
             canvasGroup.alpha = alpha;
+            gamePanelGroup.alpha = 1-alpha;
+            playerRenderer.color = new Color32(255, 255, 255, (byte) (255*(1-alpha)));
             // If reached the target
             if (alpha == targetAlpha) {
                 // If dissappeared
@@ -74,6 +79,10 @@ public class PausePanel : MonoBehaviour
                 Pause();
             }
         }
+    }
+
+    public void Hide() {
+        targetAlpha = 0;
     }
 
     public void Pause() {

@@ -75,11 +75,12 @@ public class SpawnedController : MonoBehaviour
     public GameObject prefab;
     // Player
     public GameObject player;
-    public GameObject scoreEarnedPrefab, canvas;
+    public GameObject scoreEarnedPrefab, canvas, targets;
 
-    public GameObject pauseMenu, failScreen, gamePanel, rankD, rankS, rankA, rankB, rankC;
+    public GameObject rankD, rankS, rankA, rankB, rankC;
 
     private EndScreen endScreen;
+    private FailScreen failScreen;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
@@ -141,6 +142,7 @@ public class SpawnedController : MonoBehaviour
 
         playerWidth = GameObject.Find("Player").GetComponent<Renderer>().bounds.size.x / 4;
         endScreen = GetComponent<EndScreen>();
+        failScreen = GetComponent<FailScreen>();
         // Create new data
         sectors = new Dictionary<Sector, SectorData>();
         // Iterate
@@ -195,14 +197,31 @@ public class SpawnedController : MonoBehaviour
             PlayMusic();
     }
 
-    private void Restart() {
+    public void Restart() {
         // Stop
         audioSource.Stop();
+        musicHandler.Reset();
+        audioSource.time = 0;
         // Reset to defaults
+        score = 0;
+        multiplier = MULTIPLIERS[0].multiplier;
+        combo = 0;
+        maxScore = 0;
+        displayedScore = 0;
+        displayedMultiplier = MULTIPLIERS[0].multiplier;
+        displayedAccuracy = 0;
+        displayedHP = 100;
+        hp = START_HP;
         startedPlaying = false;
         finishedPlaying = false;
         failedPlaying = false;
+        paused = false;
         rankIndex = RANKS.Count - 1;
+        misses = 0;
+
+        // Reset ranks
+        for (int index = 0; index < RANKS.Count; index++)
+            RANKS[index].rank.SetActive(index == rankIndex);
 
         // Iterate
         foreach (Sector sector in Enum.GetValues(typeof(Sector)))
@@ -210,6 +229,13 @@ public class SpawnedController : MonoBehaviour
             sectors[sector].Reset();
         // Set current time
         currentTime = (int) (musicHandler.firstSpawn - 1);
+        // Reset progress
+        progressBar.fillAmount = 0;
+
+        // Hide all panels
+        endScreen.Hide();
+        failScreen.Hide();
+        pausePanel.Hide();
 
         // If lower than 0
         if (currentTime < 0)
@@ -241,7 +267,7 @@ public class SpawnedController : MonoBehaviour
             audioSource.Play();
     }
 
-    private void Quit() {
+    public void Quit() {
         // Load other scene
         SceneManager.LoadScene("MenuScene");
     }
@@ -251,15 +277,19 @@ public class SpawnedController : MonoBehaviour
     }
 
     private void ShowFailScreen() {
-        // Show screen
-        failScreen.SetActive(true);
+        failScreen.Show();
     }
 
     void PlayMusic() {
+        Debug.Log("Playing...");
         audioSource.Stop();
-        audioSource.time = 175;
+        Invoke("ChangeTime", 2);
         audioSource.Play();
         startedPlaying = true;
+    }
+
+    void ChangeTime() {
+        audioSource.time = 175;
     }
 
     void ResumeMusic() {
@@ -309,12 +339,13 @@ public class SpawnedController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(currentTime);
         // If finished or failed
         if (finishedPlaying || failedPlaying)
             return;
 
         // If HP lower than required
-        if (hp < FAIL_HP && false) {
+        if (hp < FAIL_HP) {
             // Failed
             failedPlaying = true;
             // Cancel invoke

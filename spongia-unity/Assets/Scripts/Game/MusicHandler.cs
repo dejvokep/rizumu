@@ -54,6 +54,10 @@ public class MusicHandler
         audioClip = Resources.Load<AudioClip>("Music/" + SpawnedController.songName);
     }
 
+    public void Reset() {
+        mappingIndex = 0;
+    }
+
     public void SpawnNext(float time) {
         // If out of range
         if (mappingIndex >= mappings.Count)

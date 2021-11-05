@@ -15,21 +15,12 @@ public class EndScreen : MonoBehaviour
     private CanvasGroup canvasGroup, gamePanelGroup;
     private SpriteRenderer playerRenderer;
 
-    private float ANIMATION_RATE = 5;
-    private float alpha = 0, targetAlpha = 0;
-
     private List<SpawnedController.Rank> RANKS;
-
-    private long displayedScore = 0, displayedSp = 0;
-    private int displayedHits = 0, displayedMisses = 0, displayedAccuracy = 0;
 
     private long score, sp;
     private int hits, misses, accuracy;
 
-    private const float ANIMATION_DURATION = 1;
-
-    private bool shown = false, animated = false;
-
+    private const float FADE_DURATION = 0.5f, ANIMATION_DURATION = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -47,51 +38,56 @@ public class EndScreen : MonoBehaviour
         playerRenderer = player.GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // If not shown
-        if (!shown)
-            return;
-
-        // If animating
-        if (alpha != targetAlpha) {
-            // Animate
-            animate();
-            // Reset alpha
-            canvasGroup.alpha = alpha;
-            gamePanelGroup.alpha = 1-alpha;
-            playerRenderer.color = new Color32(255, 255, 255, (byte) (255*(1-alpha)));
-        } else {
-            if (!animated) {
-                animated = true;
-                StartCoroutine(Animate());
-            }
-        }
-    }
-
     public void Show(long score, int hits, int misses, int accuracy, long sp) {
         // Activate
         panel.SetActive(true);
-        // Animate
-        targetAlpha = 1;
         // Set
-        this.shown = true;
         this.score = score;
         this.hits = hits;
         this.misses = misses;
         this.accuracy = accuracy;
         this.sp = sp;
-        Debug.Log("ACC: " + accuracy);
 
-        // Refresh rank
-        RefreshRank(accuracy);
+        // Activate rank
+        ActivateRank(accuracy);
+        // Animate
+        StartCoroutine(Fade(true));
+    }
+
+    public void Hide() {
+        // Animate
+        StartCoroutine(Fade(false));
+    }
+
+    private IEnumerator Fade(bool fadeIn) {
+        // Speed
+        float speed = 1f / FADE_DURATION;
+
+        for (float t = 0; t < 1; t += Time.deltaTime * speed) {
+            // Current alpha
+            float alpha = Mathf.Lerp(fadeIn ? 0 : 1, fadeIn ? 1 : 0, t);
+            // Reset alpha
+            canvasGroup.alpha = alpha;
+            gamePanelGroup.alpha = 1-alpha;
+            playerRenderer.color = new Color32(255, 255, 255, (byte) (255*(1-alpha)));
+            yield return true;
+        }
+
+        // If fading in
+        if (fadeIn)
+            // Animate numbers
+            StartCoroutine(Animate());
+        else
+            // Deactivate
+            panel.SetActive(false);
     }
 
     private IEnumerator Animate() {
+        // Speed
         float speed = 1.0f / ANIMATION_DURATION;
 
         for (float t = 0; t < 1; t += Time.deltaTime * speed) {
+            // Calculate values
             scoreText.text = ((long) Mathf.Lerp(0, score, t)).ToString();
             hitsText.text = ((int) Mathf.Lerp(0, hits, t)).ToString();
             missesText.text = ((int) Mathf.Lerp(0, misses, t)).ToString();
@@ -100,6 +96,7 @@ public class EndScreen : MonoBehaviour
             yield return true;
         }
         
+        // Set final values
         scoreText.text = score.ToString();
         hitsText.text = hits.ToString();
         missesText.text = misses.ToString();
@@ -107,7 +104,7 @@ public class EndScreen : MonoBehaviour
         spText.text = sp.ToString();
     }
 
-    private void RefreshRank(float accuracy) {
+    private void ActivateRank(float accuracy) {
         // Index
         int rankIndex = 0;
         // While can move to the upper tier
@@ -117,12 +114,5 @@ public class EndScreen : MonoBehaviour
 
         // Activate rank
         RANKS[rankIndex].rank.SetActive(true);
-    }
-
-    private void animate() {
-        float diff = Time.deltaTime * ANIMATION_RATE;
-        alpha = alpha < targetAlpha ?
-        alpha + diff > targetAlpha ? targetAlpha : alpha + diff :
-        alpha - diff < targetAlpha ? targetAlpha : alpha - diff;
     }
 }
