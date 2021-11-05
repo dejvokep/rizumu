@@ -22,7 +22,7 @@ public class Prop : MonoBehaviour
 
     public TonePosition position = TonePosition.WAITING;
 
-    public bool pressed = false;
+    public bool pressed = false, startedPressing = false;
 
 
     // Start is called before the first frame update
@@ -31,6 +31,7 @@ public class Prop : MonoBehaviour
         player = GameObject.Find("Player");
         // Tone length
         length = gameObject.transform.localScale.y;
+        gameObject.transform.localScale = new Vector2(1, length * SpawnedController.DIAGONAL_MOVE_SPEED);
         // Max points
         maxPoints = length * 1000;
 
@@ -49,7 +50,7 @@ public class Prop : MonoBehaviour
         // Set player bounds
         playerBounds = new Vector2(playerWidth, playerWidth);
         // Set grid size
-        gridSize = length / SQRT_OF_TWO;
+        gridSize = length * SpawnedController.DIAGONAL_MOVE_SPEED / SQRT_OF_TWO;
     }
 
     public TonePosition Move(float time)
@@ -72,8 +73,11 @@ public class Prop : MonoBehaviour
         transform.position = new Vector2(pos * -SpawnedController.SectorXDirection(sector), pos * -SpawnedController.SectorYDirection(sector));
 
         // If waiting
-        if (startTime - time > 0)
+        if (startTime > time)
             return TonePosition.WAITING;
+        // If finished
+        if (position == TonePosition.FINISHED)
+            return position;
 
         // If east sector
         if ((int) sector < 2) {

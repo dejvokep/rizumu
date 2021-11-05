@@ -16,7 +16,7 @@ public class MusicHandler
     // Mappings by track names
     private List<List<float>> mappings;
     // Mapping index
-    private int mappingIndex = 0;
+    public int mappingIndex = 0;
 
     // The first spawn time time
     public float firstSpawn = float.MaxValue;
@@ -54,6 +54,10 @@ public class MusicHandler
         audioClip = Resources.Load<AudioClip>("Music/" + SpawnedController.songName);
     }
 
+    public void Reset() {
+        mappingIndex = 0;
+    }
+
     public void SpawnNext(float time) {
         // If out of range
         if (mappingIndex >= mappings.Count)
@@ -68,6 +72,10 @@ public class MusicHandler
             // Add
             mappingIndex += 1;
         }
+    }
+
+    public int PropCount() {
+        return mappings.Count;
     }
 
     private Sector SectorByID(int id) {
