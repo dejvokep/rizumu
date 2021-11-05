@@ -5,3 +5,7 @@ Vývojové prostredie a prostriedky: Unity, C#, Photoshop
 Fonty:
 Zdroj: https://www.fontspace.com/timeburner-font-f15111
 Licencia: Freeware
+
+Obrázky:
+Zdroj: https://www.maxpixel.net/Anime-Winds-Night-Telephone-Poles-Stars-1247849
+Licencia: CC0 1.0
