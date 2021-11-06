@@ -14,8 +14,10 @@ public class SaveSettings
     // Audio
     public float volume;
     // Controls
-    // public List<string> primaryControls;
-    // public List<string> secondaryControls;
+    public string keyNE;
+    public string keySE;
+    public string keySW;
+    public string keyNW;
 
     public void Default()
     {
@@ -26,6 +28,11 @@ public class SaveSettings
         isFullscreen = true;
 
         volume = -40f;
+
+        keyNE = "F";
+        keySE = "K";
+        keySW = "J";
+        keyNW = "D";
     }
 
     public string ToJson()
