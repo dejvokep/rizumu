@@ -5,9 +5,14 @@ using UnityEngine;
 
 public static class FileManager
 {
-    public static bool WriteToFile(string a_FileName, string a_FileContents)
+    public static bool WriteToFile(string a_FileName, string a_FileContents, string path = null)
     {
-        var fullPath = Path.Combine(Application.persistentDataPath, a_FileName);
+        if (path == null)
+        {
+            path = Application.persistentDataPath;
+        }
+
+        var fullPath = Path.Combine(path, a_FileName);
 
         try
         {
@@ -21,9 +26,14 @@ public static class FileManager
         }
     }
 
-    public static bool LoadFromFile(string a_FileName, out string result)
+    public static bool LoadFromFile(string a_FileName, out string result, string path = null)
     {
-        var fullPath = Path.Combine(Application.persistentDataPath, a_FileName);
+        if (path == null)
+        {
+            path = Application.persistentDataPath;
+        }
+
+        var fullPath = Path.Combine(path, a_FileName);
 
         try
         {
