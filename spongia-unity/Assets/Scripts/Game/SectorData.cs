@@ -44,7 +44,7 @@ public class SectorData
                         // If was not pressed
                         if (!prop.pressed) {
                             // If still focused and pressed, add 300, if not pressed at all 600
-                            controller.AddToMaxScore(prop.startedPressing ? 300 : 600);
+                            controller.AddToMaxScore((int) ((prop.startedPressing ? 300 : 600)*controller.multiplier));
                             // Reset combo
                             controller.HandleScore(Sector.NORTH_EAST, -1);
                             // If did not start pressing
@@ -140,7 +140,6 @@ public class SectorData
 
             // Focus at the first prop
             focusedIndex = 0;
-            first.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, first);
         }
@@ -159,7 +158,6 @@ public class SectorData
             
             // Focus
             focusedIndex = despawnOffset - 1;
-            prop.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, prop);
         }
@@ -179,7 +177,6 @@ public class SectorData
             // At this time, the tone should not have been pressed, in such case the focused index would not be -1
             // Focus
             focusedIndex = despawnOffset;
-            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         }
@@ -201,7 +198,6 @@ public class SectorData
 
             // Focus at the despawning
             focusedIndex = despawnOffset - 1;
-            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         } else {
@@ -215,7 +211,6 @@ public class SectorData
 
             // Focus at the first on screen
             focusedIndex = despawnOffset;
-            screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
             // Handle
             return CalculatePointsStart(time, screen[focusedIndex]);
         }
@@ -231,7 +226,7 @@ public class SectorData
 
         // Calculate points
         int points = CalculatePointsEnd(time, screen[focusedIndex]);
-        screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        // Set pressed
         screen[focusedIndex].pressed = true;
         // If despawning
         if (focusedIndex < despawnOffset)
@@ -240,8 +235,6 @@ public class SectorData
         else {
             // Move to next index (or if no prop available, none)
             focusedIndex = screen.Count > focusedIndex + 1 ? focusedIndex + 1 : -1;
-            if (focusedIndex > -1)
-                screen[focusedIndex].GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
         }
         // Return
         return points;
@@ -254,7 +247,7 @@ public class SectorData
     private int CalculatePointsStart(float time, Prop prop) {
         float diff = Math.Abs(prop.startTime - time);
 
-        controller.AddToMaxScore(300);
+        controller.AddToMaxScore((int) (300*controller.multiplier));
         prop.startedPressing = true;
         if (diff <= THRESHOLD_GOOD)
             return 300;
@@ -271,7 +264,7 @@ public class SectorData
     private int CalculatePointsEnd(float time, Prop prop) {
         float diff = Math.Abs(prop.startTime + prop.length - time);
 
-        controller.AddToMaxScore(300);
+        controller.AddToMaxScore((int) (300*controller.multiplier));
         if (diff <= THRESHOLD_GOOD)
             return 300;
         else if (diff <= THRESHOLD_AVERAGE)
