@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,71 +7,266 @@ using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
-    public Dropdown resolutionDropdown;
-
     UnityEngine.Resolution[] resolutions;
 
-
-    public Image mask; //Brightness Adjustment
-
-
+    
+    public Image brightnessMask; // Brightness Adjustment
+    [Space]
     public AudioMixer audioMixer;
+    [Space]
+    [Space]
+    public Dropdown resolutionDropdown;
+    public Dropdown graphicsDropdown;
+    public Slider brightnessSlider;
+    public Toggle fullscreenToggle;
+    [Space]
+    public Slider volumeSlider;
+    [Space]
+    [Space]
+    public GameObject controlButtonsHolder;
+
+    private GameObject currentKey;
+
+    
+    // Keyboard keys by sector
+    public static Dictionary<Sector, string> keyboardKeys = new Dictionary<Sector, string>();
+    private List<String> keys = new List<string>();
+
+
+    private int resolutionIndex;
+    private SaveSettings curSettings = new SaveSettings();
+
+
+    // Saving data
+    private string saveFileName = "settings.dat";
+    public void SaveJsonData()
+    {
+        curSettings.keyNE = keyboardKeys[Sector.NORTH_EAST] = keys[0];
+        curSettings.keySE = keyboardKeys[Sector.SOUTH_EAST] = keys[1];
+        curSettings.keySW = keyboardKeys[Sector.SOUTH_WEST] = keys[2];
+        curSettings.keyNW = keyboardKeys[Sector.NORTH_WEST] = keys[3];
+        
+        if (FileManager.WriteToFile(saveFileName, curSettings.ToJson()))
+        {
+            Debug.Log("Save successful");
+        }
+    }
+    
+    public void LoadJsonData()
+    {
+        if (FileManager.LoadFromFile(saveFileName, out var json))
+        {
+            curSettings.Default();
+
+            curSettings.LoadFromJson(json);
+
+            Debug.Log("Load complete");
+        }
+        else
+        {
+            curSettings.Default();
+
+            SaveJsonData();
+        }        
+    }
+
 
 
     void Start()
     {
+        // Resoluion dropdown setup
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
 
         List<string> options = new List<string>();
 
-        int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
+            string option = resolutions[i].width + " x " + resolutions[i].height + "  ";
             options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width &&
-                resolutions[i].height == Screen.currentResolution.height)
-            {
-                currentResolutionIndex = i;
-            }
         }
 
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+
+        // Control Buttons setup
+        // controlButtonsHolder.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(0);});
+        // controlButtonsHolder.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(1);});
+        // controlButtonsHolder.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(2);});
+        // controlButtonsHolder.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(3);});
+
+
+        // Load Settings
+        LoadJsonData();
+
+        keys.Add(curSettings.keyNE);
+        keys.Add(curSettings.keySE);
+        keys.Add(curSettings.keySW);
+        keys.Add(curSettings.keyNW);
+
+
+        // Update Settings
+        UpdateAllSettings();
     }
 
-    public void SetResolution (int resolutionIndex)
+
+    private int getResolutionIndex()
     {
-        UnityEngine.Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            if (resolutions[i].width == curSettings.resolutionWidth &&
+                resolutions[i].height == curSettings.resolutionHeight)
+            {
+                return i;
+            }
+        }
+        return resolutions.Length - 1;
     }
 
-
-    // Fulscreen Toggle
-    public void SetFullscreen(bool isFullscreen)
+    public void UpdateAllSettings()
     {
-        Screen.fullScreen = isFullscreen;
+        // Resolution
+        Screen.SetResolution(curSettings.resolutionWidth, curSettings.resolutionHeight, Screen.fullScreen);
+
+        // Quality
+        UnityEngine.QualitySettings.SetQualityLevel(curSettings.qualityIndex);
+
+        // Brightness
+        brightnessMask.color = new Color32((byte) 0, (byte) 0, (byte) 0, (byte) (100f - curSettings.brightness));
+
+        // Fulscreen
+        Screen.fullScreen = curSettings.isFullscreen;
+
+        // Volume
+        audioMixer.SetFloat("volume", curSettings.volume);
+
+
+        resolutionIndex = getResolutionIndex(); resolutionDropdown.value = resolutionIndex;
+        graphicsDropdown.value = curSettings.qualityIndex;
+        brightnessSlider.value = curSettings.brightness;
+        fullscreenToggle.isOn = curSettings.isFullscreen;
+
+        volumeSlider.value = curSettings.volume;
+
+
+        keys[0] = keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE;
+        keys[1] = keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE;
+        keys[2] = keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW;
+        keys[3] = keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW;
+
+        // KeyControls
+        UpdateAllControlButtons();
+    }
+
+    public void DefaultSettings()
+    {
+        curSettings.Default();
     }
 
 
+    // Resolution Dropdown
+    public void SetResolution (int index)
+    {
+        resolutionIndex = index;
+        curSettings.resolutionWidth = resolutions[index].width;
+        curSettings.resolutionHeight = resolutions[index].height;
+
+        Screen.SetResolution(curSettings.resolutionWidth, curSettings.resolutionHeight, Screen.fullScreen);
+    }
+
+    // Graphics (Quality) Dropdown
+    public void SetQuality(int index)
+    {
+        curSettings.qualityIndex = index;
+
+        UnityEngine.QualitySettings.SetQualityLevel(curSettings.qualityIndex);
+    }
+
+    // Brightness Slider
     public void UpdateBrightness(float value)
     {
-        mask.color = new Color32((byte) 0, (byte) 0, (byte) 0, (byte) (100-value));
+        curSettings.brightness = value;
+
+        brightnessMask.color = new Color32((byte) 0, (byte) 0, (byte) 0, (byte) (100 - curSettings.brightness));
     }
 
+    // Fullscreen Toggle
+    public void SetFullscreen(bool value)
+    {
+        curSettings.isFullscreen = value;
 
+        Screen.fullScreen = curSettings.isFullscreen;
+    }
+
+    // Volume Slider
     public void SetVolume(float value)
     {
-        audioMixer.SetFloat("volume", value);
+        curSettings.volume = value;
+
+        audioMixer.SetFloat("volume", curSettings.volume);
     }
 
 
-    public void SetQuality(int qualityIndex)
+    void Update()
     {
-        UnityEngine.QualitySettings.SetQualityLevel(qualityIndex);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
+            currentKey = null;
+        }
+    }
+
+    void OnGUI()
+    {
+        if (currentKey != null)
+        {
+            Event e = Event.current;
+            if (e.isKey)
+            {
+                if (e.keyCode != KeyCode.Escape)
+                {
+                    keys[GetSectorIndexBySectorName(currentKey.name)] = e.keyCode.ToString();
+                    controlButtonsHolder.transform.GetChild(GetSectorIndexBySectorName(currentKey.name)).GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
+
+                    currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
+                    currentKey = null;
+                }
+            }
+        }
+    }
+    
+    public void SwitchControlsButtonHandler(GameObject clicked)
+    {
+        if (currentKey == null)
+        {
+            currentKey = clicked;
+
+            currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 100, (byte) 100, (byte) 255);
+        }
+    }
+
+    private void UpdateAllControlButtons()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            controlButtonsHolder.transform.GetChild(i).GetChild(0).GetComponent<Text>().text = keys[i];
+        }
+    }
+
+    private int GetSectorIndexBySectorName(string name)
+    {
+        switch (name)
+        {
+            default:
+                return -1;
+            case "NE":
+                return 0;
+            case "SE":
+                return 1;
+            case "SW":
+                return 2;
+            case "NW":
+                return 3;
+        }
     }
 }
