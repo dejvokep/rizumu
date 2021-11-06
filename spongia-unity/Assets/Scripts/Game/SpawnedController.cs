@@ -69,6 +69,9 @@ public class SpawnedController : MonoBehaviour
     // Audio source
     public AudioSource audioSource;
 
+    public ParticleSystem particlesNE, particlesSE, particlesSW, particlesNW;
+    public Dictionary<Sector, ParticleSystem> particles = new Dictionary<Sector, ParticleSystem>();
+
     public Text scoreText, multiplierText, comboText, accuracyText;
     public Image accuracyIndicator;
     public Image progressBar, hpBar;
@@ -130,6 +133,7 @@ public class SpawnedController : MonoBehaviour
 
     private int misses = 0;
     private int bestCombo = 0;
+    private bool initialized = false;
 
     // Start is called before the first frame update
     void Start()
@@ -141,6 +145,11 @@ public class SpawnedController : MonoBehaviour
             new Rank(85, rankA),
             new Rank(95, rankS)
         };
+        particles.Add(Sector.NORTH_EAST, particlesNE);
+        particles.Add(Sector.SOUTH_EAST, particlesSE);
+        particles.Add(Sector.SOUTH_WEST, particlesSW);
+        particles.Add(Sector.NORTH_WEST, particlesNW);
+
         rankIndex = RANKS.Count - 1;
 
         playerWidth = GameObject.Find("Player").GetComponent<Renderer>().bounds.size.x / 4;
@@ -152,7 +161,7 @@ public class SpawnedController : MonoBehaviour
         // Iterate
         foreach (Sector sector in Enum.GetValues(typeof(Sector)))
             // Add data
-            sectors.Add(sector, new SectorData(this));
+            sectors.Add(sector, new SectorData(this, sector));
 
         //
         // CONTROLS
@@ -186,6 +195,10 @@ public class SpawnedController : MonoBehaviour
         audioSource.outputAudioMixerGroup = mixer;
         // Load handler
         musicHandler = new MusicHandler(this);
+        musicHandler.Load();
+    }
+
+    public void ContinueInit() {
         // Set clip
         audioSource.clip = musicHandler.audioClip;
         songLength = audioSource.clip.length;
@@ -207,6 +220,9 @@ public class SpawnedController : MonoBehaviour
         else
             // Play now
             PlayMusic();
+
+        // Initialized
+        initialized = true;
     }
 
     public void Restart() {
@@ -296,7 +312,7 @@ public class SpawnedController : MonoBehaviour
 
     void PlayMusic() {
         audioSource.Stop();
-        Invoke("ChangeTime", 10);
+        //Invoke("ChangeTime", 10);
         audioSource.Play();
         startedPlaying = true;
     }
@@ -410,6 +426,10 @@ public class SpawnedController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If not initialized
+        if (!initialized)
+            return;
+            
         // Animate HP bar
         displayedHP = animateHp(displayedHP, (float) hp/START_HP);
         hpBar.fillAmount = displayedHP;
@@ -469,10 +489,27 @@ public class SpawnedController : MonoBehaviour
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // If pressed
-            if (Input.GetKeyDown(keyboardKeys[sector]))
-                HandleScore(sector, sectors[sector].HandlePress(currentTime));
-            else if (Input.GetKeyUp(keyboardKeys[sector]))
-                HandleScore(sector, sectors[sector].HandleRelease(currentTime));
+            if (Input.GetKeyDown(keyboardKeys[sector])) {
+                // Score
+                int score = sectors[sector].HandlePress(currentTime);
+                // If not -2
+                if (score != -2)
+                    // Turn on particle system
+                    particles[sector].Play();
+
+                // Handle
+                HandleScore(sector, score);
+            } else if (Input.GetKeyUp(keyboardKeys[sector])) {
+                // Score
+                int score = sectors[sector].HandleRelease(currentTime);
+                // If not -2
+                if (score != -2)
+                    // Turn off particle system
+                    particles[sector].Stop();
+
+                // Handle
+                HandleScore(sector, score);
+            }
 
             // Update
             sectors[sector].Update(currentTime);
