@@ -130,6 +130,7 @@ public class SpawnedController : MonoBehaviour
 
     private int misses = 0;
     private int bestCombo = 0;
+    private bool initialized = false;
 
     // Start is called before the first frame update
     void Start()
@@ -186,6 +187,10 @@ public class SpawnedController : MonoBehaviour
         audioSource.outputAudioMixerGroup = mixer;
         // Load handler
         musicHandler = new MusicHandler(this);
+        musicHandler.Load();
+    }
+
+    public void ContinueInit() {
         // Set clip
         audioSource.clip = musicHandler.audioClip;
         songLength = audioSource.clip.length;
@@ -207,6 +212,9 @@ public class SpawnedController : MonoBehaviour
         else
             // Play now
             PlayMusic();
+
+        // Initialized
+        initialized = true;
     }
 
     public void Restart() {
@@ -296,7 +304,7 @@ public class SpawnedController : MonoBehaviour
 
     void PlayMusic() {
         audioSource.Stop();
-        Invoke("ChangeTime", 10);
+        //Invoke("ChangeTime", 10);
         audioSource.Play();
         startedPlaying = true;
     }
@@ -410,6 +418,10 @@ public class SpawnedController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If not initialized
+        if (!initialized)
+            return;
+            
         // Animate HP bar
         displayedHP = animateHp(displayedHP, (float) hp/START_HP);
         hpBar.fillAmount = displayedHP;
