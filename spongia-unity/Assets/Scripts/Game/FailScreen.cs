@@ -47,9 +47,7 @@ public class FailScreen : MonoBehaviour
         }
 
         // Deactivate
-        if (!fadeIn) {
-            Debug.Log("Deactivated");
+        if (!fadeIn)
             panel.SetActive(false);
-        }
     }
 }

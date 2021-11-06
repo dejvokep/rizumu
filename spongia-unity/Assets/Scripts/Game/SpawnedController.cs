@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System;
+using System.IO;
 using static Sector;
+using Newtonsoft.Json;
 
 public class SpawnedController : MonoBehaviour
 {
@@ -30,7 +32,7 @@ public class SpawnedController : MonoBehaviour
         }
     }
 
-    public static string songName = "tajne_zaznamy";
+    public static string songID = "cf954cc6-aba1-47bd-a855-6f77c00006ad";
     // Move speed
     public static float MOVE_SPEED = 2;
     public static float DIAGONAL_MOVE_SPEED = MOVE_SPEED * (float) Prop.SQRT_OF_TWO;
@@ -82,6 +84,8 @@ public class SpawnedController : MonoBehaviour
     private EndScreen endScreen;
     private FailScreen failScreen;
 
+    public GameObject gameBackground, pauseBackground;
+
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
 
@@ -100,7 +104,7 @@ public class SpawnedController : MonoBehaviour
     private long score = 0;
 
     private float songLength;
-    private float multiplier = MULTIPLIERS[0].multiplier;
+    public float multiplier = MULTIPLIERS[0].multiplier;
     private int combo = 0;
 
     private long maxScore = 0;
@@ -110,8 +114,8 @@ public class SpawnedController : MonoBehaviour
 
     private long displayedScore = 0;
     private float displayedMultiplier = MULTIPLIERS[0].multiplier;
-    private float displayedAccuracy = 0;
-    private int displayedHP = 100;
+    private float displayedAccuracy = 1;
+    private float displayedHP = 1;
 
     private int hp = START_HP;
 
@@ -125,8 +129,7 @@ public class SpawnedController : MonoBehaviour
     public static int START_HP = 100, MISS_HP = -30, CORRECT_HP = 20;
 
     private int misses = 0;
-
-
+    private int bestCombo = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -143,6 +146,7 @@ public class SpawnedController : MonoBehaviour
         playerWidth = GameObject.Find("Player").GetComponent<Renderer>().bounds.size.x / 4;
         endScreen = GetComponent<EndScreen>();
         failScreen = GetComponent<FailScreen>();
+        pausePanel = GetComponent<PausePanel>();
         // Create new data
         sectors = new Dictionary<Sector, SectorData>();
         // Iterate
@@ -188,6 +192,14 @@ public class SpawnedController : MonoBehaviour
         // Set current time
         currentTime = (int) (musicHandler.firstSpawn - 1);
 
+        // Aspect ratio
+        float aspectRatio = musicHandler.image.rect.width / musicHandler.image.rect.height;
+        // Set backgrounds
+        gameBackground.GetComponent<Image>().sprite = musicHandler.image;
+        gameBackground.GetComponent<AspectRatioFitter>().aspectRatio = aspectRatio;
+        pauseBackground.GetComponent<Image>().sprite = musicHandler.image;
+        pauseBackground.GetComponent<AspectRatioFitter>().aspectRatio = aspectRatio;
+
         // If lower than 0
         if (currentTime < 0)
             // Start playing when current time is 0
@@ -209,8 +221,8 @@ public class SpawnedController : MonoBehaviour
         maxScore = 0;
         displayedScore = 0;
         displayedMultiplier = MULTIPLIERS[0].multiplier;
-        displayedAccuracy = 0;
-        displayedHP = 100;
+        displayedAccuracy = 1;
+        displayedHP = 1;
         hp = START_HP;
         startedPlaying = false;
         finishedPlaying = false;
@@ -231,6 +243,8 @@ public class SpawnedController : MonoBehaviour
         currentTime = (int) (musicHandler.firstSpawn - 1);
         // Reset progress
         progressBar.fillAmount = 0;
+        // Reset HP
+        hpBar.fillAmount = 1;
 
         // Hide all panels
         endScreen.Hide();
@@ -281,9 +295,8 @@ public class SpawnedController : MonoBehaviour
     }
 
     void PlayMusic() {
-        Debug.Log("Playing...");
         audioSource.Stop();
-        Invoke("ChangeTime", 2);
+        Invoke("ChangeTime", 10);
         audioSource.Play();
         startedPlaying = true;
     }
@@ -297,12 +310,12 @@ public class SpawnedController : MonoBehaviour
         audioSource.Play();
     }
 
-    public void Spawn(Sector sector, float length, float startTime) {
+    public void Spawn(Sector sector, float length, float startTime, float diagonalSpeed) {
         // Sector ID
         int sectorID = (int) sector;
         
         // Full size of the prop (1/2)
-        float xSize = (float) (length / 2 * DIAGONAL_MOVE_SPEED) + ((float) (prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+        float xSize = (float) (length / 2 * diagonalSpeed) + ((float) (prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
         // Positions (NOTE : ((float) offset + (length / 2 / Prop.SQRT_OF_TWO)))
         double x = xOffset + xSize, y = yOffset + xSize;
 
@@ -323,6 +336,10 @@ public class SpawnedController : MonoBehaviour
         Prop prop = spawned.GetComponent<Prop>();
         // Set start time
         prop.SetStartTime(startTime);
+        // Set diagonal speed
+        prop.SetSpeed(diagonalSpeed);
+        // Init
+        prop.Init();
         // Spawn
         sectors[sector].Spawn(prop);
 
@@ -332,13 +349,71 @@ public class SpawnedController : MonoBehaviour
         //active[sector].Add(spawned.GetComponent<Prop>());
     }
 
-    public void Clicked(GameObject prop) {
-        Debug.Log(prop);
+    private void Save() {
+        // File path
+        string filePath = Path.Combine(Application.persistentDataPath, "userdata.json");
+        
+        // Json base
+        JSONBase jsonBase;
+        // If exists
+        if (File.Exists(filePath)) {
+            // Create reader
+            StreamReader reader = new StreamReader(filePath);
+            // Deserialize
+            jsonBase = JsonConvert.DeserializeObject<JSONBase>(reader.ReadToEnd());
+            // Close
+            reader.Close();
+        } else {
+            // Create default
+            jsonBase = new JSONBase {
+                sp = 0,
+                highscores = new Dictionary<string, JSONHighscore>()
+            };
+        }
+
+        // Accurracy
+        float accuracy = (float) score / maxScore * 100;
+        // Add sp
+        jsonBase.sp += (long) Math.Sqrt(this.score);
+        // New score
+        JSONHighscore highscore = new JSONHighscore {
+            score = this.score,
+            accuracy = (float) this.score / this.maxScore * 100,
+            rank = rankIndex == 0 ? "D" : rankIndex == 1 ? "C" : rankIndex == 2 ? "B" : rankIndex == 3 ? "A" : "S",
+            combo = this.bestCombo
+        };
+
+        // If does not contain
+        if (!jsonBase.highscores.ContainsKey(songID))
+            // Add
+            jsonBase.highscores.Add(songID, highscore);
+        else if (jsonBase.highscores[songID].accuracy < accuracy)
+            // Replace
+            jsonBase.highscores[songID] = highscore;
+        
+        // Serialize
+        File.WriteAllText(filePath, JsonConvert.SerializeObject(jsonBase, Formatting.Indented));
+    }
+
+    public class JSONBase {
+        public long sp {get; set;}
+        public Dictionary<string, JSONHighscore> highscores {get; set;}
+    }
+
+    public class JSONHighscore {
+        public long score {get; set;}
+        public float accuracy {get; set;}
+        public string rank {get; set;}
+        public int combo {get; set;}
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Animate HP bar
+        displayedHP = animateHp(displayedHP, (float) hp/START_HP);
+        hpBar.fillAmount = displayedHP;
+
         //Debug.Log(currentTime);
         // If finished or failed
         if (finishedPlaying || failedPlaying)
@@ -373,6 +448,8 @@ public class SpawnedController : MonoBehaviour
             finishedPlaying = true;
             // Update the bar
             progressBar.fillAmount = 1;
+            // Save
+            Save();
 
             // Show end screen after 1 second
             Invoke("ShowEndScreen", 1);
@@ -403,9 +480,9 @@ public class SpawnedController : MonoBehaviour
 
         // Animate
         displayedScore = animateLong(displayedScore, score);
-        displayedAccuracy = (maxScore > 0 ? animateFloat(displayedAccuracy, (float) score / maxScore) : 1);
+        displayedAccuracy = (maxScore > 0 ? animateFloat(displayedAccuracy, (float) score / maxScore) : displayedAccuracy);
         displayedMultiplier = animateFloat(displayedMultiplier, multiplier);
-        displayedHP = animateHp(displayedHP, hp);
+        displayedHP = animateHp(displayedHP, (float) hp/START_HP);
 
         // Score
         scoreText.text = displayedScore.ToString();
@@ -418,7 +495,7 @@ public class SpawnedController : MonoBehaviour
         accuracyIndicator.fillAmount = displayedAccuracy;
         RefreshRank(maxScore > 0 ? (float) score / maxScore * 100 : 100);
         // HP
-        hpBar.fillAmount = (float) displayedHP / START_HP;
+        hpBar.fillAmount = displayedHP;
 
         // Spawn
         musicHandler.SpawnNext(currentTime);
@@ -442,6 +519,10 @@ public class SpawnedController : MonoBehaviour
     public void HandleScore(Sector sector, int score) {
         // If -1, reset
         if (score == -1) {
+            // If the best combo
+            if (bestCombo < combo)
+                bestCombo = combo;
+            
             // Reset combo and multiplier
             combo = 0;
             multiplierIndex = 0;
@@ -467,8 +548,11 @@ public class SpawnedController : MonoBehaviour
                 // Set text
                 Text text = gameObject.GetComponent<Text>();
                 text.text = (score * multiplier * DIFFICULTY_MULTIPLIER).ToString();
-                // Set color
+                // If greater than 0
                 if (score > 0) {
+                    // Play SFX
+                    SFXPlayer.Play(SFXPlayer.EffectType.DRUM_HIT);
+                    // Set text color
                     text.color = score == 300 ? SCORE_COLOR_GOOD : score == 200 ? SCORE_COLOR_AVERAGE : SCORE_COLOR_BAD;
                     // Increase HP
                     hp = hp + CORRECT_HP <= START_HP ? hp + CORRECT_HP : START_HP;
@@ -492,8 +576,9 @@ public class SpawnedController : MonoBehaviour
         displayed - diff < target ? target : displayed - diff;
     }
 
-    private int animateHp(int displayed, int target) {
-        int diff = (int) (Time.deltaTime * 500);
+    private float animateHp(float displayed, float target) {
+        float diff = Time.deltaTime * 1f;
+        //Debug.Log(diff + ": " + displayed + " " + target);
         return displayed < target ?
         displayed + diff > target ? target : displayed + diff :
         displayed - diff < target ? target : displayed - diff;

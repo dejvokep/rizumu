@@ -44,7 +44,7 @@ public class SectorData
                         // If was not pressed
                         if (!prop.pressed) {
                             // If still focused and pressed, add 300, if not pressed at all 600
-                            controller.AddToMaxScore(prop.startedPressing ? 300 : 600);
+                            controller.AddToMaxScore((int) ((prop.startedPressing ? 300 : 600)*controller.multiplier));
                             // Reset combo
                             controller.HandleScore(Sector.NORTH_EAST, -1);
                             // If did not start pressing
@@ -254,7 +254,7 @@ public class SectorData
     private int CalculatePointsStart(float time, Prop prop) {
         float diff = Math.Abs(prop.startTime - time);
 
-        controller.AddToMaxScore(300);
+        controller.AddToMaxScore((int) (300*controller.multiplier));
         prop.startedPressing = true;
         if (diff <= THRESHOLD_GOOD)
             return 300;
@@ -271,7 +271,7 @@ public class SectorData
     private int CalculatePointsEnd(float time, Prop prop) {
         float diff = Math.Abs(prop.startTime + prop.length - time);
 
-        controller.AddToMaxScore(300);
+        controller.AddToMaxScore((int) (300*controller.multiplier));
         if (diff <= THRESHOLD_GOOD)
             return 300;
         else if (diff <= THRESHOLD_AVERAGE)

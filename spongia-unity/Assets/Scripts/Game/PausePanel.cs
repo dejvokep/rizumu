@@ -83,17 +83,21 @@ public class PausePanel : MonoBehaviour
 
     public void Hide() {
         targetAlpha = 0;
+        paused = false;
     }
 
     public void Pause() {
         // If paused
         if (paused)
             return;
+        // Paused
         paused = true;
         // Open the menu
         panel.SetActive(true);
         // Pause
         controller.Pause();
+        // Play sound
+        SFXPlayer.Play(SFXPlayer.EffectType.CLICK_CONTINUE);
         // Animate
         targetAlpha = 1;
         // Set
@@ -106,7 +110,10 @@ public class PausePanel : MonoBehaviour
         // If not paused
         if (!paused)
             return;
+        // Resumed
         paused = false;
+        // Play sound
+        SFXPlayer.Play(SFXPlayer.EffectType.CLICK_CONTINUE);
         // Animate
         targetAlpha = 0;
         // Set awaiting

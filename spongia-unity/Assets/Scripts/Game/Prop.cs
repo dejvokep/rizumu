@@ -6,7 +6,7 @@ using System;
 public class Prop : MonoBehaviour
 {
 
-    public static double SQRT_OF_TWO = Math.Sqrt(2);
+    public static float SQRT_OF_TWO = (float) Math.Sqrt(2);
 
     public GameObject player;
     private Vector2 playerBounds;
@@ -19,19 +19,17 @@ public class Prop : MonoBehaviour
     public float startTime;
 
     private float playerWidth;
+    private float diagonalSpeed, speed;
 
     public TonePosition position = TonePosition.WAITING;
 
     public bool pressed = false, startedPressing = false;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void Init() {
         player = GameObject.Find("Player");
         // Tone length
         length = gameObject.transform.localScale.y;
-        gameObject.transform.localScale = new Vector2(1, length * SpawnedController.DIAGONAL_MOVE_SPEED);
+        gameObject.transform.localScale = new Vector2(1, length * diagonalSpeed);
         // Max points
         maxPoints = length * 1000;
 
@@ -50,7 +48,7 @@ public class Prop : MonoBehaviour
         // Set player bounds
         playerBounds = new Vector2(playerWidth, playerWidth);
         // Set grid size
-        gridSize = length * SpawnedController.DIAGONAL_MOVE_SPEED / SQRT_OF_TWO;
+        gridSize = length * diagonalSpeed / SQRT_OF_TWO;
     }
 
     public TonePosition Move(float time)
@@ -65,7 +63,7 @@ public class Prop : MonoBehaviour
         
         // pos > 0 ak je status WAITING
         // pos 
-        float pos = playerWidth + ((float) gridSize/2) + (startTime - time) * SpawnedController.MOVE_SPEED;
+        float pos = playerWidth + ((float) gridSize/2) + (startTime - time) * speed;
 
         //Debug.Log("Delta X t=" + Time.deltaTime + " , moved=" + (Math.Abs(newX - transform.position.x)));
 
@@ -113,6 +111,11 @@ public class Prop : MonoBehaviour
 
     public void SetStartTime(float time) {
         startTime = time;
+    }
+
+    public void SetSpeed(float diagonalSpeed) {
+        this.diagonalSpeed = diagonalSpeed;
+        speed = diagonalSpeed / SQRT_OF_TWO;
     }
 
     
