@@ -7,6 +7,7 @@ using System;
 using System.Globalization;
 using Newtonsoft.Json;
 using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 public class MusicHandler
 {
@@ -35,8 +36,11 @@ public class MusicHandler
     public MusicHandler(SpawnedController c) {
         // Set
         controller = c;
+    }
+
+    public void Load() {
         // Base offset
-        double offset = c.xOffset;
+        double offset = controller.xOffset;
 
         // If bundled into the game by default
         bool bundled = File.Exists("Assets/Resources/maps/" + SpawnedController.songID + "/data.json");
@@ -52,9 +56,9 @@ public class MusicHandler
             float length = propData[2];
 
             // Full size of the prop (1/2)
-            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (c.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
             // Time where the prop will touch the player - how long it will take from the spawn position to that position
-            propData.Add(propData[0] - ((float) offset - c.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO));
+            propData.Add(propData[0] - ((float) offset - controller.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO));
             //Debug.Log("Assigned spawn time=" + (propData[0] - ((float) offset - c.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO)));
 
             // If earlier spawn time
@@ -73,25 +77,40 @@ public class MusicHandler
             audioClip = Resources.Load<AudioClip>("maps/" + SpawnedController.songID + "/audio");
             // Load the image
             image = Resources.Load<Sprite>("maps/" + SpawnedController.songID + "/image");
+            // Continue in the controller
+            controller.ContinueInit();
         } else {
-            // Load the clip
-            LoadClip();
             // Load user image
             LoadUserImage();
+            // Load the clip
+            LoadClip();
         }
     }
 
-    private void LoadClip() {
+    async void LoadClip() {
+        // Make request
         using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip("file://" + Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/audio.mp3"), AudioType.MPEG)) {
             // Send the request
             request.SendWebRequest();
 
-            // Log the error or construct
-            if (request.result == UnityWebRequest.Result.ConnectionError)
-                Debug.Log(request.error);
-            else
-                audioClip = DownloadHandlerAudioClip.GetContent(request);
+            try {
+                // While not done
+                while (!request.isDone)
+                    // Wait
+                    await Task.Delay(5);
+
+                // If failed
+                if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+                    // Log
+                    Debug.Log(request.error);
+                else
+                    this.audioClip = DownloadHandlerAudioClip.GetContent(request);
+            } catch (Exception err) {
+                Debug.Log(err);
+            }
         }
+        // Continue in the controller
+        controller.ContinueInit();
     }
 
     private void LoadUserImage() {

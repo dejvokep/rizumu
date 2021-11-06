@@ -18,9 +18,12 @@ public class SectorData
     public const float THRESHOLD_BAD = 0.2F;
     public const float THRESHOLD_MISS = 0.4F;
 
-    public SectorData(SpawnedController c) {
+    private Sector sector;
+
+    public SectorData(SpawnedController c, Sector sector) {
         // Set
         controller = c;
+        this.sector = sector;
     }
 
     public void Spawn(Prop prop) {
@@ -48,8 +51,12 @@ public class SectorData
                             // Reset combo
                             controller.HandleScore(Sector.NORTH_EAST, -1);
                             // If did not start pressing
-                            if (!prop.startedPressing)
+                            if (!prop.startedPressing) {
                                 controller.HandleScore(Sector.NORTH_EAST, -1);
+                            } else {
+                                // Turn off particle system
+                                controller.particles[sector].Stop();
+                            }
                         }
 
                         // Destroy
