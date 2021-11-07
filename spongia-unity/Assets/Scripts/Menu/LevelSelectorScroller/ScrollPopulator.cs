@@ -81,33 +81,33 @@ public class ScrollPopulator : MonoBehaviour
             mapsSpritesAspectRatio[mapID] = aspectRatio;
         }
 
-
-        List<string> playerMapPaths = Directory.GetDirectories(Application.persistentDataPath + "/maps/").ToList();
-        foreach (string mapPath in playerMapPaths)
+        if (File.Exists(Application.persistentDataPath + "/maps/"))
         {
-            string mapID = Path.GetFileName(mapPath);
-
-            SongInfo loadedMapInfo = LoadJsonData(mapID);
-
-            if (loadedMapInfo == null)
+            List<string> playerMapPaths = Directory.GetDirectories(Application.persistentDataPath + "/maps/").ToList();
+            foreach (string mapPath in playerMapPaths)
             {
-                continue;
+                string mapID = Path.GetFileName(mapPath);
+
+                SongInfo loadedMapInfo = LoadJsonData(mapID);
+
+                if (loadedMapInfo == null)
+                {
+                    continue;
+                }
+
+                mapsInfo[mapID] = loadedMapInfo;
+
+                mapsID.Add(mapID);
+
+                LoadImage(mapID);
+
+                float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
+                mapsSpritesAspectRatio[mapID] = aspectRatio;
             }
-
-            mapsInfo[mapID] = loadedMapInfo;
-
-            mapsID.Add(mapID);
-
-            LoadImage(mapID);
-
-            float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
-            mapsSpritesAspectRatio[mapID] = aspectRatio;
         }
 
-        
 
         scrollWidth = Screen.width * 0.345f - 51;
-
 
         foreach (string mapID in mapsID)
         {
