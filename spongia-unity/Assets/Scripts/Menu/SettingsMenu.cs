@@ -71,6 +71,12 @@ public class SettingsMenu : MonoBehaviour
 
     void Start()
     {
+        if (!File.Exists(Application.persistentDataPath + "/settings.json"))
+        {
+            curSettings.Default();
+            SaveJsonData();
+        }
+        
         // Resoluion dropdown setup
         resolutions = Screen.resolutions;
 
@@ -265,9 +271,11 @@ public class SettingsMenu : MonoBehaviour
 
     private void updateKeys()
     {
-        keys[0] = SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE.ToLower();
-        keys[1] = SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE.ToLower();
-        keys[2] = SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW.ToLower();
-        keys[3] = SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW.ToLower();
+        keys = new List<string>{curSettings.keyNE.ToLower(), curSettings.keySE.ToLower(), curSettings.keySW.ToLower(), curSettings.keyNW.ToLower()};
+        SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
+        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE.ToLower();
+        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE.ToLower();
+        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW.ToLower();
+        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW.ToLower();
     }
 }

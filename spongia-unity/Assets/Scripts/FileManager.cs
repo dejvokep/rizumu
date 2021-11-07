@@ -17,6 +17,7 @@ public static class FileManager
         try
         {
             File.WriteAllText(fullPath, a_FileContents);
+            Debug.Log("Saved settings");
             return true;
         }
         catch (Exception e)
