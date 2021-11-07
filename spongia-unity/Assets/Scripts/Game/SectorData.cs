@@ -49,10 +49,10 @@ public class SectorData
                             // If still focused and pressed, add 300, if not pressed at all 600
                             controller.AddToMaxScore((int) ((prop.startedPressing ? 300 : 600)*controller.multiplier));
                             // Reset combo
-                            controller.HandleScore(Sector.NORTH_EAST, -1);
+                            controller.HandleScore(Sector.NORTH_EAST, -1, false);
                             // If did not start pressing
                             if (!prop.startedPressing) {
-                                controller.HandleScore(Sector.NORTH_EAST, -1);
+                                controller.HandleScore(Sector.NORTH_EAST, -1, false);
                             } else {
                                 // Turn off particle system
                                 controller.particles[sector].Stop();
@@ -65,7 +65,7 @@ public class SectorData
                         screen.RemoveAt(0);
 
                         // Decrease offset
-                        despawnOffset -= 1;
+                        despawnOffset = despawnOffset == 0 ? 0 : despawnOffset - 1;
                         // Decrease index
                         focusedIndex = focusedIndex == -1 ? -1 : focusedIndex - 1;
                     } else if (previous == TonePosition.PLAYING) {
@@ -114,6 +114,7 @@ public class SectorData
     // -1: 0 score, reset combo -> MISS
     // 0+: 0 score, +1 combo
     public int HandlePress(float time) {
+        
         // If there are no props at all
         if (screen.Count == 0) {
             // Reset just in case
@@ -172,6 +173,7 @@ public class SectorData
         // THERE ARE AT LEAST 2 PROPS - AT LEAST ONE DESPAWNING (FINISHED) AND ONE WAITING
 
         // If the first non-FINISHED prop is still PLAYING
+        Debug.Log(despawnOffset);
         if (screen[despawnOffset].position == TonePosition.PLAYING) {
             // If too far away
             if (PropStartTooAway(time, screen[despawnOffset])) {

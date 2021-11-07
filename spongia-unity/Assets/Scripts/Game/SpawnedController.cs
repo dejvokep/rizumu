@@ -129,7 +129,7 @@ public class SpawnedController : MonoBehaviour
     public static int FAIL_HP = 30;
     private int rankIndex;
 
-    public static int START_HP = 100, MISS_HP = -30, CORRECT_HP = 20;
+    public static int START_HP = 100, MISS_HP = -15, CORRECT_HP = 25;
 
     private int misses = 0;
     private int bestCombo = 0;
@@ -225,7 +225,15 @@ public class SpawnedController : MonoBehaviour
         initialized = true;
     }
 
+    private void ResetParticles()
+    {
+        foreach (Sector sector in Enum.GetValues(typeof(Sector)))
+            // Add data
+            particles[sector].Stop();
+    }
+
     public void Restart() {
+        ResetParticles();
         // Stop
         audioSource.Stop();
         musicHandler.Reset();
@@ -277,6 +285,7 @@ public class SpawnedController : MonoBehaviour
     }
 
     public void Pause() {
+        ResetParticles();
         // Paused
         paused = true;
         // Cancel invoke
@@ -303,10 +312,12 @@ public class SpawnedController : MonoBehaviour
     }
 
     private void ShowEndScreen() {
+        ResetParticles();
         endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) ((float) score / maxScore * 100), (long) Math.Sqrt(score));
     }
 
     private void ShowFailScreen() {
+        ResetParticles();
         failScreen.Show();
     }
 
@@ -498,7 +509,7 @@ public class SpawnedController : MonoBehaviour
                     particles[sector].Play();
 
                 // Handle
-                HandleScore(sector, score);
+                HandleScore(sector, score, true);
             } else if (Input.GetKeyUp(keyboardKeys[sector])) {
                 // Score
                 int score = sectors[sector].HandleRelease(currentTime);
@@ -508,7 +519,7 @@ public class SpawnedController : MonoBehaviour
                     particles[sector].Stop();
 
                 // Handle
-                HandleScore(sector, score);
+                HandleScore(sector, score, false);
             }
 
             // Update
@@ -553,7 +564,7 @@ public class SpawnedController : MonoBehaviour
         RANKS[rankIndex].rank.SetActive(true);
     }
 
-    public void HandleScore(Sector sector, int score) {
+    public void HandleScore(Sector sector, int score, bool press) {
         // If -1, reset
         if (score == -1) {
             // If the best combo
@@ -588,7 +599,10 @@ public class SpawnedController : MonoBehaviour
                 // If greater than 0
                 if (score > 0) {
                     // Play SFX
-                    SFXPlayer.Play(SFXPlayer.EffectType.DRUM_HIT);
+                    if (press)
+                    {
+                        SFXPlayer.Play(SFXPlayer.EffectType.DRUM_HIT);
+                    }
                     // Set text color
                     text.color = score == 300 ? SCORE_COLOR_GOOD : score == 200 ? SCORE_COLOR_AVERAGE : SCORE_COLOR_BAD;
                     // Increase HP

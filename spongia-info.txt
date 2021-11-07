@@ -6,6 +6,18 @@ Fonty:
 Zdroj: https://www.fontspace.com/timeburner-font-f15111
 Licencia: Freeware
 
+Zdroj: https://fonts.google.com/specimen/Electrolize
+Licencia: Open Font License
+
+
 Obrázky:
 Zdroj: https://www.maxpixel.net/Anime-Winds-Night-Telephone-Poles-Stars-1247849
 Licencia: CC0 1.0
+
+Zdroj: https://freesvg.org/elephant-on-ball
+Licencia: CC Public Domain
+
+
+Hudba:
+Zdroj: https://www.youtube.com/watch?v=2-T7MXVd2mg
+Licencia: Creative Commons Attribution licence (reuse allowed)

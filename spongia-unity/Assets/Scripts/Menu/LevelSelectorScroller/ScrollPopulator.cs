@@ -28,12 +28,10 @@ public class ScrollPopulator : MonoBehaviour
 
         if (loadFromResources)
         {
-            print("maps/" + mapID + "/info.json");
-            print(mapID);
             string json = Resources.Load<TextAsset>("maps/" + mapID + "/info").ToString();
             mapInfo.LoadFromJson(json);
 
-            Debug.Log("Load complete - Resources");
+            // Debug.Log("Load complete - Resources");
 
             return mapInfo;
 
@@ -42,7 +40,7 @@ public class ScrollPopulator : MonoBehaviour
         {
             mapInfo.LoadFromJson(json);
 
-            Debug.Log("Load complete - presistenDataPath");
+            // Debug.Log("Load complete - presistenDataPath");
 
             return mapInfo;
         }
@@ -50,7 +48,7 @@ public class ScrollPopulator : MonoBehaviour
         {
             mapInfo.Default();
 
-            Debug.Log("Load failed");
+            // Debug.Log("Load failed");
 
             return null;
         }
@@ -111,7 +109,6 @@ public class ScrollPopulator : MonoBehaviour
 
         foreach (string mapID in mapsID)
         {
-            print("Instantiate: " + mapID);
             // Scroller Unit Creation
             GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
             scrollerUnit.transform.SetParent(transform, false);
@@ -175,7 +172,6 @@ public class ScrollPopulator : MonoBehaviour
     {
         var textFile = Resources.Load<TextAsset>("maps_list");
         string textString = textFile.ToString();
-        print(textString);
         string[] lines = textString.Split(new [] { '\r', '\n' });;
         return lines;
     }

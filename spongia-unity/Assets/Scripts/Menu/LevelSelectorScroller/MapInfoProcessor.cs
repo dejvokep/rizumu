@@ -33,7 +33,6 @@ public class MapInfoProcessor : MonoBehaviour
             mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
 
             float viewAspectRation = (imageToScreen.x*Screen.currentResolution.width)/(imageToScreen.y*Screen.currentResolution.height);
-            Debug.Log($"{Screen.currentResolution.width} {Screen.currentResolution.height}");
             if (ScrollPopulator.mapsSpritesAspectRatio[mapID] >= viewAspectRation)
             {
                 mapImage.GetComponent<AspectRatioFitter>().aspectMode = UnityEngine.UI.AspectRatioFitter.AspectMode.HeightControlsWidth;
