@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ScrollPopulator : MonoBehaviour
 {
@@ -27,11 +28,12 @@ public class ScrollPopulator : MonoBehaviour
 
         if (loadFromResources)
         {
-            // print("maps/" + mapID + "/info.json");
+            print("maps/" + mapID + "/info.json");
+            print(mapID);
             string json = Resources.Load<TextAsset>("maps/" + mapID + "/info").ToString();
             mapInfo.LoadFromJson(json);
 
-            // Debug.Log("Load complete - Resources");
+            Debug.Log("Load complete - Resources");
 
             return mapInfo;
 
@@ -40,7 +42,7 @@ public class ScrollPopulator : MonoBehaviour
         {
             mapInfo.LoadFromJson(json);
 
-            // Debug.Log("Load complete - presistenDataPath");
+            Debug.Log("Load complete - presistenDataPath");
 
             return mapInfo;
         }
@@ -48,7 +50,7 @@ public class ScrollPopulator : MonoBehaviour
         {
             mapInfo.Default();
 
-            // Debug.Log("Load failed");
+            Debug.Log("Load failed");
 
             return null;
         }
@@ -62,11 +64,11 @@ public class ScrollPopulator : MonoBehaviour
         mapsSprites.Clear();
         mapsSpritesAspectRatio.Clear();
 
-        print("START START START");
         string[] defaultMapIDs = LoadMapsFromResources();
         foreach (string mapID in defaultMapIDs)
         {
-            print(mapID);
+            if (mapID == null || mapID == "")
+                continue;
 
             SongInfo loadedMapInfo = LoadJsonData(mapID, true);
             mapsInfo[mapID] = loadedMapInfo;
@@ -84,7 +86,6 @@ public class ScrollPopulator : MonoBehaviour
         foreach (string mapPath in playerMapPaths)
         {
             string mapID = Path.GetFileName(mapPath);
-            print(mapID);
 
             SongInfo loadedMapInfo = LoadJsonData(mapID);
 
@@ -181,6 +182,13 @@ public class ScrollPopulator : MonoBehaviour
 
     void Update()
     {
-        // Debug.Log(ScrollUnitButton.selectedMapID);
+        if (ScrollUnitButton.selectedMapID != null && ScrollUnitButton.selectedMapID != "")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SpawnedController.songID = ScrollUnitButton.selectedMapID;
+                SceneManager.LoadScene("GameScene");
+            }
+        }
     }
 }
