@@ -29,9 +29,6 @@ public class SettingsMenu : MonoBehaviour
 
     
     // Keyboard keys by sector
-    public static Dictionary<Sector, string> keyboardKeys = new Dictionary<Sector, string>();
-    private List<String> keys = new List<string>();
-
 
     private int resolutionIndex;
     private SaveSettings curSettings = new SaveSettings();
@@ -92,19 +89,9 @@ public class SettingsMenu : MonoBehaviour
 
         resolutionDropdown.AddOptions(options);
 
-        // Control Buttons setup
-
-
         // Load Settings
         DefaultSettings();
-        keys.Add(curSettings.keyNE);
-        keys.Add(curSettings.keySE);
-        keys.Add(curSettings.keySW);
-        keys.Add(curSettings.keyNW);
-
         LoadJsonData();
-
-
 
         // Update Settings
         UpdateAllSettings();
@@ -148,8 +135,6 @@ public class SettingsMenu : MonoBehaviour
         fullscreenToggle.isOn = curSettings.isFullscreen;
 
         volumeSlider.value = curSettings.volume;
-
-        SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
         
         updateKeys();
 
@@ -224,8 +209,10 @@ public class SettingsMenu : MonoBehaviour
             {
                 if (e.keyCode != KeyCode.Escape)
                 {
-                    keys[GetSectorIndexBySectorName(currentKey.name)] = e.keyCode.ToString();
-                    controlButtonsHolder.transform.GetChild(GetSectorIndexBySectorName(currentKey.name)).GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
+                    curSettings.keyboardKeys[GetSectorIndexBySectorName(currentKey.name)] = e.keyCode.ToString().ToLower();
+                    Debug.Log(indexToSector(GetSectorIndexBySectorName(currentKey.name)));
+                    Debug.Log(curSettings.keyboardKeys[GetSectorIndexBySectorName(currentKey.name)]);
+                    controlButtonsHolder.transform.GetChild(GetSectorIndexBySectorName(currentKey.name)).GetChild(0).GetComponent<Text>().text = e.keyCode.ToString().ToUpper();
 
                     currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                     currentKey = null;
@@ -248,7 +235,7 @@ public class SettingsMenu : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            controlButtonsHolder.transform.GetChild(i).GetChild(0).GetComponent<Text>().text = keys[i];
+            controlButtonsHolder.transform.GetChild(i).GetChild(0).GetComponent<Text>().text = curSettings.keyboardKeys[i].ToUpper();
         }
     }
 
@@ -269,13 +256,29 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    private Sector indexToSector(int index)
+    {
+        switch (index)
+        {
+            default:
+                return Sector.NORTH_EAST;
+            case 0:
+                return Sector.NORTH_EAST;
+            case 1:
+                return Sector.SOUTH_EAST;
+            case 2:
+                return Sector.SOUTH_WEST;
+            case 3:
+                return Sector.NORTH_WEST;
+        }
+    }
+
     private void updateKeys()
     {
-        keys = new List<string>{curSettings.keyNE.ToLower(), curSettings.keySE.ToLower(), curSettings.keySW.ToLower(), curSettings.keyNW.ToLower()};
         SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
-        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE.ToLower();
-        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE.ToLower();
-        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW.ToLower();
-        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW.ToLower();
+        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyboardKeys[0].ToLower();
+        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keyboardKeys[1].ToLower();
+        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keyboardKeys[2].ToLower();
+        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyboardKeys[3].ToLower();
     }
 }

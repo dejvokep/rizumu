@@ -14,10 +14,7 @@ public class SaveSettings
     // Audio
     public float volume;
     // Controls
-    public string keyNE;
-    public string keySE;
-    public string keySW;
-    public string keyNW;
+    public List<string> keyboardKeys;
 
     public void Default()
     {
@@ -29,10 +26,11 @@ public class SaveSettings
 
         volume = -40f;
 
-        keyNE = "F";
-        keySE = "K";
-        keySW = "J";
-        keyNW = "D";
+        keyboardKeys = new List<string>();
+        keyboardKeys.Add("f");
+        keyboardKeys.Add("k");
+        keyboardKeys.Add("j");
+        keyboardKeys.Add("d");
     }
 
     public string ToJson()
