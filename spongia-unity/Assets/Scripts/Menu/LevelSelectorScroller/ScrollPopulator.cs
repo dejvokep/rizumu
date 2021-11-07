@@ -81,6 +81,8 @@ public class ScrollPopulator : MonoBehaviour
             mapsInfo[mapID] = loadedMapInfo;
 
             // Scroller Unit Creation
+            // GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            // scrollerUnit.transform.SetParent(transform, false);
             GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
             scrollerUnit.transform.SetParent(transform, false);
             scrollerUnit.transform.localScale.Set(1, 1, 1);

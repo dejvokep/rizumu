@@ -35,7 +35,7 @@ public class SettingsMenu : MonoBehaviour
 
 
     // Saving data
-    private string saveFileName = "settings.dat";
+    private string saveFileName = "settings.json";
     public void SaveJsonData()
     {
         updateKeys();
@@ -70,6 +70,7 @@ public class SettingsMenu : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/settings.json"))
         {
+            Debug.Log($"{Application.persistentDataPath + "/settings.json"} FILE DOESNT EXIST");
             curSettings.Default();
             SaveJsonData();
         }
