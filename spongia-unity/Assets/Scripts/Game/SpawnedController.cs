@@ -32,7 +32,7 @@ public class SpawnedController : MonoBehaviour
         }
     }
 
-    public static string songID = "cf954cc6-aba1-47bd-a855-6f77c00006ad";
+    public static string songID; //"cf954cc6-aba1-47bd-a855-6f77c00006ad"
     // Move speed
     public static float MOVE_SPEED = 2;
     public static float DIAGONAL_MOVE_SPEED = MOVE_SPEED * (float) Prop.SQRT_OF_TWO;
@@ -99,7 +99,7 @@ public class SpawnedController : MonoBehaviour
     // Currently active (spawned) props
     private Dictionary<Sector, SectorData> sectors;
     // Keyboard keys by sector
-    private Dictionary<Sector, string> keyboardKeys;
+    public static Dictionary<Sector, string> keyboardKeys;
 
     private float currentTime;
     public float playerWidth;
@@ -166,11 +166,11 @@ public class SpawnedController : MonoBehaviour
         //
         // CONTROLS
         //
-        keyboardKeys = new Dictionary<Sector, string>();
-        keyboardKeys.Add(Sector.NORTH_WEST, "a");
-        keyboardKeys.Add(Sector.NORTH_EAST, "s");
-        keyboardKeys.Add(Sector.SOUTH_EAST, "d");
-        keyboardKeys.Add(Sector.SOUTH_WEST, "f");
+        // keyboardKeys = new Dictionary<Sector, string>();
+        // keyboardKeys.Add(Sector.NORTH_WEST, "a");
+        // keyboardKeys.Add(Sector.NORTH_EAST, "s");
+        // keyboardKeys.Add(Sector.SOUTH_EAST, "d");
+        // keyboardKeys.Add(Sector.SOUTH_WEST, "f");
 
         //
         // OFFSETS

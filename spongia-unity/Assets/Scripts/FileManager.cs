@@ -17,6 +17,7 @@ public static class FileManager
         try
         {
             File.WriteAllText(fullPath, a_FileContents);
+            Debug.Log("Saved settings");
             return true;
         }
         catch (Exception e)
@@ -34,6 +35,7 @@ public static class FileManager
         }
 
         var fullPath = Path.Combine(path, a_FileName);
+        Debug.Log($"Load path: {fullPath}");
 
         try
         {
