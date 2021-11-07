@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayButtonsController : MonoBehaviour
 {
@@ -22,5 +23,10 @@ public class PlayButtonsController : MonoBehaviour
         {
             animator.SetBool("open", true);
         }
+    }
+
+    public void LoadEditorScene()
+    {
+        SceneManager.LoadScene("LevelMaker");
     }
 }

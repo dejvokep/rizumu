@@ -34,6 +34,7 @@ public static class FileManager
         }
 
         var fullPath = Path.Combine(path, a_FileName);
+        Debug.Log($"Load path: {fullPath}");
 
         try
         {

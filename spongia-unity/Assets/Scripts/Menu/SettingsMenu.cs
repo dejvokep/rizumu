@@ -41,10 +41,7 @@ public class SettingsMenu : MonoBehaviour
     private string saveFileName = "settings.dat";
     public void SaveJsonData()
     {
-        curSettings.keyNE = keyboardKeys[Sector.NORTH_EAST] = keys[0];
-        curSettings.keySE = keyboardKeys[Sector.SOUTH_EAST] = keys[1];
-        curSettings.keySW = keyboardKeys[Sector.SOUTH_WEST] = keys[2];
-        curSettings.keyNW = keyboardKeys[Sector.NORTH_WEST] = keys[3];
+        updateKeys();
         
         if (FileManager.WriteToFile(saveFileName, curSettings.ToJson()))
         {
@@ -90,19 +87,17 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.AddOptions(options);
 
         // Control Buttons setup
-        // controlButtonsHolder.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(0);});
-        // controlButtonsHolder.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(1);});
-        // controlButtonsHolder.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(2);});
-        // controlButtonsHolder.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(delegate{SwitchControlsButtonHandler(3);});
 
 
         // Load Settings
-        LoadJsonData();
-
+        DefaultSettings();
         keys.Add(curSettings.keyNE);
         keys.Add(curSettings.keySE);
         keys.Add(curSettings.keySW);
         keys.Add(curSettings.keyNW);
+
+        LoadJsonData();
+
 
 
         // Update Settings
@@ -148,11 +143,9 @@ public class SettingsMenu : MonoBehaviour
 
         volumeSlider.value = curSettings.volume;
 
-
-        keys[0] = keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE;
-        keys[1] = keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE;
-        keys[2] = keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW;
-        keys[3] = keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW;
+        SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
+        
+        updateKeys();
 
         // KeyControls
         UpdateAllControlButtons();
@@ -268,5 +261,13 @@ public class SettingsMenu : MonoBehaviour
             case "NW":
                 return 3;
         }
+    }
+
+    private void updateKeys()
+    {
+        keys[0] = SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyNE.ToLower();
+        keys[1] = SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keySE.ToLower();
+        keys[2] = SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keySW.ToLower();
+        keys[3] = SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyNW.ToLower();
     }
 }
