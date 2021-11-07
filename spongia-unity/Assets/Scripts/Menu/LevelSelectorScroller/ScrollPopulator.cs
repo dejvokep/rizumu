@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ScrollPopulator : MonoBehaviour
 {
@@ -17,35 +18,34 @@ public class ScrollPopulator : MonoBehaviour
 
     public static Dictionary<string, SongInfo> mapsInfo = new System.Collections.Generic.Dictionary<string, SongInfo>();
     public static List<string> mapsID = new List<string>();
-    private List<bool> mapsFromPresistentDataPath = new List<bool>();
     public static Dictionary<string, Sprite> mapsSprites = new System.Collections.Generic.Dictionary<string, Sprite>();
     public static Dictionary<string, float> mapsSpritesAspectRatio = new System.Collections.Generic.Dictionary<string, float>();
     
     // Map Info Load
-    public SongInfo LoadJsonData(string mapPath)
+    public SongInfo LoadJsonData(string mapID, bool loadFromResources = false)
     {
         SongInfo mapInfo = new SongInfo();
 
+        if (loadFromResources)
+        {
+            print("maps/" + mapID + "/info.json");
+            print(mapID);
+            string json = Resources.Load<TextAsset>("maps/" + mapID + "/info").ToString();
+            mapInfo.LoadFromJson(json);
 
-        if (FileManager.LoadFromFile("", out var json, mapPath + "/info.json"))
+            Debug.Log("Load complete - Resources");
+
+            return mapInfo;
+
+        }
+        else if (FileManager.LoadFromFile("", out var json, Application.persistentDataPath+ "/maps/" + mapID + "/info.json"))
         {
             mapInfo.LoadFromJson(json);
 
             Debug.Log("Load complete - presistenDataPath");
 
-            mapsFromPresistentDataPath.Add(true);
-
             return mapInfo;
         }
-        // else if (FileManager.LoadFromFile("info.json", out var json1, "Assets/Resources/maps/" + mapID + "/"))
-        // {
-        //     mapInfo.LoadFromJson(json1);
-
-        //     Debug.Log("Load complete - assets");
-
-        //     mapsFromPresistentDataPath.Add(false);
-        //     return mapInfo;
-        // }
         else
         {
             mapInfo.Default();
@@ -59,27 +59,59 @@ public class ScrollPopulator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scrollWidth = Screen.width * 0.345f - 51;
+        mapsInfo.Clear();
+        mapsID.Clear();
+        mapsSprites.Clear();
+        mapsSpritesAspectRatio.Clear();
 
-        maps = Directory.GetDirectories(Application.persistentDataPath + "/maps/").Concat(Directory.GetDirectories("Assets/Resources/maps/")).ToList();
-
-        foreach (string mapPath in maps)
+        string[] defaultMapIDs = LoadMapsFromResources();
+        foreach (string mapID in defaultMapIDs)
         {
-            // Get map info
+            if (mapID == null || mapID == "")
+                continue;
+
+            SongInfo loadedMapInfo = LoadJsonData(mapID, true);
+            mapsInfo[mapID] = loadedMapInfo;
+
+            mapsID.Add(mapID);
+
+            LoadImage(mapID, true);
+
+            float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
+            mapsSpritesAspectRatio[mapID] = aspectRatio;
+        }
+
+
+        List<string> playerMapPaths = Directory.GetDirectories(Application.persistentDataPath + "/maps/").ToList();
+        foreach (string mapPath in playerMapPaths)
+        {
             string mapID = Path.GetFileName(mapPath);
 
-            Debug.Log(mapID);
-
-            SongInfo loadedMapInfo = LoadJsonData(mapPath);
+            SongInfo loadedMapInfo = LoadJsonData(mapID);
 
             if (loadedMapInfo == null)
             {
                 continue;
             }
 
-            mapsID.Add(mapID);
             mapsInfo[mapID] = loadedMapInfo;
 
+            mapsID.Add(mapID);
+
+            LoadImage(mapID);
+
+            float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
+            mapsSpritesAspectRatio[mapID] = aspectRatio;
+        }
+
+        
+
+        scrollWidth = Screen.width * 0.345f - 51;
+
+
+        foreach (string mapID in mapsID)
+        {
+            print("Instantiate: " + mapID);
             // Scroller Unit Creation
             GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
             scrollerUnit.transform.SetParent(transform, false);
@@ -87,14 +119,11 @@ public class ScrollPopulator : MonoBehaviour
 
             scrollerUnit.name = mapID;
 
-            LoadImage(mapPath);
 
             // Song Image
             scrollerUnit.transform.GetChild(0).GetComponent<Image>().sprite = mapsSprites[mapID];
 
-            float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
-            mapsSpritesAspectRatio[mapID] = aspectRatio;
-            scrollerUnit.transform.GetChild(0).GetComponent<AspectRatioFitter>().aspectRatio = aspectRatio;
+            scrollerUnit.transform.GetChild(0).GetComponent<AspectRatioFitter>().aspectRatio = mapsSpritesAspectRatio[mapID];
             
             scrollerUnit.transform.GetChild(0).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(0, unitSize - 2*margin);
 
@@ -121,18 +150,45 @@ public class ScrollPopulator : MonoBehaviour
     }
 
 
-    private void LoadImage(string mapPath) {
-        string path = mapPath+"/image.png";
+    private void LoadImage(string mapID, bool loadFromResources = false)
+    {
+        Texture2D texture;
+        if (loadFromResources)
+        {
+            texture = Resources.Load<Texture2D>("maps/" + mapID + "/image");
+        }
+        else
+        {
+            string path = Application.persistentDataPath + "/maps/" + mapID + "/image.png";
 
-        Texture2D texture = new Texture2D(1, 1);
-        // Load image
-        texture.LoadImage(File.ReadAllBytes(path));
+            texture = new Texture2D(1, 1);
+            // Load image
+            texture.LoadImage(File.ReadAllBytes(path));
+        }
+        
         // Set sprite
-        mapsSprites[Path.GetFileName(mapPath)] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        mapsSprites[mapID] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+    }
+
+
+    private string[] LoadMapsFromResources()
+    {
+        var textFile = Resources.Load<TextAsset>("maps_list");
+        string textString = textFile.ToString();
+        print(textString);
+        string[] lines = textString.Split(new [] { '\r', '\n' });;
+        return lines;
     }
 
     void Update()
     {
-        Debug.Log(ScrollUnitButton.selectedMapID);
+        if (ScrollUnitButton.selectedMapID != null && ScrollUnitButton.selectedMapID != "")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SpawnedController.songID = ScrollUnitButton.selectedMapID;
+                SceneManager.LoadScene("GameScene");
+            }
+        }
     }
 }

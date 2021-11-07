@@ -158,7 +158,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
         
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.NORTH_EAST]))
             {
                 Stlacenie(0);
             }
@@ -167,7 +167,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(KeyCode.F))
+            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.NORTH_EAST]))
             {
                 Pustenie();
             }
@@ -175,7 +175,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.SOUTH_EAST]))
             {
                 Stlacenie(1);
             }
@@ -184,7 +184,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(KeyCode.G))
+            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.SOUTH_EAST]))
             {
                 Pustenie();
             }
@@ -192,7 +192,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.SOUTH_WEST]))
             {
                 Stlacenie(2);
             }
@@ -201,7 +201,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(KeyCode.H))
+            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.SOUTH_WEST]))
             {
                 Pustenie();
             }
@@ -209,7 +209,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.NORTH_WEST]))
             {
                 Stlacenie(3);
             }
@@ -218,7 +218,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(KeyCode.J))
+            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.NORTH_WEST]))
             {
                 Pustenie();
             }
