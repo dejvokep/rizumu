@@ -328,11 +328,21 @@ public class AudioLength : MonoBehaviour
     }
     public void SaveFunction()
         {
+            int difficulty0;
+            try
+            {
+                difficulty0 = int.Parse(DifficultyInput.text);
+            }
+            catch (FormatException)
+            {
+                difficulty0 = 0;
+            }
+
             var info = new jsonInfoVeci
             {
                 song_name = SaveName.text,
                 song_author = AutorName.text,
-                difficulty = int.Parse(DifficultyInput.text)
+                difficulty = difficulty0
             };
 
             MusicPath=SpojHudba.text;
@@ -355,7 +365,7 @@ public class AudioLength : MonoBehaviour
             
             //FOLDER STUFF
             name = SaveName.text+"-"+Guid.NewGuid().ToString();
-            string folderPath = Application.persistentDataPath + "/" + name;
+            string folderPath = Application.persistentDataPath + "/maps/" + name;
             System.IO.Directory.CreateDirectory(folderPath);
 
 

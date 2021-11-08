@@ -43,13 +43,32 @@ public class MusicHandler
         double offset = controller.xOffset;
 
         // If bundled into the game by default
-        bool bundled = File.Exists("Assets/Resources/maps/" + SpawnedController.songID + "/data.json");
-        // Create reader
-        StreamReader reader = new StreamReader(bundled ? "Assets/Resources/maps/" + SpawnedController.songID + "/data.json" : Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
-        // Load JSON
-        mappings = JsonConvert.DeserializeObject<List<List<float>>>(reader.ReadToEnd());
-        // Close
-        reader.Close();
+        bool bundled;
+        string mappingsString = "";
+        try
+        {
+            mappingsString = Resources.Load<TextAsset>("maps/" + SpawnedController.songID + "/data").ToString();
+        }
+        catch (NullReferenceException)
+        {
+
+        }
+
+        if (mappingsString == "")
+        {
+            // Create reader
+            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
+            // Load JSON
+            mappings = JsonConvert.DeserializeObject<List<List<float>>>(reader.ReadToEnd());
+            // Close
+            reader.Close();
+            bundled = false;
+        }
+        else
+        {
+            mappings = JsonConvert.DeserializeObject<List<List<float>>>(mappingsString);
+            bundled = true;
+        }
         // For each prop
         foreach (List<float> propData in mappings) {
             // Tone length
@@ -115,9 +134,19 @@ public class MusicHandler
 
     private void LoadUserImage() {
         // Create texture
-        Texture2D texture = new Texture2D(1, 1);
+        Texture2D texture;
         // Load image
-        texture.LoadImage(File.ReadAllBytes(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/image.png")));
+        try
+        {
+            byte[] fileBytes = File.ReadAllBytes(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/image.png"));
+            texture = new Texture2D(1, 1);
+            texture.LoadImage(fileBytes);
+        }
+        catch (FileNotFoundException)
+        {
+            texture = Resources.Load<Texture2D>("image");
+        }
+
         // Set sprite
         image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }

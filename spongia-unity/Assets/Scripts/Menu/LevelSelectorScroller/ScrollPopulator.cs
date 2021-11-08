@@ -80,7 +80,7 @@ public class ScrollPopulator : MonoBehaviour
             mapsSpritesAspectRatio[mapID] = aspectRatio;
         }
 
-        if (File.Exists(Application.persistentDataPath + "/maps/"))
+        try
         {
             List<string> playerMapPaths = Directory.GetDirectories(Application.persistentDataPath + "/maps/").ToList();
             foreach (string mapPath in playerMapPaths)
@@ -103,6 +103,10 @@ public class ScrollPopulator : MonoBehaviour
                 float aspectRatio = mapsSprites[mapID].rect.width / mapsSprites[mapID].rect.height;
                 mapsSpritesAspectRatio[mapID] = aspectRatio;
             }
+        }
+        catch (DirectoryNotFoundException)
+        {
+            
         }
 
 
@@ -157,11 +161,18 @@ public class ScrollPopulator : MonoBehaviour
         }
         else
         {
-            string path = Application.persistentDataPath + "/maps/" + mapID + "/image.png";
-
-            texture = new Texture2D(1, 1);
-            // Load image
-            texture.LoadImage(File.ReadAllBytes(path));
+            try
+            {
+                string path = Application.persistentDataPath + "/maps/" + mapID + "/image.png";
+                texture = new Texture2D(1, 1);
+                // Load image
+                texture.LoadImage(File.ReadAllBytes(path));
+            }
+            catch (FileNotFoundException)
+            {
+                texture = Resources.Load<Texture2D>("image");
+            }
+            
         }
         
         // Set sprite
