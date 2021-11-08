@@ -7,7 +7,9 @@ ScriptsOnlyBuild:
     - EndScreen
     - ExitGame
     - FailScreen
+    - LoadMainMenu
     - MapInfoProcessor
+    - MenuMusicPlayer
     - NAudioImporter
     - PResize
     - PausePanel
@@ -16,6 +18,7 @@ ScriptsOnlyBuild:
     - Prop
     - PulsingObject
     - SFXPlayer
+    - SPTextPopulator
     - ScoreEarnedFadeout
     - ScrollPopulator
     - ScrollUnitButton
@@ -39,6 +42,7 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
+    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
     - UnityEditor.Tilemaps.GridPaletteBrushes
@@ -109,35 +113,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1498}
     - Class: 114
-      Script: {instanceID: 1572}
+      Script: {instanceID: 1560}
     - Class: 114
-      Script: {instanceID: 2596}
+      Script: {instanceID: 2584}
     - Class: 114
-      Script: {instanceID: 2692}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2826}
+      Script: {instanceID: 2814}
     - Class: 114
-      Script: {instanceID: 2850}
+      Script: {instanceID: 2838}
     - Class: 114
-      Script: {instanceID: 3066}
+      Script: {instanceID: 3056}
     - Class: 114
-      Script: {instanceID: 3094}
+      Script: {instanceID: 3084}
     - Class: 114
-      Script: {instanceID: 3308}
+      Script: {instanceID: 3298}
     - Class: 114
-      Script: {instanceID: 3344}
+      Script: {instanceID: 3334}
     - Class: 114
-      Script: {instanceID: 3396}
+      Script: {instanceID: 3386}
     - Class: 114
-      Script: {instanceID: 3784}
+      Script: {instanceID: 3774}
     - Class: 114
-      Script: {instanceID: 3900}
+      Script: {instanceID: 3890}
     - Class: 114
-      Script: {instanceID: 4170}
+      Script: {instanceID: 4160}
     - Class: 114
-      Script: {instanceID: 4464}
+      Script: {instanceID: 4454}
     - Class: 114
-      Script: {instanceID: 4750}
+      Script: {instanceID: 4740}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -198,33 +202,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1498}
     - Class: 114
-      Script: {instanceID: 1762}
+      Script: {instanceID: 1750}
     - Class: 114
-      Script: {instanceID: 2436}
+      Script: {instanceID: 2424}
     - Class: 114
-      Script: {instanceID: 2492}
+      Script: {instanceID: 2480}
     - Class: 114
-      Script: {instanceID: 2496}
+      Script: {instanceID: 2484}
     - Class: 114
-      Script: {instanceID: 2692}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2826}
+      Script: {instanceID: 2838}
     - Class: 114
-      Script: {instanceID: 2850}
+      Script: {instanceID: 2986}
     - Class: 114
-      Script: {instanceID: 3066}
+      Script: {instanceID: 3056}
     - Class: 114
-      Script: {instanceID: 3124}
+      Script: {instanceID: 3114}
     - Class: 114
-      Script: {instanceID: 3230}
+      Script: {instanceID: 3220}
     - Class: 114
-      Script: {instanceID: 3308}
+      Script: {instanceID: 3298}
     - Class: 114
-      Script: {instanceID: 4170}
+      Script: {instanceID: 4160}
     - Class: 114
-      Script: {instanceID: 4370}
+      Script: {instanceID: 4360}
     - Class: 114
-      Script: {instanceID: 5270}
+      Script: {instanceID: 5260}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -289,83 +293,87 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1498}
     - Class: 114
-      Script: {instanceID: 1706}
+      Script: {instanceID: 1694}
+    - Class: 114
+      Script: {instanceID: 1750}
     - Class: 114
       Script: {instanceID: 1762}
     - Class: 114
-      Script: {instanceID: 1774}
+      Script: {instanceID: 1786}
     - Class: 114
-      Script: {instanceID: 1798}
+      Script: {instanceID: 2424}
     - Class: 114
-      Script: {instanceID: 2436}
+      Script: {instanceID: 2534}
     - Class: 114
-      Script: {instanceID: 2546}
+      Script: {instanceID: 2652}
     - Class: 114
-      Script: {instanceID: 2664}
+      Script: {instanceID: 2678}
     - Class: 114
-      Script: {instanceID: 2690}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2692}
+      Script: {instanceID: 2814}
     - Class: 114
       Script: {instanceID: 2826}
     - Class: 114
       Script: {instanceID: 2838}
     - Class: 114
-      Script: {instanceID: 2850}
+      Script: {instanceID: 2956}
     - Class: 114
-      Script: {instanceID: 2968}
+      Script: {instanceID: 3056}
     - Class: 114
-      Script: {instanceID: 3066}
+      Script: {instanceID: 3114}
     - Class: 114
-      Script: {instanceID: 3124}
+      Script: {instanceID: 3222}
     - Class: 114
-      Script: {instanceID: 3232}
+      Script: {instanceID: 3298}
     - Class: 114
-      Script: {instanceID: 3308}
+      Script: {instanceID: 3310}
     - Class: 114
-      Script: {instanceID: 3320}
+      Script: {instanceID: 3508}
     - Class: 114
       Script: {instanceID: 3518}
     - Class: 114
-      Script: {instanceID: 3528}
+      Script: {instanceID: 3614}
     - Class: 114
-      Script: {instanceID: 3624}
+      Script: {instanceID: 3638}
     - Class: 114
-      Script: {instanceID: 3648}
+      Script: {instanceID: 3804}
     - Class: 114
-      Script: {instanceID: 3814}
+      Script: {instanceID: 3870}
     - Class: 114
-      Script: {instanceID: 3880}
+      Script: {instanceID: 3888}
     - Class: 114
-      Script: {instanceID: 3898}
+      Script: {instanceID: 3894}
     - Class: 114
-      Script: {instanceID: 3904}
+      Script: {instanceID: 3960}
     - Class: 114
-      Script: {instanceID: 3970}
+      Script: {instanceID: 4160}
     - Class: 114
-      Script: {instanceID: 4170}
+      Script: {instanceID: 4224}
     - Class: 114
-      Script: {instanceID: 4234}
+      Script: {instanceID: 4310}
     - Class: 114
-      Script: {instanceID: 4320}
+      Script: {instanceID: 4430}
     - Class: 114
-      Script: {instanceID: 4440}
+      Script: {instanceID: 4432}
     - Class: 114
-      Script: {instanceID: 4442}
+      Script: {instanceID: 4454}
     - Class: 114
-      Script: {instanceID: 4464}
+      Script: {instanceID: 4580}
     - Class: 114
-      Script: {instanceID: 4590}
+      Script: {instanceID: 4746}
     - Class: 114
-      Script: {instanceID: 4756}
+      Script: {instanceID: 4980}
     - Class: 114
-      Script: {instanceID: 4990}
+      Script: {instanceID: 4984}
     - Class: 114
-      Script: {instanceID: 4994}
+      Script: {instanceID: 5416}
     - Class: 114
-      Script: {instanceID: 5426}
+      Script: {instanceID: 5712}
     - Class: 114
-      Script: {instanceID: 5722}
+      Script: {instanceID: 18094}
+    - Class: 114
+      Script: {instanceID: 61204}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -603,6 +611,12 @@ ScriptsOnlyBuild:
     assemblyName: SimpleFileBrowser.Runtime.dll
     namespaceName: SimpleFileBrowser
     className: FileBrowserCursorHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LoadMainMenu
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1059,9 +1073,21 @@ ScriptsOnlyBuild:
     assemblyName: SimpleFileBrowser.Runtime.dll
     namespaceName: SimpleFileBrowser
     className: FileBrowserMovement
+  - hash:
+      serializedVersion: 2
+      Hash: cbeba0be93684d3bcd4b72542d830f58
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MenuMusicPlayer
+  - hash:
+      serializedVersion: 2
+      Hash: 9a684399e957cdd31028bece93868288
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SPTextPopulator
   platform: 19
   scenePathNames:
   - Assets/Scenes/MenuScene.unity
   - Assets/Scenes/GameScene.unity
   - Assets/Scenes/LevelMaker.unity
-  playerPath: C:/Unity/__TEST_BUILDS/rizumu 0.2/rizumu.exe
+  playerPath: C:/Unity/__TEST_BUILDS/rizumu 1.0/rizumu.exe

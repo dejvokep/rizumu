@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,7 +51,14 @@ public class MapInfoProcessor : MonoBehaviour
             mapDifficultyLabel.text = $"Difficulty: {ScrollPopulator.mapsInfo[mapID].difficulty}★";
 
             if (UserDataReader.userData != null)
-                userHighscoreLabel.text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
+                try
+                {
+                    userHighscoreLabel.text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
+                }
+                catch (NullReferenceException)
+                {
+                    userHighscoreLabel.text = "Highscore: 0";
+                }
             else
                 userHighscoreLabel.text = "Highscore: 0";
         }

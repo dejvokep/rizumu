@@ -1536,8 +1536,8 @@ SpriteMask:
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
   m_BackSortingLayer: 0
-  m_FrontSortingOrder: 4
-  m_BackSortingOrder: 3
+  m_FrontSortingOrder: 3
+  m_BackSortingOrder: 2
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
 --- !u!1 &432462661
@@ -5064,8 +5064,8 @@ SpriteMask:
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
   m_BackSortingLayer: 0
-  m_FrontSortingOrder: 3
-  m_BackSortingOrder: 2
+  m_FrontSortingOrder: 2
+  m_BackSortingOrder: 1
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
 --- !u!1 &1130009662
@@ -6213,8 +6213,8 @@ SpriteMask:
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
   m_BackSortingLayer: 0
-  m_FrontSortingOrder: 2
-  m_BackSortingOrder: 1
+  m_FrontSortingOrder: 1
+  m_BackSortingOrder: 0
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
 --- !u!1 &1498011664
@@ -7979,8 +7979,8 @@ SpriteMask:
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
   m_BackSortingLayer: 0
-  m_FrontSortingOrder: 5
-  m_BackSortingOrder: 4
+  m_FrontSortingOrder: 4
+  m_BackSortingOrder: 3
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
 --- !u!1 &2020703889

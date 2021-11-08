@@ -59,6 +59,16 @@ public class AudioLength : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // try
+        // {
+        //     print("Set audio volume");
+        //     m_AudioSource.volume = SettingsMenu.audioVolume;
+        // }
+        // catch (NullReferenceException)
+        // {
+        //     print("Audio volume not set, defaulting");
+        //     m_AudioSource.volume = -30;
+        // }
 
         if (SpawnedController.keyboardKeys != null)
             keyboardKeys = SpawnedController.keyboardKeys;

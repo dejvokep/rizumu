@@ -28,6 +28,7 @@ public class ScrollPopulator : MonoBehaviour
 
         if (loadFromResources)
         {
+            print(mapID);
             string json = Resources.Load<TextAsset>("maps/" + mapID + "/info").ToString();
             mapInfo.LoadFromJson(json);
 
@@ -168,7 +169,7 @@ public class ScrollPopulator : MonoBehaviour
     }
 
 
-    private string[] LoadMapsFromResources()
+    public static string[] LoadMapsFromResources()
     {
         var textFile = Resources.Load<TextAsset>("maps_list");
         string textString = textFile.ToString();

@@ -8,6 +8,7 @@ public class UserDataReader : MonoBehaviour
 
     void Awake()
     {
+        userData = new UserData();
         LoadJsonData();
     }
 
@@ -21,8 +22,15 @@ public class UserDataReader : MonoBehaviour
         }
         else
         {
-            userData = null;
-            Debug.Log("userdata.json not found");
+            Debug.Log("userdata.json not found, creating new file");
+
+            userData.Default();
+
+            string jsonString = userData.ToJson();
+            if (FileManager.WriteToFile("userdata.json", jsonString))
+            {
+                Debug.Log("Save successful");
+            }
         }        
     }
 }

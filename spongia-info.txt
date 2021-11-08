@@ -2,6 +2,11 @@ Názov tímu: AE
 Názov hry: rizumu
 Vývojové prostredie a prostriedky: Unity, C#, Photoshop
 
+Unity Pluginy:
+Zdroj: https://github.com/yasirkula/UnitySimpleFileBrowser
+Licencia: MIT License
+
+
 Fonty:
 Zdroj: https://www.fontspace.com/timeburner-font-f15111
 Licencia: Freeware
@@ -16,6 +21,24 @@ Licencia: CC0 1.0
 
 Zdroj: https://freesvg.org/elephant-on-ball
 Licencia: CC Public Domain
+
+Zdroj: https://images.unsplash.com/photo-1636306950045-4dbb10b7e0f4
+Licencia: Unsplash Free License
+
+Zdroj: https://images.unsplash.com/photo-1635972064135-8ec7711f9895
+Licencia: Unsplash Free License
+
+Zdroj: https://images.unsplash.com/photo-1636255520944-cf9a73aa64a4
+Licencia: Unsplash Free License
+
+Zdroj: https://images.unsplash.com/photo-1636310917185-015ddd4363af?ixlib
+Licencia: Unsplash Free License
+
+Zdroj: https://images.unsplash.com/photo-1636262815212-1c2476f47784
+Licencia: Unsplash Free License
+
+Zdroj: https://images.unsplash.com/photo-1632059368252-be6d65abc4e2
+Licencia: Unsplash Free License
 
 
 Hudba:
@@ -35,4 +58,13 @@ Zdroj: https://www.youtube.com/watch?v=2N4SjqaKPA8
 Licencia: No Copyright
 
 Zdroj: https://www.youtube.com/watch?v=4Bk7eHrjDaQ
+Licencia: No Copyright
+
+Zdroj: https://www.youtube.com/watch?v=0_VIvrAcrw0
+Licencia: No Copyright
+
+Zdroj: https://www.youtube.com/watch?v=prLN6KSetUU
+Licencia: No Copyright
+
+Zdroj: https://www.youtube.com/watch?v=fSZ9qa9e32A
 Licencia: No Copyright

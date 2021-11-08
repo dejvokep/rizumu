@@ -36,9 +36,13 @@ public class SettingsMenu : MonoBehaviour
 
     // Saving data
     private string saveFileName = "settings.json";
+
+    public static float audioVolume = -30;
+
     public void SaveJsonData()
     {
         updateKeys();
+        audioVolume = curSettings.volume;
         
         if (FileManager.WriteToFile(saveFileName, curSettings.ToJson()))
         {
@@ -128,6 +132,7 @@ public class SettingsMenu : MonoBehaviour
 
         // Volume
         audioMixer.SetFloat("volume", curSettings.volume);
+        audioVolume = curSettings.volume;
 
 
         resolutionIndex = getResolutionIndex(); resolutionDropdown.value = resolutionIndex;
