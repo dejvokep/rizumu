@@ -28,11 +28,8 @@ public class ScrollPopulator : MonoBehaviour
 
         if (loadFromResources)
         {
-            print(mapID);
             string json = Resources.Load<TextAsset>("maps/" + mapID + "/info").ToString();
             mapInfo.LoadFromJson(json);
-
-            // Debug.Log("Load complete - Resources");
 
             return mapInfo;
 
@@ -41,15 +38,11 @@ public class ScrollPopulator : MonoBehaviour
         {
             mapInfo.LoadFromJson(json);
 
-            // Debug.Log("Load complete - presistenDataPath");
-
             return mapInfo;
         }
         else
         {
             mapInfo.Default();
-
-            // Debug.Log("Load failed");
 
             return null;
         }
@@ -124,30 +117,23 @@ public class ScrollPopulator : MonoBehaviour
 
             // Song Image
             scrollerUnit.transform.GetChild(0).GetComponent<Image>().sprite = mapsSprites[mapID];
-
             scrollerUnit.transform.GetChild(0).GetComponent<AspectRatioFitter>().aspectRatio = mapsSpritesAspectRatio[mapID];
-            
             scrollerUnit.transform.GetChild(0).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(0, unitSize - 2*margin);
 
             float imageWidth = scrollerUnit.transform.GetChild(0).transform.GetComponent<RectTransform>().sizeDelta.x;
-            // Debug.Log($"{i}: imageWidth: {imageWidth}");
-
             scrollerUnit.transform.GetChild(0).transform.localPosition = new Vector3(imageWidth/2 + margin, 0, 0);
-            // Debug.Log($"{i}: localPosition: x = {imageWidth/2 + margin}, y = {unitSize/2 + margin}, z = 0");
-
 
 
             // Song Name
             scrollerUnit.transform.GetChild(1).GetComponent<Text>().text = mapsInfo[mapID].song_name;
             scrollerUnit.transform.GetChild(1).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(scrollWidth - imageWidth - 2*margin, unitSize/2);
             scrollerUnit.transform.GetChild(1).transform.localPosition = new Vector3((scrollWidth + imageWidth + 2*margin)/2, unitSize/4, 0);
-            // Debug.Log($"{i}: sizeDelta: x = {(scrollWidth - imageWidth - 2*margin)/2}, y = {unitSize/2}");
+
 
             // Song Difficulty
             scrollerUnit.transform.GetChild(2).GetComponent<Text>().text = "Difficulty: " + mapsInfo[mapID].difficulty.ToString() + "★";
             scrollerUnit.transform.GetChild(2).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(scrollWidth - imageWidth - 2*margin, unitSize/2);
             scrollerUnit.transform.GetChild(2).transform.localPosition = new Vector3((scrollWidth + imageWidth + 2*margin)/2, -unitSize/4, 0);
-            // Debug.Log($"{i}: localPosition: x = {(scrollWidth + imageWidth + 2*margin)/2}, y = {-unitSize/4}, z = 0");
         }
     }
 

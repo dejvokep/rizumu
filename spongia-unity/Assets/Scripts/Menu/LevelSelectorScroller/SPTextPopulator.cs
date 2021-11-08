@@ -13,9 +13,8 @@ public class SPTextPopulator : MonoBehaviour
         {
             spText.text = $"SP: {UserDataReader.userData.sp.ToString()}";
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
-            print(e);
             return;
         }
     }

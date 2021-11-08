@@ -20,6 +20,5 @@ public class MenuMusicPlayer : MonoBehaviour
 
         audioSource.clip = Resources.Load<AudioClip>("maps/" + availableMaps[index] + "/audio");
         audioSource.Play();
-        Debug.Log("Play: " + "maps/" + availableMaps[index] + "/audio");
     }
 }

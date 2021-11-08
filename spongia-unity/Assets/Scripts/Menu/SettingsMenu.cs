@@ -46,7 +46,7 @@ public class SettingsMenu : MonoBehaviour
         
         if (FileManager.WriteToFile(saveFileName, curSettings.ToJson()))
         {
-            Debug.Log("Save successful");
+            // Debug.Log("Save successful");
         }
     }
     
@@ -58,7 +58,7 @@ public class SettingsMenu : MonoBehaviour
 
             curSettings.LoadFromJson(json);
 
-            Debug.Log("Load complete");
+            // Debug.Log("Load complete");
         }
         else
         {
@@ -74,7 +74,6 @@ public class SettingsMenu : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/settings.json"))
         {
-            Debug.Log($"{Application.persistentDataPath + "/settings.json"} FILE DOESNT EXIST");
             curSettings.Default();
             SaveJsonData();
         }

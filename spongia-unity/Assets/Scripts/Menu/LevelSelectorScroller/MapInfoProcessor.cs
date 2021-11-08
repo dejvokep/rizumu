@@ -50,17 +50,17 @@ public class MapInfoProcessor : MonoBehaviour
 
             mapDifficultyLabel.text = $"Difficulty: {ScrollPopulator.mapsInfo[mapID].difficulty}★";
 
+            
+            userHighscoreLabel.text = "Highscore: 0";
             if (UserDataReader.userData != null)
                 try
                 {
                     userHighscoreLabel.text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
                 }
-                catch (NullReferenceException)
+                catch (Exception)
                 {
-                    userHighscoreLabel.text = "Highscore: 0";
+                    
                 }
-            else
-                userHighscoreLabel.text = "Highscore: 0";
         }
         else if (ScrollPopulator.mapsID[0] != null && ScrollPopulator.mapsID[0] != "" && mapID == null)
             ScrollUnitButton.selectedMapID = ScrollPopulator.mapsID[0];
