@@ -52,18 +52,41 @@ public class AudioLength : MonoBehaviour
     public AudioSource TargetAudioSource;
     AudioClip m_AudioClip;
     public List<List<float>> objects = new List<List<float>> ();
+
+
+    private Dictionary<Sector, string> keyboardKeys;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        if (SpawnedController.keyboardKeys != null)
+            keyboardKeys = SpawnedController.keyboardKeys;
+        else
+        {
+            keyboardKeys = new Dictionary<Sector, string>();
+            keyboardKeys[Sector.NORTH_EAST] = "f";
+            keyboardKeys[Sector.SOUTH_EAST] = "k";
+            keyboardKeys[Sector.SOUTH_WEST] = "j";
+            keyboardKeys[Sector.NORTH_WEST] = "d";
+        }
+
         print(Application.persistentDataPath);
         SpeedInput.text="1";
         Spoj.text="1";
         m_AudioSource = GetComponent<AudioSource>();
         m_AudioClip = m_AudioSource.clip;
-        Debug.Log("Audio clip length : " + m_AudioSource.clip.length);
-        float Len = (float)m_AudioSource.clip.length;
-        mSlider.maxValue= Len;
-        MaximumTime.text = Len.ToString();
+        try
+        {
+            Debug.Log("Audio clip length : " + m_AudioSource.clip.length);
+            float Len = (float)m_AudioSource.clip.length;
+            mSlider.maxValue= Len;
+            MaximumTime.text = Len.ToString();
+        }
+        catch (NullReferenceException)
+        {
+            return;
+        }
     }
     public void Stlacenie(int s)
     {
@@ -158,7 +181,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
         
-            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.NORTH_EAST]))
+            if (Input.GetKeyDown(keyboardKeys[Sector.NORTH_EAST]))
             {
                 Stlacenie(0);
             }
@@ -167,7 +190,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.NORTH_EAST]))
+            if (Input.GetKeyUp(keyboardKeys[Sector.NORTH_EAST]))
             {
                 Pustenie();
             }
@@ -175,7 +198,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.SOUTH_EAST]))
+            if (Input.GetKeyDown(keyboardKeys[Sector.SOUTH_EAST]))
             {
                 Stlacenie(1);
             }
@@ -184,7 +207,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.SOUTH_EAST]))
+            if (Input.GetKeyUp(keyboardKeys[Sector.SOUTH_EAST]))
             {
                 Pustenie();
             }
@@ -192,7 +215,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.SOUTH_WEST]))
+            if (Input.GetKeyDown(keyboardKeys[Sector.SOUTH_WEST]))
             {
                 Stlacenie(2);
             }
@@ -201,7 +224,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.SOUTH_WEST]))
+            if (Input.GetKeyUp(keyboardKeys[Sector.SOUTH_WEST]))
             {
                 Pustenie();
             }
@@ -209,7 +232,7 @@ public class AudioLength : MonoBehaviour
         if (playing==true)
         {
             
-            if (Input.GetKeyDown(SpawnedController.keyboardKeys[Sector.NORTH_WEST]))
+            if (Input.GetKeyDown(keyboardKeys[Sector.NORTH_WEST]))
             {
                 Stlacenie(3);
             }
@@ -218,7 +241,7 @@ public class AudioLength : MonoBehaviour
         }
         if (playing==true)
         {
-            if (Input.GetKeyUp(SpawnedController.keyboardKeys[Sector.NORTH_WEST]))
+            if (Input.GetKeyUp(keyboardKeys[Sector.NORTH_WEST]))
             {
                 Pustenie();
             }
