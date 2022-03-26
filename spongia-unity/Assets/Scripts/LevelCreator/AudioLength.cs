@@ -53,6 +53,8 @@ public class AudioLength : MonoBehaviour
     AudioClip m_AudioClip;
     public List<List<float>> objects = new List<List<float>> ();
 
+    private bool inputEnabled = true;
+
 
     private Dictionary<Sector, string> keyboardKeys;
 
@@ -124,6 +126,10 @@ public class AudioLength : MonoBehaviour
     void Update()
 
     {
+        if (!inputEnabled)
+            return;
+
+
         mSlider.value = (float)m_AudioSource.time;
         CurrentTime.text = m_AudioSource.time.ToString();
         // foreach (var item in CurrentMap.Keys)
@@ -257,6 +263,23 @@ public class AudioLength : MonoBehaviour
             }
         }            
     }
+
+    public void disableInput()
+    {
+        inputEnabled = false;
+
+        m_AudioSource.Pause();
+        playing = false;
+    }
+    public void enableInput()
+    {
+        inputEnabled = true;
+
+        m_AudioSource.UnPause();
+        playing = true;
+    }
+
+
     public void ReadStringInput(string myInput)
     {
         float Input = float.Parse(myInput);
@@ -400,7 +423,7 @@ public class AudioLength : MonoBehaviour
                 System.IO.File.Copy(@"Assets/Textures/Default.png", destFile2, true);
             }
 
-            
+
         }
 }
 class jsonInfoVeci
