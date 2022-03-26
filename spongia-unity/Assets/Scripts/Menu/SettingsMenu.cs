@@ -198,11 +198,30 @@ public class SettingsMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && current != null)
+        if (Input.GetKeyDown(KeyCode.Escape)) // && current != null)
         {
-            currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
-            currentKey = null;
+            if (currentKey != null)
+            {
+                currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
+                currentKey = null;
+            }
+            else
+                backtToMainMenu();
         }
+    }
+
+    private void backtToMainMenu()
+    {
+        transform.Find("SettingsMenu").gameObject.SetActive(false);
+        transform.Find("MainMenu").gameObject.SetActive(true);
+
+        loadSavedSettings();
+    }
+
+    public void loadSavedSettings()
+    {
+        LoadJsonData();
+        UpdateAllSettings();
     }
 
     void OnGUI()
