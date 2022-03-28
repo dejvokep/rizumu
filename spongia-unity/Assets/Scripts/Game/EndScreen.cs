@@ -108,11 +108,18 @@ public class EndScreen : MonoBehaviour
         // Index
         int rankIndex = 0;
         // While can move to the upper tier
-        while (rankIndex + 1 < RANKS.Count && RANKS[rankIndex + 1].accuracy <= accuracy)
+        while (rankIndex + 1 < RANKS.Count && RANKS[rankIndex + 1].accuracy <= accuracy) {
+            // Deactivate
+            RANKS[rankIndex].rank.SetActive(false);
             // Increase
             rankIndex += 1;
+        }
 
         // Activate rank
         RANKS[rankIndex].rank.SetActive(true);
+
+        // Deactivate the rest
+        for (rankIndex++; rankIndex < RANKS.Count; rankIndex++)
+            RANKS[rankIndex].rank.SetActive(false);
     }
 }
