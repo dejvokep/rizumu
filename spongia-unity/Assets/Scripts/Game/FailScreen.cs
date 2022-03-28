@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FailScreen : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class FailScreen : MonoBehaviour
     public void Hide() {
         // Animate
         StartCoroutine(Fade(false));
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private IEnumerator Fade(bool fadeIn) {

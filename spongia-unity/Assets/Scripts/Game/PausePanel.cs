@@ -21,6 +21,7 @@ public class PausePanel : MonoBehaviour
 
     public GameObject gamePanel, player, resumeCountdownObject, panel;
     private Text resumeCountdownText;
+    public Text songTitle;
 
     private bool paused = false;
 
@@ -93,6 +94,8 @@ public class PausePanel : MonoBehaviour
             return;
         // Paused
         paused = true;
+        
+        songTitle.text = controller.songName + " (" + ((int) (controller.currentTime/controller.songLength*100)) + "%)";
         // Open the menu
         panel.SetActive(true);
         // Pause
