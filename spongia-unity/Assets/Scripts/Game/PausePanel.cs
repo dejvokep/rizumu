@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 
 public class PausePanel : MonoBehaviour
@@ -104,6 +105,7 @@ public class PausePanel : MonoBehaviour
         pendingCountdown = false;
         // Disable
         resumeCountdownObject.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void Resume() {
