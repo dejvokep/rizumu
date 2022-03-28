@@ -959,7 +959,7 @@ MonoBehaviour:
   settingsMenu: {fileID: 1014418853}
   creditsMenu: {fileID: 560645117}
   windowTransitioner: {fileID: 393254314}
-  transitionSpeed: 3
+  transitionSpeed: 7
   transitionFaze: -1
 --- !u!1 &133008916
 GameObject:
@@ -1748,6 +1748,7 @@ GameObject:
   - component: {fileID: 393254315}
   - component: {fileID: 393254317}
   - component: {fileID: 393254316}
+  - component: {fileID: 393254318}
   m_Layer: 5
   m_Name: _WindowTransitioner
   m_TagString: Untagged
@@ -1809,6 +1810,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 393254314}
   m_CullTransparentMesh: 1
+--- !u!114 &393254318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393254314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cc72c10bf9cf64db81fef6de506f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 2
+  speed: 0.75
 --- !u!1 &441472300
 GameObject:
   m_ObjectHideFlags: 0
