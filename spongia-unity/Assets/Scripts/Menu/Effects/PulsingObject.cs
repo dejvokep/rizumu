@@ -6,21 +6,18 @@ public class PulsingObject : MonoBehaviour
 {
 
     AudioSource _audioSource;
-    AudioSource[] _audioSources;
     public static float[] _samples = new float[512];
     public static float[] _freqBand = new float[8];
 
     // Start is called before the first frame update
     void Start()
     {
-        _audioSources = GetComponents<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        _audioSource = _audioSources[0].isPlaying ? _audioSources[0] : _audioSources[1];
-        
         GetSpectrumData();
         MakeFrequencyBands();
     }
