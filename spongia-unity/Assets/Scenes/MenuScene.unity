@@ -1005,6 +1005,9 @@ MonoBehaviour:
   windowTransitioner: {fileID: 393254314}
   transitionSpeed: 7
   transitionFaze: -1
+  transitionProgress: 0
+  defaultMenu: {fileID: 1618742575}
+  limitedMode: 1
 --- !u!1 &133008916
 GameObject:
   m_ObjectHideFlags: 0
