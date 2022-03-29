@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
   m_Name: skin 6
   m_EditorClassIdentifier: 
-  name: 6
+  name: Tiger
   cost: 87
   bought: 0
-  skin: {fileID: 21300000, guid: db8ee7db7405aed458852165eec7bc6a, type: 3}
+  skin: {fileID: 21300000, guid: 1bdb51b0546d4bb41aac36e119ab7604, type: 3}

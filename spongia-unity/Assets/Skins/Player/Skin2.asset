@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
   m_Name: Skin2
   m_EditorClassIdentifier: 
-  name: Not Epic Skin
+  name: Bonkers
   cost: 1
   bought: 0
-  skin: {fileID: 21300000, guid: 02f4943dba9511e4a80c2c131d944b60, type: 3}
+  skin: {fileID: 21300000, guid: da2db7f68140c514ba2644c1b6127252, type: 3}
