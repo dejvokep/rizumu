@@ -8,9 +8,6 @@ TagManager:
   - 1
   - 2
   - 3
-  - Selected
-  - Unselected
-  - bought
   layers:
   - Default
   - TransparentFX
