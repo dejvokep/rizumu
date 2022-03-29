@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,7 @@ using UnityEngine.SceneManagement;
 public class ScrollPopulator : MonoBehaviour
 {
     public GameObject scrollerUnitPrefab;
-    [Space]
-    public float unitSize = 123;
-    public float margin = 6;
+    
 
     private List<string> maps;
     private float scrollWidth;
@@ -108,32 +107,40 @@ public class ScrollPopulator : MonoBehaviour
         foreach (string mapID in mapsID)
         {
             // Scroller Unit Creation
-            GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-            scrollerUnit.transform.SetParent(transform, false);
-            scrollerUnit.transform.localScale.Set(1, 1, 1);
+            GameObject scrollerUnit = Instantiate(scrollerUnitPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), transform);
 
             scrollerUnit.name = mapID;
 
 
             // Song Image
-            scrollerUnit.transform.GetChild(0).GetComponent<Image>().sprite = mapsSprites[mapID];
-            scrollerUnit.transform.GetChild(0).GetComponent<AspectRatioFitter>().aspectRatio = mapsSpritesAspectRatio[mapID];
-            scrollerUnit.transform.GetChild(0).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(0, unitSize - 2*margin);
-
-            float imageWidth = scrollerUnit.transform.GetChild(0).transform.GetComponent<RectTransform>().sizeDelta.x;
-            scrollerUnit.transform.GetChild(0).transform.localPosition = new Vector3(imageWidth/2 + margin, 0, 0);
+            Transform thumbnail = scrollerUnit.transform.GetChild(0).GetChild(0);
+            thumbnail.GetComponent<Image>().sprite = mapsSprites[mapID];
+            thumbnail.GetComponent<AspectRatioFitter>().aspectRatio = mapsSpritesAspectRatio[mapID];
 
 
             // Song Name
-            scrollerUnit.transform.GetChild(1).GetComponent<Text>().text = mapsInfo[mapID].song_name;
-            scrollerUnit.transform.GetChild(1).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(scrollWidth - imageWidth - 2*margin, unitSize/2);
-            scrollerUnit.transform.GetChild(1).transform.localPosition = new Vector3((scrollWidth + imageWidth + 2*margin)/2, unitSize/4, 0);
+            Transform nameLabel = scrollerUnit.transform.GetChild(1);
+            nameLabel.GetComponent<Text>().text = mapsInfo[mapID].song_name;
 
 
             // Song Difficulty
-            scrollerUnit.transform.GetChild(2).GetComponent<Text>().text = "Difficulty: " + mapsInfo[mapID].difficulty.ToString() + "★";
-            scrollerUnit.transform.GetChild(2).transform.GetComponent<RectTransform>().sizeDelta = new Vector2(scrollWidth - imageWidth - 2*margin, unitSize/2);
-            scrollerUnit.transform.GetChild(2).transform.localPosition = new Vector3((scrollWidth + imageWidth + 2*margin)/2, -unitSize/4, 0);
+            Transform difficultyLabel = scrollerUnit.transform.GetChild(2);
+            difficultyLabel.GetComponent<Text>().text = "Difficulty: " + mapsInfo[mapID].difficulty.ToString() + "★";
+
+
+            // Song Hiscore
+            if (UserDataReader.userData != null)
+            {
+                try
+                {
+                    Transform highscoreLabel = scrollerUnit.transform.GetChild(3);
+                    highscoreLabel.GetComponent<Text>().text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
         }
     }
 
