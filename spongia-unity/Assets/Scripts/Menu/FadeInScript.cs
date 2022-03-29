@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FadeInScript : MonoBehaviour
 {
+	
     private RawImage windowTransitionerImage;
     public float progress = 2f;
     public float speed = 1f;
