@@ -204,10 +204,18 @@ public class SettingsMenu : MonoBehaviour
             {
                 currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                 currentKey = null;
-
-                MenuEventManager.triggerToggleEscape();
             }
+            else
+                backtToMainMenu();
         }
+    }
+
+    private void backtToMainMenu()
+    {
+        transform.Find("SettingsMenu").gameObject.SetActive(false);
+        transform.Find("MainMenu").gameObject.SetActive(true);
+
+        loadSavedSettings();
     }
 
     public void loadSavedSettings()
@@ -232,8 +240,6 @@ public class SettingsMenu : MonoBehaviour
 
                     currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                     currentKey = null;
-
-                    MenuEventManager.triggerToggleEscape();
                 }
             }
         }
@@ -246,8 +252,6 @@ public class SettingsMenu : MonoBehaviour
             currentKey = clicked;
 
             currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 100, (byte) 100, (byte) 255);
-
-            MenuEventManager.triggerToggleEscape();
         }
     }
 
