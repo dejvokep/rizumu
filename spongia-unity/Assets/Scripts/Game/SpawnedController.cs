@@ -74,7 +74,7 @@ public class SpawnedController : MonoBehaviour
 
     public Text scoreText, multiplierText, comboText, accuracyText;
     public Image accuracyIndicator;
-    public Image progressBar, hpBar, hpBarFill;
+    public Image progressBar, hpBar;
 
     // Prefab to spawn
     public GameObject prefab;
@@ -87,7 +87,7 @@ public class SpawnedController : MonoBehaviour
     private EndScreen endScreen;
     private FailScreen failScreen;
 
-    public GameObject gameBackground, pauseBackground, gamePanel;
+    public GameObject gameBackground, pauseBackground;
 
     // Hlavna classa, kde by mal byt cely logic co sa tyka spawnutych kruzkov, whatever.
     // To znamena, metoda ked sa nejaky klikne, ked treba nejaky spawnut, etc.
@@ -97,16 +97,16 @@ public class SpawnedController : MonoBehaviour
     private double height, width;
 
     // Currently active (spawned) props
-    public Dictionary<Sector, SectorData> sectors;
+    private Dictionary<Sector, SectorData> sectors;
     // Keyboard keys by sector
     public static Dictionary<Sector, string> keyboardKeys;
 
-    public float currentTime;
+    private float currentTime;
     public float playerWidth;
 
     private long score = 0;
 
-    public float songLength;
+    private float songLength;
     public float multiplier = MULTIPLIERS[0].multiplier;
     private int combo = 0;
 
@@ -134,9 +134,6 @@ public class SpawnedController : MonoBehaviour
     private int misses = 0;
     private int bestCombo = 0;
     private bool initialized = false;
-
-    public string songName, songAuthor;
-    public int songDifficulty;
 
     // Start is called before the first frame update
     void Start()
@@ -199,25 +196,6 @@ public class SpawnedController : MonoBehaviour
         // Load handler
         musicHandler = new MusicHandler(this);
         musicHandler.Load();
-
-        string songDataString;
-        // If bundled
-        if (musicHandler.bundled) {
-            songDataString = Resources.Load<TextAsset>("maps/" + songID + "/info").ToString();
-        } else {
-            // Create reader
-            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
-            // Read
-            songDataString = reader.ReadToEnd();
-            // Close
-            reader.Close();
-        }
-
-        // Load
-        Dictionary<string, object> songData = JsonConvert.DeserializeObject<Dictionary<string, object>>(songDataString);
-        songName = songData["song_name"].ToString();
-        songAuthor = songData["song_author"].ToString();
-        songDifficulty = Int32.Parse(songData["difficulty"].ToString());
     }
 
     public void ContinueInit() {
@@ -225,7 +203,7 @@ public class SpawnedController : MonoBehaviour
         audioSource.clip = musicHandler.audioClip;
         songLength = audioSource.clip.length;
         // Set current time
-        currentTime = (int) (musicHandler.firstSpawn - 2);
+        currentTime = (int) (musicHandler.firstSpawn - 1);
 
         // Aspect ratio
         float aspectRatio = musicHandler.image.rect.width / musicHandler.image.rect.height;
@@ -286,7 +264,7 @@ public class SpawnedController : MonoBehaviour
             // Reset
             sectors[sector].Reset();
         // Set current time
-        currentTime = (int) (musicHandler.firstSpawn - 2);
+        currentTime = (int) (musicHandler.firstSpawn - 1);
         // Reset progress
         progressBar.fillAmount = 0;
         // Reset HP
@@ -412,9 +390,7 @@ public class SpawnedController : MonoBehaviour
             jsonBase = JsonConvert.DeserializeObject<JSONBase>(reader.ReadToEnd());
             // Close
             reader.Close();
-            print("exists");
         } else {
-            print("creating");
             // Create default
             jsonBase = new JSONBase {
                 sp = 0,
@@ -433,10 +409,6 @@ public class SpawnedController : MonoBehaviour
             rank = rankIndex == 0 ? "D" : rankIndex == 1 ? "C" : rankIndex == 2 ? "B" : rankIndex == 3 ? "A" : "S",
             combo = this.bestCombo
         };
-
-        if (jsonBase.highscores == null) {
-            jsonBase.highscores = new Dictionary<string, JSONHighscore>();
-        }
 
         // If does not contain
         if (!jsonBase.highscores.ContainsKey(songID))
@@ -572,7 +544,6 @@ public class SpawnedController : MonoBehaviour
         RefreshRank(maxScore > 0 ? (float) score / maxScore * 100 : 100);
         // HP
         hpBar.fillAmount = displayedHP;
-        //hpBarFill.color = displayedHP < ((float) hp/START_HP) ? new Color32(0, 255, 63, 255) : displayedHP > ((float) hp/START_HP) ? new Color32(255, 0, 0, 255) : new Color32(255, 255, 255, 255);
 
         // Spawn
         musicHandler.SpawnNext(currentTime);
@@ -619,7 +590,7 @@ public class SpawnedController : MonoBehaviour
                 // Spawn text
                 GameObject gameObject = Instantiate(scoreEarnedPrefab, new Vector2(), Quaternion.identity);
                 // Set parent canvas
-                gameObject.transform.SetParent(gamePanel.transform, false);
+                gameObject.transform.SetParent(canvas.transform, false);
                 // Set position
                 gameObject.transform.position = new Vector2(playerWidth * (1 + UnityEngine.Random.Range(-0.4f, 0.4f)) * -SectorXDirection(sector), playerWidth * (4 + UnityEngine.Random.Range(-0.2f, 0.4f)) * -SectorYDirection(sector));
                 // Set text
@@ -628,7 +599,8 @@ public class SpawnedController : MonoBehaviour
                 // If greater than 0
                 if (score > 0) {
                     // Play SFX
-                    if (press) {
+                    if (press)
+                    {
                         SFXPlayer.Play(SFXPlayer.EffectType.DRUM_HIT);
                     }
                     // Set text color

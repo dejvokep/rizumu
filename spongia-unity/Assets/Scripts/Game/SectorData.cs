@@ -19,7 +19,6 @@ public class SectorData
     public const float THRESHOLD_MISS = 0.4F;
 
     private Sector sector;
-    private bool failed = false;
 
     public SectorData(SpawnedController c, Sector sector) {
         // Set
@@ -33,9 +32,6 @@ public class SectorData
     }
 
     public void Update(float time) {
-        if (failed) {
-            return;
-        }
         // Keys
         List<Prop> props = new List<Prop>(screen);
         // For each prop
@@ -88,24 +84,18 @@ public class SectorData
         }
     }
 
-    public void Fade(float alpha) {
-        foreach (Prop prop in screen)
-            prop.renderer.color = new Color32(255, 255, 255, (byte) (255*alpha));
-    }
-
     public void Failed() {
-        failed = true;
-        /*// For each prop
+        // For each prop
         foreach (Prop prop in screen) {
             // If finished
             if (prop.position == TonePosition.FINISHED)
                 continue;
                 
             // Apply gravity
-            //prop.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
+            prop.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
             // Set sorting order in layer
-            //prop.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
-        }*/
+            prop.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
     }
 
     public void Reset() {
@@ -118,7 +108,6 @@ public class SectorData
         // Reset indexes
         focusedIndex = -1;
         despawnOffset = 0;
-        failed = false;
     }
 
     // -2: 0 score, 0 combo

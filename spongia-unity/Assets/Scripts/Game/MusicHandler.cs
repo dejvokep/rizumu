@@ -33,8 +33,6 @@ public class MusicHandler
     // The first spawn time time
     public float firstSpawn = float.MaxValue;
 
-    public bool bundled;
-
     public MusicHandler(SpawnedController c) {
         // Set
         controller = c;
@@ -45,6 +43,7 @@ public class MusicHandler
         double offset = controller.xOffset;
 
         // If bundled into the game by default
+        bool bundled;
         string mappingsString = "";
         try
         {

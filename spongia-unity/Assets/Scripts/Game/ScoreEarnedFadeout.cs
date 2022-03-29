@@ -11,8 +11,6 @@ public class ScoreEarnedFadeout : MonoBehaviour
 
     private Text text;
 
-    public SpawnedController controller;
-
     // Start is called before the first frame update
     void Start()
     {

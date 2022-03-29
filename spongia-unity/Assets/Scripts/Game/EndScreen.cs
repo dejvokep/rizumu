@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Audio;
 using static SpawnedController.Rank;
 
 public class EndScreen : MonoBehaviour
@@ -13,8 +12,6 @@ public class EndScreen : MonoBehaviour
     public Text scoreText, hitsText, missesText, accuracyText, spText;
 
     public GameObject panel;
-    public Animator animator;
-
     private CanvasGroup canvasGroup, gamePanelGroup;
     private SpriteRenderer playerRenderer;
 
@@ -22,10 +19,6 @@ public class EndScreen : MonoBehaviour
 
     private long score, sp;
     private int hits, misses, accuracy;
-
-    private AudioSource source;
-    public AudioMixerGroup mixer;
-    public AudioClip ticking, rankShowUp;
 
     private const float FADE_DURATION = 0.5f, ANIMATION_DURATION = 1;
 
@@ -43,20 +36,9 @@ public class EndScreen : MonoBehaviour
         canvasGroup = panel.GetComponent<CanvasGroup>();
         gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
         playerRenderer = player.GetComponent<SpriteRenderer>();
-
-        // Add audio source
-        source = gameObject.AddComponent<AudioSource>();
-        // Set mixer
-        source.outputAudioMixerGroup = mixer;
-        source.loop = true;
-        source.clip = ticking;
-        //Show(100, 100, 50, 99, 1);
     }
 
     public void Show(long score, int hits, int misses, int accuracy, long sp) {
-        // Deactivate ranks
-        foreach (SpawnedController.Rank rank in RANKS)
-            rank.rank.SetActive(false);
         // Activate
         panel.SetActive(true);
         // Set
@@ -66,6 +48,8 @@ public class EndScreen : MonoBehaviour
         this.accuracy = accuracy;
         this.sp = sp;
 
+        // Activate rank
+        ActivateRank(accuracy);
         // Animate
         StartCoroutine(Fade(true));
     }
@@ -101,40 +85,41 @@ public class EndScreen : MonoBehaviour
     private IEnumerator Animate() {
         // Speed
         float speed = 1.0f / ANIMATION_DURATION;
-        source.Play();
 
         for (float t = 0; t < 1; t += Time.deltaTime * speed) {
             // Calculate values
-            scoreText.text = "Score: " + ((long) Mathf.Lerp(0, score, t)).ToString();
-            hitsText.text = "Hits/misses: " + ((int) Mathf.Lerp(0, hits, t)).ToString() + "/" + ((int) Mathf.Lerp(0, misses, t)).ToString();
-            accuracyText.text = "Accuracy: " + ((int) Mathf.Lerp(0, accuracy, t)) + "%";
-            spText.text = "Earned: " + ((long) Mathf.Lerp(0, sp, t)).ToString() + " pts";
+            scoreText.text = ((long) Mathf.Lerp(0, score, t)).ToString();
+            hitsText.text = ((int) Mathf.Lerp(0, hits, t)).ToString();
+            missesText.text = ((int) Mathf.Lerp(0, misses, t)).ToString();
+            accuracyText.text = ((int) Mathf.Lerp(0, accuracy, t)) + "%";
+            spText.text = ((long) Mathf.Lerp(0, sp, t)).ToString();
             yield return true;
         }
         
         // Set final values
-        scoreText.text = "Score: " + score.ToString();
-        hitsText.text = "Hits/misses: " + hits.ToString() + "/" + misses.ToString();
-        accuracyText.text = "Accuracy: " + accuracy + "%";
-        spText.text = "Earned: " + sp.ToString() + " pts";
-        source.Stop();
-        
-        // Activate rank
-        Invoke("ActivateRank", 0.5F);
+        scoreText.text = score.ToString();
+        hitsText.text = hits.ToString();
+        missesText.text = misses.ToString();
+        accuracyText.text = accuracy + "%";
+        spText.text = sp.ToString();
     }
 
-    private void ActivateRank() {
+    private void ActivateRank(float accuracy) {
         // Index
         int rankIndex = 0;
         // While can move to the upper tier
-        while (rankIndex + 1 < RANKS.Count && RANKS[rankIndex + 1].accuracy <= accuracy)
+        while (rankIndex + 1 < RANKS.Count && RANKS[rankIndex + 1].accuracy <= accuracy) {
+            // Deactivate
+            RANKS[rankIndex].rank.SetActive(false);
             // Increase
             rankIndex += 1;
+        }
 
-        source.PlayOneShot(rankShowUp);
-        // Play animation
-        RANKS[rankIndex].rank.GetComponent<Animator>().Play("Rank_Popup", -1, 0F);
         // Activate rank
         RANKS[rankIndex].rank.SetActive(true);
+
+        // Deactivate the rest
+        for (rankIndex++; rankIndex < RANKS.Count; rankIndex++)
+            RANKS[rankIndex].rank.SetActive(false);
     }
 }

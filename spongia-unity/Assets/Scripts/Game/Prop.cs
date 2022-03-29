@@ -25,8 +25,6 @@ public class Prop : MonoBehaviour
 
     public bool pressed = false, startedPressing = false;
 
-    public SpriteRenderer renderer;
-
     public void Init() {
         player = GameObject.Find("Player");
         // Tone length
@@ -45,7 +43,6 @@ public class Prop : MonoBehaviour
         else
             sector = Sector.NORTH_WEST;
 
-        renderer = gameObject.GetComponent<SpriteRenderer>();
         // Player width
         playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         // Set player bounds

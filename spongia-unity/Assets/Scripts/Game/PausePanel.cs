@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System;
 
 public class PausePanel : MonoBehaviour
@@ -21,7 +20,6 @@ public class PausePanel : MonoBehaviour
 
     public GameObject gamePanel, player, resumeCountdownObject, panel;
     private Text resumeCountdownText;
-    public Text songTitle;
 
     private bool paused = false;
 
@@ -94,8 +92,6 @@ public class PausePanel : MonoBehaviour
             return;
         // Paused
         paused = true;
-        
-        songTitle.text = controller.songName + " (" + Math.Max((int) (controller.currentTime/controller.songLength*100), 0) + "%)";
         // Open the menu
         panel.SetActive(true);
         // Pause
@@ -128,7 +124,6 @@ public class PausePanel : MonoBehaviour
         resumeCountdownObject.SetActive(true);
         // Set the text
         resumeCountdownText.text = "Resuming in " + ((int) resumeCountdown) + "...";
-        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void animate() {

@@ -19,17 +19,10 @@ public class navigationManager : MonoBehaviour
     [Space]
     [Header("Transition Configuration")]
     public float transitionSpeed = 1;
-    [SerializeField]
-    private int transitionFaze = -1;
-    [SerializeField]
+
+
+    public int transitionFaze = -1;
     private float transitionProgress;
-    
-
-    [Space(3)]
-    public GameObject defaultMenu;
-    public bool limitedMode = false;
-
-
 
     private GameObject lastMenu;
     private GameObject currentMenu;
@@ -39,30 +32,8 @@ public class navigationManager : MonoBehaviour
     
     void Start()
     {
-        GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, creditsMenu};
-
-        if (defaultMenu == null)
-            defaultMenu = mainMenu;
-
-        foreach (GameObject menu in menuArray)
-        {
-            try
-            {
-                menu.SetActive(!limitedMode);
-            }
-            catch (UnassignedReferenceException)
-            {
-                
-            }
-        }
-
-        defaultMenu.SetActive(true);
-
-        lastMenu = defaultMenu;
-        currentMenu = defaultMenu;
-
-        mainMenu.transform.SetAsFirstSibling();
-        currentMenu.transform.SetSiblingIndex(transform.childCount - 3);
+        lastMenu = mainMenu;
+        currentMenu = mainMenu;
     }
 
     private void toggleEsacpeEnabled()
