@@ -1558,6 +1558,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c215f31708c39d64b9113177a769636f, type: 2}
   - {fileID: 11400000, guid: d4f0dea9a2c05034293b70eecbb1c91f, type: 2}
   - {fileID: 11400000, guid: 3d4c60dc126c602468c39b79e16a6110, type: 2}
+  - {fileID: 11400000, guid: 75fb831661dcce049a1e6a22a56ac64f, type: 2}
   Scroll: {fileID: 1778521965}
   Template: {fileID: 1802427267}
 --- !u!1 &284470237
@@ -4391,7 +4392,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -159}
+  m_AnchoredPosition: {x: 0, y: 0.000015259}
   m_SizeDelta: {x: 280, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &889859012
