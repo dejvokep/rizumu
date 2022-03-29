@@ -97,7 +97,7 @@ public class SpawnedController : MonoBehaviour
     private double height, width;
 
     // Currently active (spawned) props
-    private Dictionary<Sector, SectorData> sectors;
+    public Dictionary<Sector, SectorData> sectors;
     // Keyboard keys by sector
     public static Dictionary<Sector, string> keyboardKeys;
 
@@ -225,7 +225,7 @@ public class SpawnedController : MonoBehaviour
         audioSource.clip = musicHandler.audioClip;
         songLength = audioSource.clip.length;
         // Set current time
-        currentTime = (int) (musicHandler.firstSpawn - 1);
+        currentTime = (int) (musicHandler.firstSpawn - 2);
 
         // Aspect ratio
         float aspectRatio = musicHandler.image.rect.width / musicHandler.image.rect.height;
@@ -286,7 +286,7 @@ public class SpawnedController : MonoBehaviour
             // Reset
             sectors[sector].Reset();
         // Set current time
-        currentTime = (int) (musicHandler.firstSpawn - 1);
+        currentTime = (int) (musicHandler.firstSpawn - 2);
         // Reset progress
         progressBar.fillAmount = 0;
         // Reset HP

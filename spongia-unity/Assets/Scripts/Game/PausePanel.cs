@@ -95,7 +95,7 @@ public class PausePanel : MonoBehaviour
         // Paused
         paused = true;
         
-        songTitle.text = controller.songName + " (" + ((int) (controller.currentTime/controller.songLength*100)) + "%)";
+        songTitle.text = controller.songName + " (" + Math.Max((int) (controller.currentTime/controller.songLength*100), 0) + "%)";
         // Open the menu
         panel.SetActive(true);
         // Pause
@@ -108,7 +108,6 @@ public class PausePanel : MonoBehaviour
         pendingCountdown = false;
         // Disable
         resumeCountdownObject.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void Resume() {
@@ -129,6 +128,7 @@ public class PausePanel : MonoBehaviour
         resumeCountdownObject.SetActive(true);
         // Set the text
         resumeCountdownText.text = "Resuming in " + ((int) resumeCountdown) + "...";
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void animate() {

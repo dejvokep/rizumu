@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using static Sector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,6 +13,8 @@ public class FailScreen : MonoBehaviour
     private CanvasGroup canvasGroup, gamePanelGroup;
     private SpriteRenderer playerRenderer;
 
+    private SpawnedController controller;
+
     private const float FADE_DURATION = 0.5f;
 
     // Start is called before the first frame update
@@ -19,6 +23,7 @@ public class FailScreen : MonoBehaviour
         canvasGroup = panel.GetComponent<CanvasGroup>();
         gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
         playerRenderer = player.GetComponent<SpriteRenderer>();
+        controller = gameObject.GetComponent<SpawnedController>();
     }
 
     public void Show() {
@@ -45,6 +50,8 @@ public class FailScreen : MonoBehaviour
             canvasGroup.alpha = alpha;
             gamePanelGroup.alpha = 1-alpha;
             playerRenderer.color = new Color32(255, 255, 255, (byte) (255*(1-alpha)));
+            foreach (Sector sector in Enum.GetValues(typeof(Sector)))
+                controller.sectors[sector].Fade(1-alpha);
             yield return true;
         }
 
