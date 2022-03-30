@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
-  m_Name: Skin2
+  m_Script: {fileID: 11500000, guid: 17df9c3bc6130da489b331d87abc5058, type: 3}
+  m_Name: ultraviolet
   m_EditorClassIdentifier: 
-  name: Bonkers
-  cost: 1
-  bought: 0
-  skin: {fileID: 21300000, guid: da2db7f68140c514ba2644c1b6127252, type: 3}
+  name: ultraviolet
+  collor1: 6836388
+  collor2: 15183303
+  cost: 0

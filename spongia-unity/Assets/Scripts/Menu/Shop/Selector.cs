@@ -7,7 +7,8 @@ using System.IO;
 public class Selector : MonoBehaviour
 {
     public Button playerPreview;
-    
+
+    public string skinType;
     // Start is called before the first frame update
     public void Select()
     {
@@ -42,12 +43,22 @@ public class Selector : MonoBehaviour
 
             }
             transform.gameObject.tag = "Selected";
-            
+            Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
+            Dictionary<string, bool> skinDetails = skinDetails2[skinType];
+            if (skinDetails2[skinType][transform.name])
+            {
+                Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
+                equipedSkins[skinType] = transform.name;
+                string json = JsonConvert.SerializeObject(equipedSkins, Formatting.Indented);
+                File.WriteAllText(Application.persistentDataPath+"/activeSkins.json", json); 
+            }
+                
             foreach (Transform Child in transform)
             {
                 if (Child.name == "Selected")
                 {
                     Child.gameObject.SetActive(true);
+                    
                 }
             }
             

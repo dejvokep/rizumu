@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 using Newtonsoft.Json;
-public class PlayerChooser : MonoBehaviour
+public class NoteChooser : MonoBehaviour
 {
     public List<Skins> skinList;
     public GameObject Scroll;
@@ -14,7 +14,7 @@ public class PlayerChooser : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        ChoosePlayer();
+        NotePlayer();
         transform.gameObject.SetActive(false);
     }
 
@@ -24,11 +24,11 @@ public class PlayerChooser : MonoBehaviour
         
     }
 
-    public void ChoosePlayer()
+    public void NotePlayer()
     {
         print(Application.persistentDataPath+"/skinInfo.json");
         Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
-        Dictionary<string, bool> skinDetails = skinDetails2["player_skins"];
+        Dictionary<string, bool> skinDetails = skinDetails2["note_skins"];
         string name = "none";
         if (Scroll.transform.childCount > 0)
         {

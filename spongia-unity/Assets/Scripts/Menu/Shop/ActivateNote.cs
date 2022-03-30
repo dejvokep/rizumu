@@ -4,11 +4,11 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 
-public class Activate : MonoBehaviour
+public class ActivateNote : MonoBehaviour
 {
     public GameObject GameObject;
     public GameObject Scroll;
-    public GameObject NoteScroll;
+    public GameObject PlayerScroll;
     // Start is called before the first frame update
     void Awake()
     {
@@ -17,7 +17,7 @@ public class Activate : MonoBehaviour
         // foreach (Transform child in Scroll.transform)
         // {
         //
-        //     if (child.name == equipedSkins["player_skins"])
+        //     if (child.name == equipedSkins["note_skins"])
         //     {
         //         Scroll.GetComponent<ShopScrollController>().setActivedCell(child.gameObject);
         //     }
@@ -43,14 +43,12 @@ public class Activate : MonoBehaviour
             foreach (Transform child in Scroll.transform)
             {
 
-                if (child.name == equipedSkins["player_skins"])
+                if (child.name == equipedSkins["note_skins"])
                 {
                     Scroll.GetComponent<ShopScrollController>().setActivedCell(child.gameObject);
                 }
             }
-            
-            
-            NoteScroll.SetActive(false);
+            PlayerScroll.SetActive(false);
             GameObject.SetActive(true); 
         }
     }

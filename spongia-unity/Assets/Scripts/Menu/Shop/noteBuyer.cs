@@ -5,7 +5,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using UnityEngine.UI;
-public class Buyer : MonoBehaviour
+public class noteBuyer : MonoBehaviour
 {
     public Text NotEnoughMoney;
     // Start is called before the first frame update
@@ -47,7 +47,7 @@ public class Buyer : MonoBehaviour
         {
             int Cost = 0;
             Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
-            Dictionary<string, bool> skinDetails = skinDetails2["player_skins"];
+            Dictionary<string, bool> skinDetails = skinDetails2["note_skins"];
             Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string,object >>(File.ReadAllText(Application.persistentDataPath+"/userdata.json"));
 
             if (!skinDetails[transform.name])
