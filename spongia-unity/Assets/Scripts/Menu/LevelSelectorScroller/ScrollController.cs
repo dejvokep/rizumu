@@ -88,7 +88,7 @@ public class ScrollController : MonoBehaviour
             deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
 
         if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)) || Input.mouseScrollDelta.y != 0)
-            sfxPlayer.ClickContinue();
+            sfxPlayer.Hover();
 
 
         if (Mathf.Abs(Input.mouseScrollDelta.y) == 1)
