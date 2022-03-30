@@ -7,31 +7,43 @@ using static SpawnedController.Rank;
 
 public class EndScreen : MonoBehaviour
 {
-    public GameObject rankD, rankS, rankA, rankB, rankC;
-    public GameObject gamePanel, player;
+    [Header("Audio")]
+    public AudioMixerGroup mixer;
+    public AudioClip ticking;
+    public AudioClip rankShowUp;
 
-    public Text scoreText, hitsText, missesText, accuracyText, spText;
+    [Header("Ranks")]
+    public GameObject rankS;
+    public GameObject rankA;
+    public GameObject rankB;
+    public GameObject rankC;
+    public GameObject rankD;
 
+    [Header("UI elements")]
+    public Text scoreText;
+    public Text hitsText;
+    public Text missesText;
+    public Text accuracyText;
+    public Text spText;
     public GameObject panel;
     public Animator animator;
+    public GameObject gamePanel, player;
 
+    // Constants
+    private const float FADE_DURATION = 0.5f, ANIMATION_DURATION = 1;
+
+    // Internals
     private CanvasGroup canvasGroup, gamePanelGroup;
     private SpriteRenderer playerRenderer;
-
     private List<SpawnedController.Rank> RANKS;
-
     private long score, sp;
     private int hits, misses, accuracy;
-
     private AudioSource source;
-    public AudioMixerGroup mixer;
-    public AudioClip ticking, rankShowUp;
-
-    private const float FADE_DURATION = 0.5f, ANIMATION_DURATION = 1;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Construct the list
         RANKS = new List<SpawnedController.Rank>{
             new SpawnedController.Rank(0, rankD),
             new SpawnedController.Rank(50, rankC),
@@ -40,6 +52,7 @@ public class EndScreen : MonoBehaviour
             new SpawnedController.Rank(95, rankS)
         };
 
+        // Get components
         canvasGroup = panel.GetComponent<CanvasGroup>();
         gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
         playerRenderer = player.GetComponent<SpriteRenderer>();
@@ -50,9 +63,9 @@ public class EndScreen : MonoBehaviour
         source.outputAudioMixerGroup = mixer;
         source.loop = true;
         source.clip = ticking;
-        //Show(100, 100, 50, 99, 1);
     }
 
+    // Shows the panel
     public void Show(long score, int hits, int misses, int accuracy, long sp) {
         // Deactivate ranks
         foreach (SpawnedController.Rank rank in RANKS)
@@ -70,11 +83,13 @@ public class EndScreen : MonoBehaviour
         StartCoroutine(Fade(true));
     }
 
+    // Hides the panel
     public void Hide() {
         // Animate
         StartCoroutine(Fade(false));
     }
 
+    // Fades the panel (and other game components)
     private IEnumerator Fade(bool fadeIn) {
         // Speed
         float speed = 1f / FADE_DURATION;
@@ -98,6 +113,7 @@ public class EndScreen : MonoBehaviour
             panel.SetActive(false);
     }
 
+    // Animates the analytics
     private IEnumerator Animate() {
         // Speed
         float speed = 1.0f / ANIMATION_DURATION;
@@ -123,6 +139,7 @@ public class EndScreen : MonoBehaviour
         Invoke("ActivateRank", 0.5F);
     }
 
+    // Activates the correct rank
     private void ActivateRank() {
         // Index
         int rankIndex = 0;
