@@ -141,6 +141,8 @@ public class SpawnedController : MonoBehaviour
     public string songName, songAuthor;
     public int songDifficulty;
 
+    private Animator playerAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -158,10 +160,11 @@ public class SpawnedController : MonoBehaviour
 
         rankIndex = RANKS.Count - 1;
 
-        playerWidth = GameObject.Find("Player").GetComponent<Renderer>().bounds.size.x / 4;
+        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         endScreen = GetComponent<EndScreen>();
         failScreen = GetComponent<FailScreen>();
         pausePanel = GetComponent<PausePanel>();
+        playerAnimator = player.GetComponent<Animator>();
         // Create new data
         sectors = new Dictionary<Sector, SectorData>();
         // Iterate
@@ -617,6 +620,7 @@ public class SpawnedController : MonoBehaviour
                     // Play SFX
                     if (press) {
                         SFXPlayer.Play(SFXPlayer.EffectType.DRUM_HIT);
+                        playerAnimator.Play("Player", -1, 0F);
                     }
                     // Set text color
                     text.color = score == 300 ? SCORE_COLOR_GOOD : score == 200 ? SCORE_COLOR_AVERAGE : SCORE_COLOR_BAD;
