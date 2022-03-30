@@ -38,11 +38,11 @@ public class Prop : MonoBehaviour
         maxPoints = length * 1000;
 
         int rotation = (int) gameObject.transform.rotation.eulerAngles.z;
-        if (rotation == 315)
+        if (rotation == 135)
             sector = Sector.NORTH_EAST;
         else if (rotation == 45)
             sector = Sector.SOUTH_EAST;
-        else if (rotation == 135)
+        else if (rotation == 315)
             sector = Sector.SOUTH_WEST;
         else
             sector = Sector.NORTH_WEST;

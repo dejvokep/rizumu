@@ -33,8 +33,6 @@ public class SpawnedController : MonoBehaviour
     }
 
     public static string songID = "Space Loop-3e8c4c00-0614-40ec-8a7b-45753dc972ef";
-    public static string playerSkin = "eye";
-    public static string tileSkin = "";
 
     // Move speed
     public static float MOVE_SPEED = 2;
@@ -142,6 +140,7 @@ public class SpawnedController : MonoBehaviour
     public int songDifficulty;
 
     private Animator playerAnimator;
+    private Sprite noteTexture;
 
     // Start is called before the first frame update
     void Start()
@@ -161,6 +160,7 @@ public class SpawnedController : MonoBehaviour
         rankIndex = RANKS.Count - 1;
 
         playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
+        print(playerWidth);
         endScreen = GetComponent<EndScreen>();
         failScreen = GetComponent<FailScreen>();
         pausePanel = GetComponent<PausePanel>();
@@ -195,7 +195,18 @@ public class SpawnedController : MonoBehaviour
         // Calculate y offset (vertical)
         yOffset = height;
 
-        player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/Player/" + playerSkin);
+        string activeSkinsPath = Path.Combine(Application.persistentDataPath, "activeSkins.json");
+        
+        // Json base
+        Dictionary<string, string> activeSkins;
+        // If exists
+        if (File.Exists(activeSkinsPath)) {
+            activeSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(activeSkinsPath);
+        } else {
+            activeSkins = new Dictionary<string, string>();
+        }
+        player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/player_skins/" + (activeSkins.TryGetValue("player_skin", out var v1) ? v1 : "Default"));
+        noteTexture = Resources.Load<Sprite>("Skins/note_skins/" + (activeSkins.TryGetValue("note_skin", out var v2) ? v2 : "Default"));
         //
         // AUDIO
         //
@@ -363,12 +374,13 @@ public class SpawnedController : MonoBehaviour
 
 
         // Instantiate
-        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID)));
+        GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, 135 - 90*sectorID)));
         // Change size
         //spawned.transform.localScale = new Vector2(1, length);
         // Set sorting order in layer
         spawned.GetComponent<SpriteRenderer>().sortingOrder = sectorID+1;
         spawned.GetComponent<SpriteRenderer>().size = new Vector2(1, length);
+        spawned.GetComponent<SpriteRenderer>().sprite = noteTexture;
         
         // Prop component
         Prop prop = spawned.GetComponent<Prop>();
