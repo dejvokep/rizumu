@@ -32,35 +32,6 @@ public class MapInfoProcessor : MonoBehaviour
             // mapImage Setup
             mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
             mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
-
-            // float viewAspectRation = (imageToScreen.x*Screen.currentResolution.width)/(imageToScreen.y*Screen.currentResolution.height);
-            // if (ScrollPopulator.mapsSpritesAspectRatio[mapID] >= viewAspectRation)
-            // {
-            //     mapImage.GetComponent<AspectRatioFitter>().aspectMode = UnityEngine.UI.AspectRatioFitter.AspectMode.HeightControlsWidth;
-            //     mapImage.GetComponent<RectTransform>().sizeDelta = new Vector2(0, imageToScreen.y * Screen.currentResolution.height);
-            // }
-            // else
-            // {
-            //     mapImage.GetComponent<AspectRatioFitter>().aspectMode = UnityEngine.UI.AspectRatioFitter.AspectMode.WidthControlsHeight;
-            //     mapImage.GetComponent<RectTransform>().sizeDelta = new Vector2(imageToScreen.x * Screen.currentResolution.width, 0);
-            // }
-
-            // Populate Labels
-            // mapNameSongAuthorLabel.text = $"{ScrollPopulator.mapsInfo[mapID].song_name} - {ScrollPopulator.mapsInfo[mapID].song_author}";
-
-            // mapDifficultyLabel.text = $"Difficulty: {ScrollPopulator.mapsInfo[mapID].difficulty}★";
-
-            
-            // userHighscoreLabel.text = "Highscore: 0";
-            // if (UserDataReader.userData != null)
-            //     try
-            //     {
-            //         userHighscoreLabel.text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
-            //     }
-            //     catch (Exception)
-            //     {
-                    
-            //     }
         }
         else if (ScrollPopulator.mapsID[0] != null && ScrollPopulator.mapsID[0] != "" && mapID == null)
             ScrollUnitButton.selectedMapID = ScrollPopulator.mapsID[0];

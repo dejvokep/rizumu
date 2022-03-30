@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 5437824558137655592}
   m_Layer: 5
   m_Name: MapUnit
-  m_TagString: Untagged
+  m_TagString: menuMapUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 1
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -339,7 +339,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5234635400174826839}
         m_TargetAssemblyTypeName: ScrollUnitButton, Assembly-CSharp
-        m_MethodName: Select
+        m_MethodName: setActivedCell
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
