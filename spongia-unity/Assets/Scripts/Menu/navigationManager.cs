@@ -129,13 +129,14 @@ public class navigationManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isEscapeEnabled && currentMenu != mainMenu)
+            if (currentMenu == mainMenu)
+                return;
+
+            else if (isEscapeEnabled)
             {
                 transitionMenu(mainMenu);
                 sfxPlayer.ClickBack();
-            }            
-            else if (currentMenu == mainMenu)
-                throw new System.NotImplementedException();  // Prompt game exit
+            }
             else
             {
                 if (currentMenu == settingsMenu)
@@ -156,5 +157,10 @@ public class navigationManager : MonoBehaviour
 
         lastMenu = currentMenu;
         currentMenu = menuWindow;
+    }
+
+    public GameObject getCurrentMenu()
+    {
+        return currentMenu;
     }
 }
