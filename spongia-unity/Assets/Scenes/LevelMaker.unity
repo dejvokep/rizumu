@@ -997,11 +997,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1033,11 +1033,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 56.5
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50
+      value: 56.5
       objectReference: {fileID: 0}
     - target: {fileID: 8342601783483387238, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1071,6 +1071,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LoadMainMenu, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 8342601783483387240, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 31973d73286bfab4d8508a71bb264040, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0168c33df296d3944a9425eb99bfd31b, type: 3}
 --- !u!1 &241856108 stripped
