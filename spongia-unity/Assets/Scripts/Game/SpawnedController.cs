@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using static Sector;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 public class SpawnedController : MonoBehaviour
 {
@@ -198,15 +199,23 @@ public class SpawnedController : MonoBehaviour
         string activeSkinsPath = Path.Combine(Application.persistentDataPath, "activeSkins.json");
         
         // Json base
-        Dictionary<string, string> activeSkins;
-        // If exists
-        if (File.Exists(activeSkinsPath)) {
-            activeSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(activeSkinsPath);
-        } else {
-            activeSkins = new Dictionary<string, string>();
-        }
+        Dictionary<string, string> activeSkins = File.Exists(activeSkinsPath) ? JsonConvert.DeserializeObject<Dictionary<string, string>>(activeSkinsPath) : new Dictionary<string, string>();
         player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/player_skins/" + (activeSkins.TryGetValue("player_skin", out var v1) ? v1 : "Default"));
         noteTexture = Resources.Load<Sprite>("Skins/note_skins/" + (activeSkins.TryGetValue("note_skin", out var v2) ? v2 : "Default"));
+
+        
+        //Dictionary<string, object> particleInfo = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(Resources.Load<TextAsset>("Skins/particle_skins/data").text)[activeSkins.TryGetValue("particle_skin", out var v3) ? v3 : "Bluelagoo"];
+        string[] particleColors = (activeSkins.TryGetValue("particle_skin", out var v3) ? v3 : "16777215,16777215").Split(',');
+        ParticleSystem.MinMaxGradient gradient = new ParticleSystem.MinMaxGradient(ParseColor(Int32.Parse(particleColors[0])), ParseColor(Int32.Parse(particleColors[1])));
+        
+        var settings = particlesNE.main;
+        settings.startColor = gradient;
+        settings = particlesSE.main;
+        settings.startColor = gradient;
+        settings = particlesSW.main;
+        settings.startColor = gradient;
+        settings = particlesNW.main;
+        settings.startColor = gradient;
         //
         // AUDIO
         //
@@ -217,6 +226,10 @@ public class SpawnedController : MonoBehaviour
         // Load handler
         musicHandler = new MusicHandler(this);
         musicHandler.Load();
+    }
+
+    private Color32 ParseColor(int color) {
+        return new Color32((byte) ((color >> 16) & 255), (byte) ((color >> 8) & 255), (byte) (color & 255), 255);
     }
 
     public void ContinueInit() {
