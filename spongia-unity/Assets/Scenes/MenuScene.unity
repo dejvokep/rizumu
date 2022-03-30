@@ -1066,8 +1066,8 @@ MonoBehaviour:
   transitionSpeed: 7
   transitionFaze: -1
   transitionProgress: 0
-  defaultMenu: {fileID: 1618742575}
-  limitedMode: 1
+  defaultMenu: {fileID: 0}
+  limitedMode: 0
 --- !u!1 &141281875
 GameObject:
   m_ObjectHideFlags: 0
