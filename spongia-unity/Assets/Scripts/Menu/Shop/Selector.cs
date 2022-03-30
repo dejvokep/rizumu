@@ -7,8 +7,9 @@ using System.IO;
 public class Selector : MonoBehaviour
 {
     public Button playerPreview;
-
+    public GameObject previewScroll;
     public string skinType;
+    public GameObject particlePreview;
     // Start is called before the first frame update
     public void Select()
     {
@@ -33,15 +34,51 @@ public class Selector : MonoBehaviour
                     
                 }
             }
-            foreach (Transform child in transform)
-            {
-                if (child.name == "Button")
-                {
-                    playerPreview.GetComponent<Image>().sprite = child.gameObject.GetComponent<Button>().image.sprite;
-                }
-                
 
+            if (!(skinType == "particle_skins"))
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.name == "Button")
+                    {
+                        playerPreview.GetComponent<Image>().sprite = child.gameObject.GetComponent<Button>().image.sprite;
+                    }
+                }
             }
+
+            if(!(previewScroll == null))
+            {
+                foreach (Transform child in previewScroll.transform)
+                {
+                    foreach (Transform smallchild in child)
+                    {
+                        if (smallchild.name == "Button")
+                        {
+                            smallchild.GetComponent<Image>().sprite = playerPreview.GetComponent<Image>().sprite;
+                        }
+                    }
+                }
+            }
+
+            if (skinType == "particle_skins")
+            {
+                
+                foreach (Transform child in particlePreview.transform)
+                {
+                    foreach (Transform smallchild in transform)
+                    {
+                        if (smallchild.name == "Particles")
+                        {
+                            ParticleSystem.MinMaxGradient gradient = smallchild.GetChild(0).GetComponent<ParticleSystem>().main.startColor;
+                            var settings = child.transform.GetComponent<ParticleSystem>().main;
+                            settings.startColor = gradient;
+                        }
+                    }
+                    
+                    
+                }
+            }
+
             transform.gameObject.tag = "Selected";
             Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
             Dictionary<string, bool> skinDetails = skinDetails2[skinType];

@@ -9,6 +9,7 @@ public class ActivateNote : MonoBehaviour
     public GameObject GameObject;
     public GameObject Scroll;
     public GameObject PlayerScroll;
+    public GameObject ParticleScroll;
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,6 +50,7 @@ public class ActivateNote : MonoBehaviour
                 }
             }
             PlayerScroll.SetActive(false);
+            ParticleScroll.SetActive(false);
             GameObject.SetActive(true); 
         }
     }
