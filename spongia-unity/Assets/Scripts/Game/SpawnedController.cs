@@ -328,10 +328,10 @@ public class SpawnedController : MonoBehaviour
             audioSource.Play();
     }
 
-    public void Quit() {
-        // Load other scene
-        SceneManager.LoadScene("MenuScene");
-    }
+    // public void Quit() {
+    //     // Load other scene
+    //     SceneManager.LoadScene("MenuScene");
+    // }
 
     private void ShowEndScreen() {
         ResetParticles();
