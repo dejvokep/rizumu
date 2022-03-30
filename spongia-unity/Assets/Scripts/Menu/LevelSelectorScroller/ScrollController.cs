@@ -6,21 +6,27 @@ using UnityEngine.EventSystems;
 public class ScrollController : MonoBehaviour
 {
     public SFXPlayer sfxPlayer;
+    public MapInfoProcessor mapInfoProcessor;
+
     public float cellHeight = 100f;
 
     private int selectionIndex;
     private int maxIndex;
 
     private float deltaScroll;
-    private float timeScrolling;
     public float scrollDelay = 2f;
     [SerializeField]
     private float currentScrollSpeed;
-    public float maxScrollSpeed = 7f;
-    public float mouseScrollScale = 50f;
-    public float keyboardScrollScale = 7f;
+    public float maxScrollSpeed = 20f;
+    public float keyboardScrollScale = 10f;
 
     private bool isActive;
+
+    private bool _isScrolling = false;
+
+    private float lastScrolling = 0f;
+
+    public float fadeTimeOut = 1f;
 
 
     private void checkIfActive()
@@ -107,27 +113,37 @@ public class ScrollController : MonoBehaviour
             if (Mathf.Abs(currentScrollSpeed) > maxScrollSpeed)
                 currentScrollSpeed = Mathf.Sign(currentScrollSpeed)*maxScrollSpeed;
             
-            deltaScroll += Mathf.Abs(currentScrollSpeed)*(Mathf.Abs(currentScrollSpeed) - scrollDelay)*Time.deltaTime;
-
-            // if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)))
-            //     sfxPlayer.Hover();
+            deltaScroll += Mathf.Sign(currentScrollSpeed)*(Mathf.Abs(currentScrollSpeed) - scrollDelay)*Time.deltaTime;
         }
+
+        bool isInteractedWith = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.mouseScrollDelta.y != 0;
+        if (isInteractedWith && _isScrolling == false)
+            fade(false);
+        else if (lastScrolling > fadeTimeOut)
+            fade(true);
         
+        _isScrolling = isInteractedWith;
+        if (!isInteractedWith)
+            lastScrolling += Time.deltaTime;
+        else
+            lastScrolling = 0f;
 
-        // if(Input.mouseScrollDelta.y != 0)
-        //     sfxPlayer.Hover();
-
-
-        deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
 
         if(Mathf.Abs(deltaScroll) >= maxIndex/2)
             deltaScroll = Mathf.Sign(currentScrollSpeed)*Mathf.CeilToInt(maxIndex/2);
 
-
-        if (Mathf.Abs(deltaScroll) >= 1)
+        if((int)Input.mouseScrollDelta.y != 0)
         {
             sfxPlayer.Hover();
-            scroll(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*(int)Mathf.Sign(deltaScroll));
+            scroll(Mathf.Abs(Input.mouseScrollDelta.y) < maxIndex/2 ? (int)Input.mouseScrollDelta.y : (int)(maxIndex/2));
+            setSelectedMapID();
+        }
+        else if (Mathf.Abs(deltaScroll) >= 1)
+        {
+            sfxPlayer.Hover();
+            print(deltaScroll);
+            print((int)(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*Mathf.Sign(deltaScroll)));
+            scroll((int)(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*Mathf.Sign(deltaScroll)));
             setSelectedMapID();
             deltaScroll = 0f;
         }
@@ -158,5 +174,21 @@ public class ScrollController : MonoBehaviour
         scroll(-(cellIndex - selectionIndex));
 
         setSelectedMapID();
+
+        _isScrolling = true;
+    }
+
+
+    public bool isScrolling()
+    {
+        return _isScrolling;
+    }
+
+    private void fade(bool fadeIn)
+    {
+        if (fadeIn)
+            mapInfoProcessor.fadeIn();
+        else
+            mapInfoProcessor.fadeOut();
     }
 }
