@@ -134,15 +134,11 @@ public class ScrollController : MonoBehaviour
 
         if((int)Input.mouseScrollDelta.y != 0)
         {
-            sfxPlayer.Hover();
             scroll(Mathf.Abs(Input.mouseScrollDelta.y) < maxIndex/2 ? (int)Input.mouseScrollDelta.y : (int)(maxIndex/2));
             setSelectedMapID();
         }
         else if (Mathf.Abs(deltaScroll) >= 1)
         {
-            sfxPlayer.Hover();
-            print(deltaScroll);
-            print((int)(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*Mathf.Sign(deltaScroll)));
             scroll((int)(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*Mathf.Sign(deltaScroll)));
             setSelectedMapID();
             deltaScroll = 0f;
@@ -158,8 +154,9 @@ public class ScrollController : MonoBehaviour
             else
                 transform.GetChild(0).SetAsLastSibling();
         }
-
         EventSystem.current.SetSelectedGameObject(transform.GetChild(selectionIndex).gameObject);
+
+        sfxPlayer.Hover();
     }
 
     private void setSelectedMapID()
