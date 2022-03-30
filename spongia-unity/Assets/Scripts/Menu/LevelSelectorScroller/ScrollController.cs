@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ScrollController : MonoBehaviour
 {
-    public menuSoundManager sfxManager;
+    public SFXPlayer sfxPlayer;
     public float cellHeight = 100f;
 
     private int selectionIndex;
@@ -88,7 +88,7 @@ public class ScrollController : MonoBehaviour
             deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
 
         if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)) || Input.mouseScrollDelta.y != 0)
-            sfxManager.playClickSound();
+            sfxPlayer.ClickContinue();
 
 
         if (Mathf.Abs(Input.mouseScrollDelta.y) == 1)
