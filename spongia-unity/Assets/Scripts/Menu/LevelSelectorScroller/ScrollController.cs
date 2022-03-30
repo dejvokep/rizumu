@@ -54,7 +54,10 @@ public class ScrollController : MonoBehaviour
             transform.localPosition = new Vector3(0, cellHeight, 0);
         }
         else
+        {
             selectionIndex = (transform.childCount - 1) / 2;
+            scroll(-1);
+        }
         
 
         scroll(-selectionIndex);  // Select first map
