@@ -12,8 +12,13 @@ public class ScrollController : MonoBehaviour
     private int maxIndex;
 
     private float deltaScroll;
+    private float timeScrolling;
+    public float scrollDelay = 2f;
+    [SerializeField]
+    private float currentScrollSpeed;
+    public float maxScrollSpeed = 7f;
     public float mouseScrollScale = 50f;
-    public float keyboardScrollScale = 10f;
+    public float keyboardScrollScale = 7f;
 
     private bool isActive;
 
@@ -69,36 +74,59 @@ public class ScrollController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
             transform.GetChild(selectionIndex).GetComponent<ScrollUnitButton>().Select();
 
+        
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            currentScrollSpeed = 0;
+        }
+
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             scroll(1);
             setSelectedMapID();
+            currentScrollSpeed = 0;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             scroll(-1);
             setSelectedMapID();
+            currentScrollSpeed = 0;
         }
         else if (Input.GetKey(KeyCode.UpArrow))
-            deltaScroll += Time.deltaTime*keyboardScrollScale;
-        else if (Input.GetKey(KeyCode.DownArrow))
-            deltaScroll -= Time.deltaTime*keyboardScrollScale;
-        else if (Input.mouseScrollDelta.y != 0)
-            deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
-
-        if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)) || Input.mouseScrollDelta.y != 0)
-            sfxPlayer.Hover();
-
-
-        if (Mathf.Abs(Input.mouseScrollDelta.y) == 1)
         {
-            scroll((int)Mathf.Sign(deltaScroll));
-            setSelectedMapID();
-            deltaScroll = 0;
+            currentScrollSpeed += keyboardScrollScale*Time.deltaTime;
         }
-        else if (deltaScroll >= 1 || deltaScroll <= -1)
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
+            currentScrollSpeed -= keyboardScrollScale*Time.deltaTime;
+        }
+
+        if (currentScrollSpeed != 0 && Mathf.Abs(currentScrollSpeed) > scrollDelay)
+        {
+            if (Mathf.Abs(currentScrollSpeed) > maxScrollSpeed)
+                currentScrollSpeed = Mathf.Sign(currentScrollSpeed)*maxScrollSpeed;
+            
+            deltaScroll += Mathf.Abs(currentScrollSpeed)*(Mathf.Abs(currentScrollSpeed) - scrollDelay)*Time.deltaTime;
+
+            // if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)))
+            //     sfxPlayer.Hover();
+        }
+        
+
+        // if(Input.mouseScrollDelta.y != 0)
+        //     sfxPlayer.Hover();
+
+
+        deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
+
+        if(Mathf.Abs(deltaScroll) >= maxIndex/2)
+            deltaScroll = Mathf.Sign(currentScrollSpeed)*Mathf.CeilToInt(maxIndex/2);
+
+
+        if (Mathf.Abs(deltaScroll) >= 1)
+        {
+            sfxPlayer.Hover();
             scroll(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*(int)Mathf.Sign(deltaScroll));
             setSelectedMapID();
             deltaScroll = 0f;

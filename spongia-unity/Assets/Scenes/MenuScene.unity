@@ -4468,8 +4468,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfxPlayer: {fileID: 162825376}
   cellHeight: 100
+  scrollDelay: 2
+  currentScrollSpeed: 0
+  maxScrollSpeed: 7
   mouseScrollScale: 50
-  keyboardScrollScale: 10
+  keyboardScrollScale: 7
 --- !u!1 &1014418853
 GameObject:
   m_ObjectHideFlags: 0
