@@ -30,8 +30,10 @@ public class Prop : MonoBehaviour
     public void Init() {
         player = GameObject.Find("Player");
         // Tone length
-        length = gameObject.transform.localScale.y;
-        gameObject.transform.localScale = new Vector2(1, length * diagonalSpeed);
+        renderer = gameObject.GetComponent<SpriteRenderer>();
+        length = renderer.size.y;
+        //gameObject.transform.localScale = new Vector2(1, length * diagonalSpeed);
+        renderer.size = new Vector2(1, length * diagonalSpeed);
         // Max points
         maxPoints = length * 1000;
 
@@ -45,7 +47,6 @@ public class Prop : MonoBehaviour
         else
             sector = Sector.NORTH_WEST;
 
-        renderer = gameObject.GetComponent<SpriteRenderer>();
         // Player width
         playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         // Set player bounds

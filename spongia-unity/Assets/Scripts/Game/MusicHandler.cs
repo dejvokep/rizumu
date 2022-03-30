@@ -76,7 +76,7 @@ public class MusicHandler
             float length = propData[2];
 
             // Full size of the prop (1/2)
-            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
             // Time where the prop will touch the player - how long it will take from the spawn position to that position
             propData.Add(propData[0] - ((float) offset - controller.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO));
             //Debug.Log("Assigned spawn time=" + (propData[0] - ((float) offset - c.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO)));
@@ -90,6 +90,13 @@ public class MusicHandler
         mappings.Sort(delegate(List<float> x, List<float> y){
             return x[4].CompareTo(y[4]);
         });
+
+        string info = "";
+        foreach (List<float> data in mappings)
+            info += String.Join(",", data) + "; ";
+
+        Debug.Log(info);
+        Debug.Log(firstSpawn);
 
         // If bundled
         if (bundled) {

@@ -364,7 +364,7 @@ public class SpawnedController : MonoBehaviour
         int sectorID = (int) sector;
         
         // Full size of the prop (1/2)
-        float xSize = (float) (length / 2 * diagonalSpeed) + ((float) (prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+        float xSize = (float) (length / 2 * diagonalSpeed) + ((float) (prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
         // Positions (NOTE : ((float) offset + (length / 2 / Prop.SQRT_OF_TWO)))
         double x = xOffset + xSize, y = yOffset + xSize;
 
@@ -377,9 +377,10 @@ public class SpawnedController : MonoBehaviour
         // Instantiate
         GameObject spawned = (GameObject) Instantiate(prefab, new Vector3((float) x, (float) y), Quaternion.Euler(new Vector3(0, 0, -45 + 90*sectorID)));
         // Change size
-        spawned.transform.localScale = new Vector2(1, length);
+        //spawned.transform.localScale = new Vector2(1, length);
         // Set sorting order in layer
         spawned.GetComponent<SpriteRenderer>().sortingOrder = sectorID+1;
+        spawned.GetComponent<SpriteRenderer>().size = new Vector2(1, length);
         
         // Prop component
         Prop prop = spawned.GetComponent<Prop>();
@@ -502,14 +503,15 @@ public class SpawnedController : MonoBehaviour
             return;
 
         // If finished playing
-        if (!audioSource.isPlaying && audioSource.time == 0 && startedPlaying) {
+        if (!audioSource.isPlaying /*&& audioSource.time == 0*/ && startedPlaying) {
             // Finished
             finishedPlaying = true;
             // Update the bar
             progressBar.fillAmount = 1;
+            print("saving");
             // Save
             Save();
-
+            print("showing");
             // Show end screen after 1 second
             Invoke("ShowEndScreen", 1);
         }
