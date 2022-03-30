@@ -7,40 +7,10 @@ using System.IO;
 using UnityEngine.UI;
 public class noteBuyer : MonoBehaviour
 {
-    public Text NotEnoughMoney;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    public Text NoMoney;
     public Text textObj;
     // Update is called once per frame
-    public IEnumerator FadeTextToFullAlpha(float t, Text i)
-    {
-        i.color = new Color(i.color.r, i.color.g, i.color.b, 0);
-        while (i.color.a < 1.0f)
-        {
-            i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a + (Time.deltaTime / t));
-            yield return null;
-        }
-    }
-    public IEnumerator FadeTextToZeroAlpha(float t, Text i)
-    {
-        i.color = new Color(i.color.r, i.color.g, i.color.b, 1);
-        while (i.color.a > 0.0f)
-        {
-            i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (Time.deltaTime / t));
-            yield return null;
-        }
-    }
-    IEnumerator ShowMessage ()
-    {
-        StartCoroutine(FadeTextToFullAlpha(1f, NotEnoughMoney));
-        yield return new WaitForSeconds(3);
-        StartCoroutine(FadeTextToZeroAlpha(1f, NotEnoughMoney));
-
-    }
+    
     public void Buy()
     {
         if(transform.tag=="Selected")
@@ -64,7 +34,7 @@ public class noteBuyer : MonoBehaviour
 
                 if (Cost > Int32.Parse(data["sp"].ToString()))
                 {
-                    StartCoroutine(ShowMessage());
+                    StartCoroutine(transform.GetComponent<NotEnoughMoney>().ShowMessage(NoMoney));
                     return;
                     
                 }

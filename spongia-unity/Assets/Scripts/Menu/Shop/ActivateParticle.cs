@@ -66,6 +66,7 @@ public class ActivateParticle : MonoBehaviour
                 {
                     Scroll.GetComponent<ShopScrollController>().setActivedCell(child.gameObject);
                 }
+                
             }
             PlayerScroll.SetActive(false);
             NoteScroll.SetActive(false);

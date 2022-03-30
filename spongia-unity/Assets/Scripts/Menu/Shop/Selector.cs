@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -86,6 +87,22 @@ public class Selector : MonoBehaviour
             {
                 Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
                 equipedSkins[skinType] = transform.name;
+                if (skinType == "particle_skins")
+                {
+                    Particles[][] particlesFolder = new[] {Resources.LoadAll<Particles>("Skins/particle_skins")};
+                    foreach (Particles[] particle in particlesFolder)
+                    {
+                        foreach (Particles particleData in particle)
+                        {
+                            if (particleData.name == transform.name)
+                            {
+                                equipedSkins["particle_skin_color"] =
+                                    particleData.collor1 + "," + particleData.collor2;
+                            }
+                        }
+                    }
+                }
+                
                 string json = JsonConvert.SerializeObject(equipedSkins, Formatting.Indented);
                 File.WriteAllText(Application.persistentDataPath+"/activeSkins.json", json); 
             }

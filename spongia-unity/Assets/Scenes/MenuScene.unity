@@ -1598,6 +1598,7 @@ GameObject:
   - component: {fileID: 190730338}
   - component: {fileID: 190730337}
   - component: {fileID: 190730336}
+  - component: {fileID: 190730341}
   - component: {fileID: 190730340}
   - component: {fileID: 190730339}
   m_Layer: 5
@@ -1749,12 +1750,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190730334}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a326e33270ecd1e4899ca2df9d58997e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skinType: particle_skins
+--- !u!114 &190730341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190730334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2257646f638c97241a478d602da84ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &217237248
 GameObject:
   m_ObjectHideFlags: 0
@@ -24835,7 +24848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5d239d0c9d7f64392b598a61cb331d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NotEnoughMoney: {fileID: 1112943237}
+  NoMoney: {fileID: 1112943237}
   textObj: {fileID: 274639081}
 --- !u!114 &905352754
 MonoBehaviour:
@@ -67434,8 +67447,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5a2ae04f87eb847aa9881591a185e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NotEnoughMoney: {fileID: 1112943237}
+  MessageCaller: {fileID: 0}
   textObj: {fileID: 274639081}
+  NoMoney: {fileID: 1112943237}
 --- !u!1 &1803061557
 GameObject:
   m_ObjectHideFlags: 0
@@ -88016,7 +88030,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5e054dd4e47624bb086ea6fd602716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NotEnoughMoney: {fileID: 1112943237}
+  NoMoney: {fileID: 1112943237}
+  MessageCaller: {fileID: 0}
   textObj: {fileID: 274639081}
 --- !u!114 &2117925415
 MonoBehaviour:
