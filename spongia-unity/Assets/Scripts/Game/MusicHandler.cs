@@ -91,12 +91,24 @@ public class MusicHandler
             return x[4].CompareTo(y[4]);
         });
 
-        string info = "";
-        foreach (List<float> data in mappings)
-            info += String.Join(",", data) + "; ";
+        string songDataString;
+        // If bundled
+        if (bundled) {
+            songDataString = Resources.Load<TextAsset>("maps/" + SpawnedController.songID + "/info").ToString();
+        } else {
+            // Create reader
+            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
+            // Read
+            songDataString = reader.ReadToEnd();
+            // Close
+            reader.Close();
+        }
 
-        Debug.Log(info);
-        Debug.Log(firstSpawn);
+        // Load
+        Dictionary<string, object> songData = JsonConvert.DeserializeObject<Dictionary<string, object>>(songDataString);
+        controller.songName = songData["song_name"].ToString();
+        controller.songAuthor = songData["song_author"].ToString();
+        controller.songDifficulty = Int32.Parse(songData["difficulty"].ToString());
 
         // If bundled
         if (bundled) {

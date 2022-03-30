@@ -33,6 +33,9 @@ public class SpawnedController : MonoBehaviour
     }
 
     public static string songID = "Space Loop-3e8c4c00-0614-40ec-8a7b-45753dc972ef";
+    public static string playerSkin = "eye";
+    public static string tileSkin = "";
+
     // Move speed
     public static float MOVE_SPEED = 2;
     public static float DIAGONAL_MOVE_SPEED = MOVE_SPEED * (float) Prop.SQRT_OF_TWO;
@@ -189,6 +192,7 @@ public class SpawnedController : MonoBehaviour
         // Calculate y offset (vertical)
         yOffset = height;
 
+        player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/Player/" + playerSkin);
         //
         // AUDIO
         //
@@ -199,25 +203,6 @@ public class SpawnedController : MonoBehaviour
         // Load handler
         musicHandler = new MusicHandler(this);
         musicHandler.Load();
-
-        string songDataString;
-        // If bundled
-        if (musicHandler.bundled) {
-            songDataString = Resources.Load<TextAsset>("maps/" + songID + "/info").ToString();
-        } else {
-            // Create reader
-            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
-            // Read
-            songDataString = reader.ReadToEnd();
-            // Close
-            reader.Close();
-        }
-
-        // Load
-        Dictionary<string, object> songData = JsonConvert.DeserializeObject<Dictionary<string, object>>(songDataString);
-        songName = songData["song_name"].ToString();
-        songAuthor = songData["song_author"].ToString();
-        songDifficulty = Int32.Parse(songData["difficulty"].ToString());
     }
 
     public void ContinueInit() {
