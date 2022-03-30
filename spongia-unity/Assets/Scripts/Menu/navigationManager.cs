@@ -129,11 +129,11 @@ public class navigationManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Escape) && isEscapeEnabled && currentMenu != mainMenu)
         {
-            transitionMenu(mainMenu);
-            sfxPlayer.ClickBack();
-
             if (currentMenu == settingsMenu)
                 this.GetComponent<SettingsMenu>().loadSavedSettings();
+
+            transitionMenu(mainMenu);
+            sfxPlayer.ClickBack();
         }
     }
     
