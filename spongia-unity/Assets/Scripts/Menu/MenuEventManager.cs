@@ -13,6 +13,7 @@ public class MenuEventManager : MonoBehaviour
     public static void triggerToggleEscape()
     {
         toggleEscapeEvent?.Invoke();
+        print("TOGGLE ESCAPE");
     }
 
     public static void triggerChangedMenu()

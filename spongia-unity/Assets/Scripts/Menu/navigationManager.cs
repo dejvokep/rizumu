@@ -127,23 +127,13 @@ public class navigationManager : MonoBehaviour
         }
 
 
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.Escape) && isEscapeEnabled && currentMenu != mainMenu)
         {
-            if (currentMenu == mainMenu)
-                return;
+            transitionMenu(mainMenu);
+            sfxPlayer.ClickBack();
 
-            else if (isEscapeEnabled)
-            {
-                transitionMenu(mainMenu);
-                sfxPlayer.ClickBack();
-            }
-            else
-            {
-                if (currentMenu == settingsMenu)
-                    this.GetComponent<SettingsMenu>().loadSavedSettings();
-
-                transitionMenu(mainMenu);
-            }
+            if (currentMenu == settingsMenu)
+                this.GetComponent<SettingsMenu>().loadSavedSettings();
         }
     }
     
@@ -151,6 +141,9 @@ public class navigationManager : MonoBehaviour
     {
         if (transitionFaze != -1)
             return;
+        
+        if (mainMenu.GetComponent<ExitGame>().isEnabled())
+            mainMenu.GetComponent<ExitGame>().toggleEsacpeEnabled();
         
         transitionFaze = 0;
         transitionProgress = 0f;
@@ -162,5 +155,10 @@ public class navigationManager : MonoBehaviour
     public GameObject getCurrentMenu()
     {
         return currentMenu;
+    }
+
+    public bool isTransitioning()
+    {
+        return transitionFaze != -1;
     }
 }

@@ -18,14 +18,17 @@ public class ExitGame : MonoBehaviour
     {
         MenuEventManager.triggerToggleEscape();
         isPopUpEnabled = !isPopUpEnabled;
+        quitPopUp.SetActive(isPopUpEnabled);
+    }
+
+    public bool isEnabled()
+    {
+        return isPopUpEnabled;
     }
 
     void Update()
     {
-        if (navigation.getCurrentMenu() == gameObject && Input.GetKeyDown(KeyCode.Escape))
-        {
-            quitPopUp.SetActive(!isPopUpEnabled);
+        if (navigation.getCurrentMenu() == gameObject && Input.GetKeyDown(KeyCode.Escape) && !navigation.isTransitioning())
             toggleEsacpeEnabled();
-        }
     }
 }
