@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ScrollController : MonoBehaviour
 {
+    public menuSoundManager sfxManager;
     public float cellHeight = 100f;
 
     private int selectionIndex;
@@ -44,7 +45,11 @@ public class ScrollController : MonoBehaviour
         else
             selectionIndex = (transform.childCount - 1) / 2;
         
-        EventSystem.current.SetSelectedGameObject(transform.GetChild(selectionIndex).gameObject);
+
+        scroll(-selectionIndex);  // Select first map
+
+        if (ScrollUnitButton.selectedMapID != transform.GetChild(selectionIndex).name)
+            setSelectedMapID();
 
         checkIfActive();
     }
@@ -66,9 +71,15 @@ public class ScrollController : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             scroll(1);
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            setSelectedMapID();
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             scroll(-1);
+            setSelectedMapID();
+        }
         else if (Input.GetKey(KeyCode.UpArrow))
             deltaScroll += Time.deltaTime*keyboardScrollScale;
         else if (Input.GetKey(KeyCode.DownArrow))
@@ -76,15 +87,20 @@ public class ScrollController : MonoBehaviour
         else if (Input.mouseScrollDelta.y != 0)
             deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
 
+        if((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.DownArrow)) || Input.mouseScrollDelta.y != 0)
+            sfxManager.playClickSound();
+
 
         if (Mathf.Abs(Input.mouseScrollDelta.y) == 1)
         {
             scroll((int)Mathf.Sign(deltaScroll));
+            setSelectedMapID();
             deltaScroll = 0;
         }
         else if (deltaScroll >= 1 || deltaScroll <= -1)
         {
             scroll(Mathf.FloorToInt(Mathf.Abs(deltaScroll))*(int)Mathf.Sign(deltaScroll));
+            setSelectedMapID();
             deltaScroll = 0f;
         }
     }
@@ -99,10 +115,12 @@ public class ScrollController : MonoBehaviour
                 transform.GetChild(0).SetAsLastSibling();
         }
 
-        Transform cellTransform = transform.GetChild(selectionIndex);
+        EventSystem.current.SetSelectedGameObject(transform.GetChild(selectionIndex).gameObject);
+    }
 
-        EventSystem.current.SetSelectedGameObject(cellTransform.gameObject);
-        cellTransform.GetComponent<ScrollUnitButton>().Select();
+    private void setSelectedMapID()
+    {
+        transform.GetChild(selectionIndex).GetComponent<ScrollUnitButton>().Select();
     }
 
     public void setActivedCell(GameObject cell)
@@ -110,5 +128,7 @@ public class ScrollController : MonoBehaviour
         int cellIndex = cell.transform.GetSiblingIndex();
 
         scroll(-(cellIndex - selectionIndex));
+
+        setSelectedMapID();
     }
 }

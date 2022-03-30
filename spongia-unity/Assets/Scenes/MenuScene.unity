@@ -4363,6 +4363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3b529e4e002e947bb87e5fb680112d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfxManager: {fileID: 1740777789}
   cellHeight: 100
   mouseScrollScale: 50
   keyboardScrollScale: 10
