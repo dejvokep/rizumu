@@ -27,6 +27,8 @@ public class SettingsMenu : MonoBehaviour
 
     private GameObject currentKey;
 
+    private int toggleEscapeOnFrame = -1;
+
     
     // Keyboard keys by sector
 
@@ -198,6 +200,11 @@ public class SettingsMenu : MonoBehaviour
 
     void Update()
     {
+        if (toggleEscapeOnFrame > -1)
+            toggleEscapeOnFrame -= 1;
+        if (toggleEscapeOnFrame == 0)
+            MenuEventManager.triggerToggleEscape();
+
         if (Input.GetKeyDown(KeyCode.Escape)) // && current != null)
         {
             if (currentKey != null)
@@ -205,7 +212,7 @@ public class SettingsMenu : MonoBehaviour
                 currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                 currentKey = null;
 
-                MenuEventManager.triggerToggleEscape();
+                toggleEscapeOnFrame = 5;
             }
         }
     }
@@ -233,7 +240,7 @@ public class SettingsMenu : MonoBehaviour
                     currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                     currentKey = null;
 
-                    MenuEventManager.triggerToggleEscape();
+                    toggleEscapeOnFrame = 5;
                 }
             }
         }
@@ -247,7 +254,7 @@ public class SettingsMenu : MonoBehaviour
 
             currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 100, (byte) 100, (byte) 255);
 
-            MenuEventManager.triggerToggleEscape();
+            toggleEscapeOnFrame = 5;
         }
     }
 
