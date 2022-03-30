@@ -5,12 +5,17 @@ using UnityEngine.UI;
 
 public class navigationManager : MonoBehaviour
 {
+    public SFXPlayer sfxPlayer;
+
+    [Space(3)]
     [Header("Menu Windows")]
     public GameObject mainMenu;
     public GameObject levelSelectorMenu;
     public GameObject shopMenu;
     public GameObject settingsMenu;
     public GameObject creditsMenu;
+    public GameObject infoMenu;
+
 
     [Space(3)]
     [Header("Black Image")]
@@ -39,7 +44,7 @@ public class navigationManager : MonoBehaviour
     
     void Awake()
     {
-        GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, creditsMenu};
+        GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, creditsMenu, infoMenu};
 
         if (defaultMenu == null)
             defaultMenu = mainMenu;
@@ -124,11 +129,14 @@ public class navigationManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isEscapeEnabled)
-                return;
-            
             if (currentMenu == mainMenu)
-                throw new System.NotImplementedException();  // Prompt game exit
+                return;
+
+            else if (isEscapeEnabled)
+            {
+                transitionMenu(mainMenu);
+                sfxPlayer.ClickBack();
+            }
             else
             {
                 if (currentMenu == settingsMenu)
@@ -149,5 +157,10 @@ public class navigationManager : MonoBehaviour
 
         lastMenu = currentMenu;
         currentMenu = menuWindow;
+    }
+
+    public GameObject getCurrentMenu()
+    {
+        return currentMenu;
     }
 }

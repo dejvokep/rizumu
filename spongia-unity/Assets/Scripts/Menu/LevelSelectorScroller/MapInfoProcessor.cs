@@ -6,34 +6,41 @@ using UnityEngine.UI;
 
 public class MapInfoProcessor : MonoBehaviour
 {
-    private string mapID;
-
     public GameObject mapImage;
-    [Space]
-    // public Vector2 imageToScreen = new Vector2(0.655f, 0.73f);
-    [Space]
-    public Text mapNameSongAuthorLabel;
-    public Text mapDifficultyLabel;
-    public Text userHighscoreLabel;
 
+    private bool isSelected = false;
 
-    void Start()
-    {
-        
-    }
+    private bool wasScrolling = false;
 
-    // Update is called once per frame
     void Update()
     {
-        if (mapID != ScrollUnitButton.selectedMapID && ScrollUnitButton.selectedMapID != null)
+        if (!isSelected)
         {
-            mapID = ScrollUnitButton.selectedMapID;
+            if (ScrollUnitButton.selectedMapID != null)
+            {
+                string mapID = ScrollUnitButton.selectedMapID;
 
-            // mapImage Setup
-            mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
-            mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
+                mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
+                mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
+
+                isSelected = true;
+            }
+            return;
         }
-        else if (ScrollPopulator.mapsID[0] != null && ScrollPopulator.mapsID[0] != "" && mapID == null)
-            ScrollUnitButton.selectedMapID = ScrollPopulator.mapsID[0];
+    }
+
+    public void fadeIn()
+    {
+        string mapID = ScrollUnitButton.selectedMapID;
+
+        mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
+        mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
+        
+        mapImage.GetComponent<Animator>().SetBool("isScrolling", false);
+    }
+
+    public void fadeOut()
+    {
+        mapImage.GetComponent<Animator>().SetBool("isScrolling", true);
     }
 }
