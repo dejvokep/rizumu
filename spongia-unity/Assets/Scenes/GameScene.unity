@@ -10972,11 +10972,11 @@ MonoBehaviour:
   scoreEarnedPrefab: {fileID: 8632630278154399780, guid: 5fc601436dee68a4e8fae5c3d91f170a, type: 3}
   canvas: {fileID: 1004511207}
   targets: {fileID: 0}
-  rankD: {fileID: 1007886482}
   rankS: {fileID: 977269106}
   rankA: {fileID: 16139496}
   rankB: {fileID: 1180384045}
   rankC: {fileID: 298614080}
+  rankD: {fileID: 1007886482}
   gameBackground: {fileID: 196278956}
   pauseBackground: {fileID: 1462377077}
   gamePanel: {fileID: 1905435015}
@@ -10990,6 +10990,7 @@ MonoBehaviour:
   finishedPlaying: 0
   failedPlaying: 0
   paused: 0
+  initialized: 0
   songName: 
   songAuthor: 
   songDifficulty: 0
@@ -11036,13 +11037,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecb7709210429a4ea4c0cd0fe5397e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankD: {fileID: 1262593333}
+  mixer: {fileID: 24300002, guid: 80831dd6b999d1347aa96304617a6cc5, type: 2}
+  ticking: {fileID: 8300000, guid: bdc2f2e6ade7564428f9b220b6b2eaac, type: 3}
+  rankShowUp: {fileID: 8300000, guid: 24f3ae67ac852a845a9c3211311d6992, type: 3}
   rankS: {fileID: 1020215545}
   rankA: {fileID: 523870481}
   rankB: {fileID: 732317131}
   rankC: {fileID: 1611243542}
-  gamePanel: {fileID: 1905435015}
-  player: {fileID: 776885740}
+  rankD: {fileID: 1262593333}
   scoreText: {fileID: 1324337016}
   hitsText: {fileID: 2084255769}
   missesText: {fileID: 0}
@@ -11050,9 +11052,8 @@ MonoBehaviour:
   spText: {fileID: 60571895}
   panel: {fileID: 1631520662}
   animator: {fileID: 0}
-  mixer: {fileID: 24300002, guid: 80831dd6b999d1347aa96304617a6cc5, type: 2}
-  ticking: {fileID: 8300000, guid: bdc2f2e6ade7564428f9b220b6b2eaac, type: 3}
-  rankShowUp: {fileID: 8300000, guid: 24f3ae67ac852a845a9c3211311d6992, type: 3}
+  gamePanel: {fileID: 1905435015}
+  player: {fileID: 776885740}
 --- !u!114 &554220578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21289,8 +21290,6 @@ GameObject:
   m_Component:
   - component: {fileID: 776885743}
   - component: {fileID: 776885742}
-  - component: {fileID: 776885744}
-  - component: {fileID: 776885741}
   - component: {fileID: 776885745}
   m_Layer: 0
   m_Name: Player
@@ -21299,32 +21298,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &776885741
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776885740}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 13.63, y: 13.63}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 13.63, y: 13.63}
-  m_EdgeRadius: 0
 --- !u!212 &776885742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -21394,18 +21367,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
---- !u!114 &776885744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776885740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 752cdbaf051c9cc4387ddfa2b91053f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &776885745
 Animator:
   serializedVersion: 3
