@@ -940,9 +940,9 @@ RectTransform:
   m_Children:
   - {fileID: 560645118}
   - {fileID: 1014418854}
-  - {fileID: 896126888}
-  - {fileID: 2088124047}
   - {fileID: 1618742576}
+  - {fileID: 2088124047}
+  - {fileID: 896126888}
   - {fileID: 393254315}
   - {fileID: 1520456951}
   m_Father: {fileID: 0}
@@ -1006,8 +1006,8 @@ MonoBehaviour:
   transitionSpeed: 7
   transitionFaze: -1
   transitionProgress: 0
-  defaultMenu: {fileID: 1618742575}
-  limitedMode: 1
+  defaultMenu: {fileID: 896126887}
+  limitedMode: 0
 --- !u!1 &133008916
 GameObject:
   m_ObjectHideFlags: 0
@@ -4133,7 +4133,7 @@ RectTransform:
   - {fileID: 34549675}
   - {fileID: 2092940949}
   m_Father: {fileID: 105063038}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4364,7 +4364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellHeight: 100
-  scrollScale: 50
+  mouseScrollScale: 50
+  keyboardScrollScale: 10
 --- !u!1 &1014418853
 GameObject:
   m_ObjectHideFlags: 0
@@ -6053,7 +6054,7 @@ RectTransform:
   - {fileID: 1651595417}
   - {fileID: 284470238}
   m_Father: {fileID: 105063038}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

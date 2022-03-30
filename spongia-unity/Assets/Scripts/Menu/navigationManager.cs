@@ -37,7 +37,7 @@ public class navigationManager : MonoBehaviour
 
     private bool isEscapeEnabled = true;
     
-    void Start()
+    void Awake()
     {
         GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, creditsMenu};
 
@@ -63,6 +63,8 @@ public class navigationManager : MonoBehaviour
 
         mainMenu.transform.SetAsFirstSibling();
         currentMenu.transform.SetSiblingIndex(transform.childCount - 3);
+
+        MenuEventManager.triggerChangedMenu();
     }
 
     private void toggleEsacpeEnabled()
@@ -100,6 +102,8 @@ public class navigationManager : MonoBehaviour
                     lastMenu.transform.SetAsFirstSibling();
 
                     windowTransitioner.GetComponent<RawImage>().color = new Color32((byte)0, (byte)0, (byte)0, (byte)255);
+
+                    MenuEventManager.triggerChangedMenu();
                 }
                 else
                 {

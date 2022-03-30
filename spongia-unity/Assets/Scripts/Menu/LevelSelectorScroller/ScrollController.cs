@@ -11,7 +11,25 @@ public class ScrollController : MonoBehaviour
     private int maxIndex;
 
     private float deltaScroll;
-    public float scrollScale = 0.1f;
+    public float mouseScrollScale = 50f;
+    public float keyboardScrollScale = 10f;
+
+    private bool isActive;
+
+
+    private void checkIfActive()
+    {
+        isActive = transform.parent.GetSiblingIndex() == (transform.parent.parent.childCount - 3);
+    }
+
+    void OnEnable()
+    {
+        MenuEventManager.changedMenuEvent += checkIfActive;
+    }
+    void OnDisable()
+    {
+        MenuEventManager.changedMenuEvent -= checkIfActive;
+    }
 
 
     void Start()
@@ -27,26 +45,36 @@ public class ScrollController : MonoBehaviour
             selectionIndex = (transform.childCount - 1) / 2;
         
         EventSystem.current.SetSelectedGameObject(transform.GetChild(selectionIndex).gameObject);
+
+        checkIfActive();
     }
 
     void Update()
     {
+        if (!isActive)
+            return;
+
+
+
+        if (EventSystem.current.currentSelectedGameObject == null || !EventSystem.current.currentSelectedGameObject.CompareTag("menuMapUnit"))
+            EventSystem.current.SetSelectedGameObject(transform.GetChild(selectionIndex).gameObject);
+
+
+
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
             transform.GetChild(selectionIndex).GetComponent<ScrollUnitButton>().Select();
 
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            deltaScroll += Time.deltaTime*scrollScale*0.0001f;
-        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            scroll(1);
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            scroll(-1);
+        else if (Input.GetKey(KeyCode.UpArrow))
+            deltaScroll += Time.deltaTime*keyboardScrollScale;
         else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            deltaScroll -= Time.deltaTime*scrollScale*0.0001f;
-        }
+            deltaScroll -= Time.deltaTime*keyboardScrollScale;
         else if (Input.mouseScrollDelta.y != 0)
-        {
-            deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*scrollScale*2;
-        }
+            deltaScroll += Time.deltaTime*Input.mouseScrollDelta.y*mouseScrollScale;
 
 
         if (Mathf.Abs(Input.mouseScrollDelta.y) == 1)
@@ -75,5 +103,12 @@ public class ScrollController : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(cellTransform.gameObject);
         cellTransform.GetComponent<ScrollUnitButton>().Select();
+    }
+
+    public void setActivedCell(GameObject cell)
+    {
+        int cellIndex = cell.transform.GetSiblingIndex();
+
+        scroll(-(cellIndex - selectionIndex));
     }
 }
