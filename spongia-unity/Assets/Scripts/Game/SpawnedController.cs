@@ -32,7 +32,7 @@ public class SpawnedController : MonoBehaviour
         }
     }
 
-    public static string songID; //"cf954cc6-aba1-47bd-a855-6f77c00006ad"
+    public static string songID = "Space Loop-3e8c4c00-0614-40ec-8a7b-45753dc972ef";
     // Move speed
     public static float MOVE_SPEED = 2;
     public static float DIAGONAL_MOVE_SPEED = MOVE_SPEED * (float) Prop.SQRT_OF_TWO;
@@ -169,11 +169,11 @@ public class SpawnedController : MonoBehaviour
         //
         // CONTROLS
         //
-        // keyboardKeys = new Dictionary<Sector, string>();
-        // keyboardKeys.Add(Sector.NORTH_WEST, "a");
-        // keyboardKeys.Add(Sector.NORTH_EAST, "s");
-        // keyboardKeys.Add(Sector.SOUTH_EAST, "d");
-        // keyboardKeys.Add(Sector.SOUTH_WEST, "f");
+        keyboardKeys = new Dictionary<Sector, string>();
+        keyboardKeys.Add(Sector.NORTH_WEST, "d");
+        keyboardKeys.Add(Sector.NORTH_EAST, "f");
+        keyboardKeys.Add(Sector.SOUTH_EAST, "k");
+        keyboardKeys.Add(Sector.SOUTH_WEST, "j");
 
         //
         // OFFSETS
