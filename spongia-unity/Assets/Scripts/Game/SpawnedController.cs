@@ -221,7 +221,7 @@ public class SpawnedController : MonoBehaviour
         // Set note texture
         noteTexture = Resources.Load<Sprite>("Skins/note_skins/" + (activeSkins.TryGetValue("note_skin", out var v2) ? v2 : "Default"));
         // Particle system
-        string[] particleColors = (activeSkins.TryGetValue("particle_skin", out var v3) ? v3 : "16777215,16777215").Split(',');
+        string[] particleColors = (activeSkins.TryGetValue("particle_skin_color", out var v3) ? v3 : "16777215,16777215").Split(',');
         ParticleSystem.MinMaxGradient gradient = new ParticleSystem.MinMaxGradient(ParseColor(Int32.Parse(particleColors[0])), ParseColor(Int32.Parse(particleColors[1])));
         // Set color
         var settings = particlesNE.main;
