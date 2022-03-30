@@ -12,9 +12,9 @@ public class PlayerChooser : MonoBehaviour
     
     public GameObject Template;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        ChoosePlayer();
     }
 
     // Update is called once per frame
@@ -56,8 +56,23 @@ public class PlayerChooser : MonoBehaviour
                 foreach (Transform child in SkinSelect.transform)
                 {
                     if (child.name == "Button") child.GetComponent<Button>().image.sprite = file.skin;
-                    if (child.name == "Cost") child.GetComponent<Text>().text = file.cost.ToString();
-                    if (child.name == "Name") child.GetComponent<Text>().text = file.name;
+                    if (child.name == "Cost")
+                    {
+                        if (!skinDetails[file.name])
+                        {
+                            child.GetComponent<Text>().text = file.cost.ToString(); 
+                        }
+                        else
+                        {
+                            child.GetComponent<Text>().text = ""; 
+                        }
+                    }
+
+                    if (child.name == "Name")
+                    {
+                        child.GetComponent<Text>().text = file.name;
+                        SkinSelect.name = file.name;
+                    }
 
                 }
                 
