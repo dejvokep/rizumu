@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: flammable
   m_EditorClassIdentifier: 
   name: flammable
-  cost: 10
+  cost: 700
   bought: 0
   skin: {fileID: 21300000, guid: 6f3a8abf4fd86dd4cb45725ea7bb0cc9, type: 3}

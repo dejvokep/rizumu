@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: piggy pink
   m_EditorClassIdentifier: 
   name: piggypink
-  cost: 200
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 7b21065f9f866d942b700bd2a045a9f5, type: 3}

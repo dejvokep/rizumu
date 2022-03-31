@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: sauron eye
   m_EditorClassIdentifier: 
   name: sauron eye
-  cost: 5
+  cost: 700
   bought: 0
   skin: {fileID: 21300000, guid: 7dc7cc13b76c3804e923a4f1d3428bd3, type: 3}

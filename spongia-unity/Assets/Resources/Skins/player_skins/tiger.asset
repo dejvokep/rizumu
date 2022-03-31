@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: tiger
   m_EditorClassIdentifier: 
   name: tiger
-  cost: 87
+  cost: 700
   bought: 0
   skin: {fileID: 21300000, guid: 1bdb51b0546d4bb41aac36e119ab7604, type: 3}

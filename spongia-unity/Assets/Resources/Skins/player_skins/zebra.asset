@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: zebra
   m_EditorClassIdentifier: 
   name: zebra
-  cost: 8
+  cost: 700
   bought: 0
   skin: {fileID: 21300000, guid: 04629e4e4977ca74a851e5a7917c844a, type: 3}

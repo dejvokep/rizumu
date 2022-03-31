@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: harvey
   m_EditorClassIdentifier: 
   name: harvey
-  cost: 100
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 05880d88acd29f145855a40060812206, type: 3}

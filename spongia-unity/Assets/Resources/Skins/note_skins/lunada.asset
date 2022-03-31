@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: lunada
   m_EditorClassIdentifier: 
   name: lunada
-  cost: 100
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 51343c5eec85b974cbde89d89f46d860, type: 3}

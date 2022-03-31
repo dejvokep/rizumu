@@ -15,4 +15,4 @@ MonoBehaviour:
   name: wiretap
   collor1: 9053063
   collor2: 15888673
-  cost: 0
+  cost: 1000

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: bluelagoo
   m_EditorClassIdentifier: 
   name: bluelagoo
-  cost: 5000
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 8b85d0822a868cc4e8932506ff3eca82, type: 3}

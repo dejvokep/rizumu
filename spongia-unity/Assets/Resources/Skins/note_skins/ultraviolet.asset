@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ultraviolet
   m_EditorClassIdentifier: 
   name: ultraviolet
-  cost: 250
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 449b14e39f6b7074690bc74c1e88a0d8, type: 3}
