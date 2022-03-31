@@ -58,19 +58,13 @@ public class ActivateParticle : MonoBehaviour
         else
         {
             Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
-            
-            foreach (Transform child in Scroll.transform)
-            {
-
-                if (child.name == equipedSkins["particle_skins"])
-                {
-                    Scroll.GetComponent<ShopScrollController>().setActivedCell(child.gameObject);
-                }
-                
-            }
+           
             PlayerScroll.SetActive(false);
             NoteScroll.SetActive(false);
             GameObject.SetActive(true); 
+
+            
+            Scroll.GetComponent<ShopScrollController>().setActivedCell(GameObject.Find(equipedSkins["particle_skins"]));
         }
     }
 }

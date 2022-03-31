@@ -33,4 +33,9 @@ public class NotEnoughMoney : MonoBehaviour
         StartCoroutine(FadeTextToZeroAlpha(1f, NotEnoughMoney));
 
     }
+
+    public void StartMessage(Text NotEnoughMoney)
+    {
+        StartCoroutine(ShowMessage(NotEnoughMoney));
+    }
 }

@@ -11,6 +11,8 @@ public class Buyer : MonoBehaviour
     // Start is called before the first frame update
     public Text textObj;
     public Text NoMoney;
+    public GameObject NotEnoughMoney;
+
     public void Buy()
     {
         if(transform.tag=="Selected")
@@ -34,7 +36,7 @@ public class Buyer : MonoBehaviour
 
                 if (Cost > Int32.Parse(data["sp"].ToString()))
                 {
-                    StartCoroutine(transform.GetComponent<NotEnoughMoney>().ShowMessage(NoMoney));
+                    NotEnoughMoney.GetComponent<NotEnoughMoney>().StartMessage(NoMoney);
                     return;
                 }
                 skinDetails[transform.name] = true;

@@ -13211,7 +13211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -492}
+  m_AnchoredPosition: {x: 150, y: -485}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &604633309
@@ -24850,6 +24850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NoMoney: {fileID: 1112943237}
   textObj: {fileID: 274639081}
+  NotEnoughMoney: {fileID: 1112943235}
 --- !u!114 &905352754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35052,6 +35053,7 @@ GameObject:
   - component: {fileID: 1112943236}
   - component: {fileID: 1112943238}
   - component: {fileID: 1112943237}
+  - component: {fileID: 1112943239}
   m_Layer: 5
   m_Name: NotEnoughSP
   m_TagString: Untagged
@@ -35120,6 +35122,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112943235}
   m_CullTransparentMesh: 1
+--- !u!114 &1112943239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112943235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3495bc78114888e4d97f4d6a1d0a90f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1115305474
 GameObject:
   m_ObjectHideFlags: 0
@@ -67447,9 +67461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5a2ae04f87eb847aa9881591a185e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MessageCaller: {fileID: 0}
   textObj: {fileID: 274639081}
   NoMoney: {fileID: 1112943237}
+  NotEnoughMoney: {fileID: 1112943235}
 --- !u!1 &1803061557
 GameObject:
   m_ObjectHideFlags: 0
@@ -88031,8 +88045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NoMoney: {fileID: 1112943237}
-  MessageCaller: {fileID: 0}
   textObj: {fileID: 274639081}
+  NotEnoughMoney: {fileID: 1112943235}
 --- !u!114 &2117925415
 MonoBehaviour:
   m_ObjectHideFlags: 0

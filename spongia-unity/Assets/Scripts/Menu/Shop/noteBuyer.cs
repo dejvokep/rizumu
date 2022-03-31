@@ -9,6 +9,7 @@ public class noteBuyer : MonoBehaviour
 {
     public Text NoMoney;
     public Text textObj;
+    public GameObject NotEnoughMoney;
     // Update is called once per frame
     
     public void Buy()
@@ -34,7 +35,7 @@ public class noteBuyer : MonoBehaviour
 
                 if (Cost > Int32.Parse(data["sp"].ToString()))
                 {
-                    StartCoroutine(transform.GetComponent<NotEnoughMoney>().ShowMessage(NoMoney));
+                    NotEnoughMoney.GetComponent<NotEnoughMoney>().StartMessage(NoMoney);
                     return;
                     
                 }
