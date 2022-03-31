@@ -378,7 +378,7 @@ public class SpawnedController : MonoBehaviour
     // Shows the end (finished) screen
     private void ShowEndScreen() {
         ResetParticles();
-        endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) ((float) score / maxScore * 100), (long) Math.Sqrt(score));
+        endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) (((float) score) / ((float) maxScore) * 100F), (long) Math.Sqrt(score));
     }
 
     // Shows the fail screen
