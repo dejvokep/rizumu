@@ -26,7 +26,6 @@ public class NoteChooser : MonoBehaviour
 
     public void NotePlayer()
     {
-        print(Application.persistentDataPath+"/skinInfo.json");
         Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
         Dictionary<string, bool> skinDetails = skinDetails2["note_skins"];
         string name = "none";

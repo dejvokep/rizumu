@@ -12,9 +12,19 @@ public class Money : MonoBehaviour
 
     private void Awake()
     {
-        Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string,object >>(File.ReadAllText(Application.persistentDataPath+"/userdata.json"));
         
-        textObj.text = data["sp"].ToString();
+        
+        Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string,object >>(File.ReadAllText(Application.persistentDataPath+"/userdata.json"));
+
+        if (!data.ContainsKey("sp"))
+        {
+            textObj.text = "0";
+        }
+        else
+        {
+            textObj.text = data["sp"].ToString();
+        }
+        
     }
 
     public void updateFinasec()

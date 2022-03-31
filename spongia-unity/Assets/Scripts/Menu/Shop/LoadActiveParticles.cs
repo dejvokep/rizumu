@@ -10,7 +10,8 @@ public class LoadActiveParticles : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
+        string activeSkinsPath = Application.persistentDataPath + "/activeSkins.json";
+        Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(activeSkinsPath));
         
         int collor1 = Int32.Parse(equipedSkins["particle_skin_color"].Split(',')[0]);
         int collor2 = Int32.Parse(equipedSkins["particle_skin_color"].Split(',')[1]);

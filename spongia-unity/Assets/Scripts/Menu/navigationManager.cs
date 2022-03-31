@@ -13,7 +13,6 @@ public class navigationManager : MonoBehaviour
     public GameObject levelSelectorMenu;
     public GameObject shopMenu;
     public GameObject settingsMenu;
-    public GameObject creditsMenu;
     public GameObject infoMenu;
 
 
@@ -44,7 +43,7 @@ public class navigationManager : MonoBehaviour
     
     void Awake()
     {
-        GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, creditsMenu, infoMenu};
+        GameObject[] menuArray = {mainMenu, levelSelectorMenu, shopMenu, settingsMenu, settingsMenu, infoMenu};
 
         if (defaultMenu == null)
             defaultMenu = mainMenu;

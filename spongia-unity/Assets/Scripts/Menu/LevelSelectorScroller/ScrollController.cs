@@ -56,7 +56,6 @@ public class ScrollController : MonoBehaviour
         else
         {
             selectionIndex = (transform.childCount - 1) / 2;
-            scroll(-1);
         }
         
 

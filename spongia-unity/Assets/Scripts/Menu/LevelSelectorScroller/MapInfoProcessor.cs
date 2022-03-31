@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,14 +30,23 @@ public class MapInfoProcessor : MonoBehaviour
         }
     }
 
-    public void fadeIn()
+    public async void fadeIn()
     {
         string mapID = ScrollUnitButton.selectedMapID;
-
-        mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
-        mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
         
         mapImage.GetComponent<Animator>().SetBool("isScrolling", false);
+
+        await Task.Delay(600);
+
+        try
+        {
+            mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
+            mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
+        }
+        catch (MissingReferenceException)
+        {
+            
+        }
     }
 
     public void fadeOut()

@@ -26,7 +26,6 @@ public class PlayerChooser : MonoBehaviour
 
     public void ChoosePlayer()
     {
-        print(Application.persistentDataPath+"/skinInfo.json");
         Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
         Dictionary<string, bool> skinDetails = skinDetails2["player_skins"];
         string name = "none";
@@ -50,8 +49,6 @@ public class PlayerChooser : MonoBehaviour
             GameObject SkinSelect;
             foreach (Skins file in skinList)
             {
-
-
                 SkinSelect = Instantiate(Template, new Vector2(0, 0), Quaternion.identity);
                 SkinSelect.transform.SetParent(Scroll.transform);
                 foreach (Transform child in SkinSelect.transform)
