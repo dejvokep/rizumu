@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class CreateSkinInfo : MonoBehaviour
 {
+    public GameObject ScrollPlayer;
+    public GameObject ScrollNote;
+    public GameObject ScrollParticle;
     // Start is called before the first frame update
     void Awake()
     {
@@ -80,6 +83,10 @@ public class CreateSkinInfo : MonoBehaviour
             json = JsonConvert.SerializeObject(SkinInfo, Formatting.Indented);
             print(json);
             File.WriteAllText(skinInfoPath, json);
+            ScrollPlayer.GetComponent<PlayerChooser>().ChoosePlayer();
+            ScrollNote.GetComponent<NoteChooser>().NotePlayer();
+            ScrollParticle.GetComponent<particleChooser>().NotePlayer();
+            
         }
     }
 }

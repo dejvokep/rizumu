@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LoadActiveParticles : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         string activeSkinsPath = Application.persistentDataPath + "/activeSkins.json";
         Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(activeSkinsPath));

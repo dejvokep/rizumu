@@ -14,8 +14,8 @@ public class NoteChooser : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        NotePlayer();
-        transform.gameObject.SetActive(false);
+        // NotePlayer();
+        // transform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -100,5 +100,6 @@ public class NoteChooser : MonoBehaviour
             }
 
         }
+        transform.gameObject.SetActive(false);
     }
 }

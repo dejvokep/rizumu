@@ -14,8 +14,8 @@ public class PlayerChooser : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        ChoosePlayer();
-        transform.gameObject.SetActive(false);
+        // ChoosePlayer();
+        // transform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -98,5 +98,6 @@ public class PlayerChooser : MonoBehaviour
             }
 
         }
+        transform.gameObject.SetActive(false);
     }
 }

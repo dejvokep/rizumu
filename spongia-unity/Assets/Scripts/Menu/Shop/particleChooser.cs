@@ -17,8 +17,8 @@ public class particleChooser : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        NotePlayer();
-        transform.gameObject.SetActive(false);
+        // NotePlayer();
+        // transform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -132,5 +132,6 @@ public class particleChooser : MonoBehaviour
             }
 
         }
+        transform.gameObject.SetActive(false);
     }
 }
