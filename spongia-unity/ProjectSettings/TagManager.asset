@@ -8,9 +8,7 @@ TagManager:
   - 1
   - 2
   - 3
-  - Selected
-  - Unselected
-  - bought
+  - menuMapUnit
   layers:
   - Default
   - TransparentFX
@@ -47,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Particles
+    uniqueID: 1800225211
     locked: 0

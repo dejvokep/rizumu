@@ -9,14 +9,7 @@ using Newtonsoft.Json;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
-public class MusicHandler
-{
-
-    public class MappingComparer : IComparer<List<float>> {
-        public int Compare(List<float> a, List<float> b) {
-            return a[4].CompareTo(b[4]);
-        }
-    }
+public class MusicHandler {
 
     // Controller
     public SpawnedController controller;
@@ -33,8 +26,10 @@ public class MusicHandler
     // The first spawn time time
     public float firstSpawn = float.MaxValue;
 
+    // If the song is bundled
+    public bool bundled;
+
     public MusicHandler(SpawnedController c) {
-        // Set
         controller = c;
     }
 
@@ -43,19 +38,14 @@ public class MusicHandler
         double offset = controller.xOffset;
 
         // If bundled into the game by default
-        bool bundled;
         string mappingsString = "";
-        try
-        {
+        try {
             mappingsString = Resources.Load<TextAsset>("maps/" + SpawnedController.songID + "/data").ToString();
-        }
-        catch (NullReferenceException)
-        {
-
+        } catch (NullReferenceException) {
         }
 
-        if (mappingsString == "")
-        {
+        // If not found
+        if (mappingsString == "") {
             // Create reader
             StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
             // Load JSON
@@ -63,23 +53,21 @@ public class MusicHandler
             // Close
             reader.Close();
             bundled = false;
-        }
-        else
-        {
+        } else {
             mappings = JsonConvert.DeserializeObject<List<List<float>>>(mappingsString);
             bundled = true;
         }
+
         // For each prop
         foreach (List<float> propData in mappings) {
             // Tone length
             float length = propData[2];
 
             // Full size of the prop (1/2)
-            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.transform.localScale.x / 2 / Prop.SQRT_OF_TWO));
+            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
             // Time where the prop will touch the player - how long it will take from the spawn position to that position
             propData.Add(propData[0] - ((float) offset - controller.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO));
-            //Debug.Log("Assigned spawn time=" + (propData[0] - ((float) offset - c.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO)));
-
+            
             // If earlier spawn time
             if (propData[4] < firstSpawn)
                 firstSpawn = propData[4];
@@ -89,6 +77,25 @@ public class MusicHandler
         mappings.Sort(delegate(List<float> x, List<float> y){
             return x[4].CompareTo(y[4]);
         });
+
+        // Song data
+        string songDataString;
+        // If bundled
+        if (bundled) {
+            songDataString = Resources.Load<TextAsset>("maps/" + SpawnedController.songID + "/info").ToString();
+        } else {
+            // Create reader
+            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
+            // Read
+            songDataString = reader.ReadToEnd();
+            // Close
+            reader.Close();
+        }
+        // Load
+        Dictionary<string, object> songData = JsonConvert.DeserializeObject<Dictionary<string, object>>(songDataString);
+        controller.songName = songData["song_name"].ToString();
+        controller.songAuthor = songData["song_author"].ToString();
+        controller.songDifficulty = Int32.Parse(songData["difficulty"].ToString());
 
         // If bundled
         if (bundled) {
@@ -106,6 +113,7 @@ public class MusicHandler
         }
     }
 
+    // Loads custom clip
     async void LoadClip() {
         // Make request
         using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip("file://" + Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/audio.mp3"), AudioType.MPEG)) {
@@ -132,6 +140,7 @@ public class MusicHandler
         controller.ContinueInit();
     }
 
+    // Loads custom image
     private void LoadUserImage() {
         // Create texture
         Texture2D texture;
@@ -151,10 +160,12 @@ public class MusicHandler
         image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
+    // Resets the handler
     public void Reset() {
         mappingIndex = 0;
     }
 
+    // Spawns the next notes, if applicable
     public void SpawnNext(float time) {
         // If out of range
         if (mappingIndex >= mappings.Count)
@@ -171,10 +182,12 @@ public class MusicHandler
         }
     }
 
+    // Returns the amount of props loaded
     public int PropCount() {
         return mappings.Count;
     }
 
+    // Returns sector by ID
     private Sector SectorByID(int id) {
         return id == 0 ? Sector.NORTH_EAST : id == 1 ? Sector.SOUTH_EAST : id == 2 ? Sector.SOUTH_WEST : Sector.NORTH_WEST;
     }

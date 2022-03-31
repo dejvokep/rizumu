@@ -5,19 +5,20 @@ using UnityEngine.UI;
 
 public class ScoreEarnedFadeout : MonoBehaviour
 {
-
+    
+    // Constants
     private const float FADE_DURATION = 1;
     private const float MOVE_SPEED = 0.2f;
-
+    // Text
     private Text text;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         text = GetComponent<Text>();
         StartCoroutine(Animate());
     }
 
+    // Animates the position
     private IEnumerator Animate() {
         float fadeSpeed = 1.0f / FADE_DURATION;
         Color color = text.color;
@@ -32,8 +33,7 @@ public class ScoreEarnedFadeout : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         transform.Translate(Vector2.up * Time.deltaTime * MOVE_SPEED);
     }
 }
