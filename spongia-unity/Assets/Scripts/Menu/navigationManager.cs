@@ -36,6 +36,7 @@ public class navigationManager : MonoBehaviour
 
 
     private GameObject lastMenu;
+    [SerializeField]
     private GameObject currentMenu;
 
 

@@ -6237,6 +6237,7 @@ MonoBehaviour:
   transitionProgress: 0
   defaultMenu: {fileID: 896126887}
   limitedMode: 0
+  currentMenu: {fileID: 896126887}
 --- !u!1 &135737497
 GameObject:
   m_ObjectHideFlags: 0
@@ -51834,6 +51835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1430252217}
   - component: {fileID: 1430252218}
+  - component: {fileID: 1430252219}
   m_Layer: 5
   m_Name: ShopMenu
   m_TagString: Untagged
@@ -51884,6 +51886,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884e17551540e824e85e93b12cde593f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1430252219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430252216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde3bfcaa53d3547a0564389787c93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleHolder: {fileID: 135737497}
+  buttonActivators:
+  - {fileID: 959101688}
+  - {fileID: 206412614}
 --- !u!1 &1447467004
 GameObject:
   m_ObjectHideFlags: 0
