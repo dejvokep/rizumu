@@ -217,6 +217,17 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    public void deselectControlIfSelected()
+    {
+        if (currentKey != null)
+        {
+            currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
+            currentKey = null;
+
+            MenuEventManager.triggerToggleEscape();
+        }
+    }
+
     public void loadSavedSettings()
     {
         LoadJsonData();
