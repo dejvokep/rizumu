@@ -215,13 +215,14 @@ public class SpawnedController : MonoBehaviour
         //
         // SKINS
         //
-        string activeSkinsPath = Path.Combine(Application.persistentDataPath, "activeSkins.json");
+        string activeSkinsPath = Application.persistentDataPath+ "/activeSkins.json";
         // JSON
-        Dictionary<string, string> activeSkins = File.Exists(activeSkinsPath) ? JsonConvert.DeserializeObject<Dictionary<string, string>>(activeSkinsPath) : new Dictionary<string, string>();
+        print(activeSkinsPath);
+        Dictionary<string, string> activeSkins = File.Exists(activeSkinsPath) ? JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(activeSkinsPath)) : new Dictionary<string, string>();
         // Apply sprite
-        player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/player_skins/" + (activeSkins.TryGetValue("player_skin", out var v1) ? v1 : "Default"));
+        player.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Skins/player_skins/" + (activeSkins.TryGetValue("player_skins", out var v1) ? v1 : "Default"));
         // Set note texture
-        noteTexture = Resources.Load<Sprite>("Skins/note_skins/" + (activeSkins.TryGetValue("note_skin", out var v2) ? v2 : "Default"));
+        noteTexture = Resources.Load<Sprite>("Skins/note_skins/" + (activeSkins.TryGetValue("note_skins", out var v2) ? v2 : "Default"));
         // Particle system
         string[] particleColors = (activeSkins.TryGetValue("particle_skin_color", out var v3) ? v3 : "16777215,16777215").Split(',');
         ParticleSystem.MinMaxGradient gradient = new ParticleSystem.MinMaxGradient(ParseColor(Int32.Parse(particleColors[0])), ParseColor(Int32.Parse(particleColors[1])));
