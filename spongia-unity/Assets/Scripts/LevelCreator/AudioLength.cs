@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -19,8 +20,6 @@ public class AudioLength : MonoBehaviour
     public string ImageName;
     public string MusicName;
     //public string[] subs;
-    public InputField SpojHudba;
-    public InputField SpojObazkov;
     public string name;
     public float ArivalTime;
     public float OldTime;
@@ -29,7 +28,6 @@ public class AudioLength : MonoBehaviour
     public InputField DifficultyInput;
     public InputField AutorName;
     public InputField SaveName;
-    public InputField Spoj;
     public InputField SpawnTimeInput;
     public InputField ArivalTimeInput;
     public InputField SpeedInput  ;
@@ -86,7 +84,6 @@ public class AudioLength : MonoBehaviour
 
         print(Application.persistentDataPath);
         SpeedInput.text="1";
-        Spoj.text="1";
         m_AudioSource = GetComponent<AudioSource>();
         m_AudioClip = m_AudioSource.clip;
         try
@@ -149,9 +146,6 @@ public class AudioLength : MonoBehaviour
                  TargetForEdit = hit.collider.gameObject;
                  SpawnTimeInput.text=CurrentMap[TargetForEdit.GetInstanceID()][3].ToString();
                  ArivalTimeInput.text=(CurrentMap[TargetForEdit.GetInstanceID()][5].ToString());
-                 //SpeedInput.text=CurrentMap[TargetForEdit.GetInstanceID()][2].ToString();
-                 //LengthInput.text=CurrentMap[TargetForEdit.GetInstanceID()][3].ToString();
-                 Spoj.text=((TargetForEdit.GetInstanceID()).ToString());
                 
             }
                     
@@ -425,6 +419,10 @@ public class AudioLength : MonoBehaviour
             }
 
 
+        }
+
+        public void Exit() {
+            SceneManager.LoadScene("MainScene");
         }
 }
 class jsonInfoVeci
