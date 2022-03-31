@@ -92,7 +92,7 @@ public class AudioLength : MonoBehaviour
         // Add data
         CurrentMap[spawned.GetInstanceID()]=new List<float>{m_AudioSource.time-5.45f,s,float.Parse(SpeedInput.text),0.5f,m_AudioSource.time-5.45f,m_AudioSource.time};
         // Set sorting layer
-        spawned.GetComponent<SpriteRenderer>().sortingOrder = s;
+        spawned.GetComponent<SpriteRenderer>().sortingOrder = s + 1;
         // Currently edited
         TargetForLengthChange=spawned;
         stlacenie=false;
@@ -116,7 +116,7 @@ public class AudioLength : MonoBehaviour
 
         // Update time data
         mSlider.value = (float)m_AudioSource.time;
-        CurrentTime.text = m_AudioSource.time.ToString();
+        CurrentTime.text = m_AudioSource.time.ToString("0.00");
         // If clicked
         if (Input.GetMouseButtonDown(0)) {
             // Raycast

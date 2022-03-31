@@ -50,7 +50,7 @@ public class ChangeAudio : MonoBehaviour {
 
         // Reset lengths
         progressSlider.maxValue= (float) clip.length;
-        maximumTimeText.text = clip.length.ToString();
+        maximumTimeText.text = clip.length.ToString("0.00");
     }
     
 }
