@@ -18,11 +18,11 @@ public class Money : MonoBehaviour
 
         if (!data.ContainsKey("sp"))
         {
-            textObj.text = "0";
+            textObj.text = "Points: 0";
         }
         else
         {
-            textObj.text = data["sp"].ToString();
+            textObj.text = $"Points: {data["sp"].ToString()}";
         }
         
     }
@@ -31,7 +31,7 @@ public class Money : MonoBehaviour
     {
         Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string,object >>(File.ReadAllText(Application.persistentDataPath+"/userdata.json"));
         
-        textObj.text = data["sp"].ToString();
+        textObj.text = $"Points: {data["sp"].ToString()}";
     }
 
 }
