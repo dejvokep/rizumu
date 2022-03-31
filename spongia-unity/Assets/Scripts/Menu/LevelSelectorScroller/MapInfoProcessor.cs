@@ -36,7 +36,7 @@ public class MapInfoProcessor : MonoBehaviour
         
         mapImage.GetComponent<Animator>().SetBool("isScrolling", false);
 
-        await Task.Delay(500);
+        await Task.Delay(600);
 
         try
         {
