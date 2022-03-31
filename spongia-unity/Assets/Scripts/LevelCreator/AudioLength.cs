@@ -54,6 +54,7 @@ public class AudioLength : MonoBehaviour
     public List<List<float>> objects = new List<List<float>> ();
 
     private bool inputEnabled = true;
+    public static string audioPath, imagePath;
 
 
     private Dictionary<Sector, string> keyboardKeys;
@@ -368,13 +369,13 @@ public class AudioLength : MonoBehaviour
                 difficulty = difficulty0
             };
 
-            MusicPath=SpojHudba.text;
+            MusicPath=audioPath;
             List<string> subsMusic = new List<string>(
             MusicPath.Split(new string[] { @"\" }, StringSplitOptions.None));
             MusicName=subsMusic[subsMusic.Count-1];
             
 
-            ImagePath=SpojObazkov.text;
+            ImagePath=imagePath;
             List<string> subsImage = new List<string>(
             ImagePath.Split(new string[] { @"\" }, StringSplitOptions.None));
             ImageName=subsImage[subsImage.Count-1];

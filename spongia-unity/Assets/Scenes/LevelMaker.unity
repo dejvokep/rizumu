@@ -3515,7 +3515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 1658387517}
+  m_FirstSelected: {fileID: 1313832411}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &804488543
@@ -4628,13 +4628,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   importer: {fileID: 1073157396}
   audioSource: {fileID: 1073157392}
-  m_AudioSource: {fileID: 0}
-  soundPath: 
-  audioClip: {fileID: 0}
-  mSlider: {fileID: 640243566}
-  m_AudioClip: {fileID: 0}
-  MaximumTime: {fileID: 432462663}
-  SpojHudba: {fileID: 299221046}
+  progressSlider: {fileID: 640243566}
+  maximumTimeText: {fileID: 432462663}
 --- !u!114 &1073157396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6871,12 +6866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f748788a8e744c47870cd80cc6052c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Path: 
-  SpojObazkov: {fileID: 475898514}
-  Background: {fileID: 1658387517}
-  background2: {fileID: 0}
-  BackgroundImage: {fileID: 0}
-  Pokus1: {fileID: 0}
 --- !u!114 &1658387519
 MonoBehaviour:
   m_ObjectHideFlags: 0
