@@ -312,7 +312,7 @@ public class AudioLength : MonoBehaviour
     }
 
         public void Exit() {
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene("MenuScene");
         }
 }
 class jsonInfoVeci
