@@ -127,6 +127,7 @@ public class SpawnedController : MonoBehaviour
     public float currentTime;
     public float playerWidth;
     public float songLength;
+    public float noteXSize;
 
     // Multipliers
     public float multiplier = MULTIPLIERS[0].multiplier;
@@ -184,7 +185,6 @@ public class SpawnedController : MonoBehaviour
         rankIndex = RANKS.Count - 1;
 
         // Get components
-        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         endScreen = GetComponent<EndScreen>();
         failScreen = GetComponent<FailScreen>();
         pausePanel = GetComponent<PausePanel>();
@@ -199,7 +199,7 @@ public class SpawnedController : MonoBehaviour
         //
         // OFFSETS
         //
-        // Screen dimensions (/2)
+        // Screen dimensions (1/2)
         Camera cam = Camera.main;
         height = 1f * cam.orthographicSize;
         width = height * cam.aspect;
@@ -209,6 +209,8 @@ public class SpawnedController : MonoBehaviour
         xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height;
         // Calculate y offset (vertical)
         yOffset = height;
+        // Note size
+        noteXSize = (float) (prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO);
 
         //
         // SKINS
@@ -232,6 +234,9 @@ public class SpawnedController : MonoBehaviour
         settings.startColor = gradient;
         settings = particlesNW.main;
         settings.startColor = gradient;
+
+        // Set
+        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
 
         //
         // AUDIO
@@ -373,7 +378,7 @@ public class SpawnedController : MonoBehaviour
     // Shows the end (finished) screen
     private void ShowEndScreen() {
         ResetParticles();
-        endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) ((float) score / maxScore * 100), (long) Math.Sqrt(score));
+        endScreen.Show(score, musicHandler.PropCount() * 2 - misses, misses, (int) (((float) score) / ((float) maxScore) * 100F), (long) Math.Sqrt(score));
     }
 
     // Shows the fail screen
@@ -400,7 +405,7 @@ public class SpawnedController : MonoBehaviour
         int sectorID = (int) sector;
         
         // Full size of the prop (1/2)
-        float xSize = (float) (length / 2 * diagonalSpeed) + ((float) (prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
+        float xSize = (float) (length / 2 * diagonalSpeed / Prop.SQRT_OF_TWO) + noteXSize;
         // Positions (NOTE : ((float) offset + (length / 2 / Prop.SQRT_OF_TWO)))
         double x = xOffset + xSize, y = yOffset + xSize;
 

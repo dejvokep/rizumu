@@ -10985,6 +10985,7 @@ MonoBehaviour:
   currentTime: 0
   playerWidth: 0
   songLength: 0
+  noteXSize: 0
   multiplier: 1
   startedPlaying: 0
   finishedPlaying: 0
@@ -21346,7 +21347,7 @@ SpriteRenderer:
   m_Size: {x: 13.63, y: 13.63}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &776885743
@@ -21578,6 +21579,7 @@ MonoBehaviour:
   clickRetry: {fileID: 8300000, guid: fd8cbde2b15d87b42bc3c9d3cb4bba4a, type: 3}
   drumHit: {fileID: 8300000, guid: e0a9738ca25032645ac76c6fda5a5bf4, type: 3}
   hover: {fileID: 8300000, guid: bdc2f2e6ade7564428f9b220b6b2eaac, type: 3}
+  comboBreak: {fileID: 8300000, guid: 289be86ceceb2494cab3f02822452f52, type: 3}
 --- !u!4 &958590422
 Transform:
   m_ObjectHideFlags: 0

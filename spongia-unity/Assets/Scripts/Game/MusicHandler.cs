@@ -63,10 +63,12 @@ public class MusicHandler {
             // Tone length
             float length = propData[2];
 
-            // Full size of the prop (1/2)
-            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + ((float) (controller.prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
-            // Time where the prop will touch the player - how long it will take from the spawn position to that position
-            propData.Add(propData[0] - ((float) offset - controller.playerWidth + xSize) / (propData[3] / Prop.SQRT_OF_TWO));
+            // Full size of the prop (1/2) on the X axis
+            float xSize = (float) (length / 2 / Prop.SQRT_OF_TWO) + controller.noteXSize;
+            // Time when to spawn the prop
+            //             Arrival   - (distance accross X to the end of the screen - the player width + size of the prop) /          Horizontal speed
+            //             Arrival   -            distance to travel / speed
+            propData.Add(propData[0] - ((float) offset - controller.playerWidth + xSize)                                   / (propData[3] / Prop.SQRT_OF_TWO));
             
             // If earlier spawn time
             if (propData[4] < firstSpawn)

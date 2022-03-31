@@ -89,8 +89,8 @@ public class PausePanel : MonoBehaviour
 
     // Pauses
     public void Pause() {
-        // If paused
-        if (paused)
+        // If paused or finished
+        if (paused || controller.finishedPlaying || controller.failedPlaying)
             return;
         // Paused
         paused = true;
