@@ -312,6 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e9942a2e32e4341922984daacc73c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quitPopUp: {fileID: 0}
+  navigation: {fileID: 0}
 --- !u!114 &34549677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29989,8 +29991,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollerUnitPrefab: {fileID: 7258995197695055773, guid: 0289eca73fd256249b9d972e1e941081, type: 3}
-  unitSize: 123
-  margin: 6
 --- !u!1 &954679459
 GameObject:
   m_ObjectHideFlags: 0
@@ -61321,10 +61321,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapImage: {fileID: 2127692108}
-  imageToScreen: {x: 0.655, y: 0.72}
-  mapNameSongAuthorLabel: {fileID: 1827209566}
-  mapDifficultyLabel: {fileID: 1320608289}
-  userHighscoreLabel: {fileID: 1869188211}
 --- !u!114 &1618742578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61926,6 +61922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e9942a2e32e4341922984daacc73c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quitPopUp: {fileID: 0}
+  navigation: {fileID: 0}
 --- !u!114 &1706274084
 MonoBehaviour:
   m_ObjectHideFlags: 0
