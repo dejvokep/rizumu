@@ -9,6 +9,8 @@ TagManager:
   - 2
   - 3
   - menuMapUnit
+  - Unselected
+  - Selected
   layers:
   - Default
   - TransparentFX

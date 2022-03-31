@@ -15,4 +15,4 @@ MonoBehaviour:
   name: Default
   cost: 150
   bought: 0
-  skin: {fileID: 21300000, guid: f95e295fab6a6504aba38738ca5ee196, type: 3}
+  skin: {fileID: 21300000, guid: fc908b9f1d4fa6643893a682431f8518, type: 3}
