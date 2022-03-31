@@ -87,7 +87,7 @@ public class MusicHandler {
             songDataString = Resources.Load<TextAsset>("maps/" + SpawnedController.songID + "/info").ToString();
         } else {
             // Create reader
-            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/data.json"));
+            StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, "maps/" + SpawnedController.songID + "/info.json"));
             // Read
             songDataString = reader.ReadToEnd();
             // Close
