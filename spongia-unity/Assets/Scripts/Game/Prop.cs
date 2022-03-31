@@ -19,7 +19,6 @@ public class Prop : MonoBehaviour
 
     // Internals
     private double gridSize = 0;
-    private Vector2 playerBounds;
     private float diagonalSpeed, speed;
 
     // Gets the renderer component for later use
@@ -35,8 +34,6 @@ public class Prop : MonoBehaviour
         // Max points
         maxPoints = length * 1000;
 
-        // Set player bounds
-        playerBounds = new Vector2(playerWidth, playerWidth);
         // Set grid size
         gridSize = length * diagonalSpeed / SQRT_OF_TWO;
     }
@@ -61,9 +58,9 @@ public class Prop : MonoBehaviour
         // If east sector
         if ((int) sector < 2) {
             // If waiting
-            if (pos - gridSize/2 > playerBounds.x)
+            if (pos - gridSize/2 > playerWidth)
                 return position = TonePosition.WAITING;
-            else if (playerBounds.x > pos + gridSize/2)
+            else if (playerWidth > pos + gridSize/2)
                 // Just finished playing
                 return position = TonePosition.FINISHED;
             else
@@ -71,9 +68,9 @@ public class Prop : MonoBehaviour
                 return position = TonePosition.PLAYING;
         } else {
             // If waiting
-            if (-pos + gridSize/2 < -playerBounds.x)
+            if (-pos + gridSize/2 < -playerWidth)
                 return position = TonePosition.WAITING;
-            else if (-playerBounds.x < -pos - gridSize/2)
+            else if (-playerWidth < -pos - gridSize/2)
                 // Just finished playing
                 return position = TonePosition.FINISHED;
             else
