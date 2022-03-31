@@ -71,7 +71,7 @@ public class Prop : MonoBehaviour
                 return position = TonePosition.PLAYING;
         } else {
             // If waiting
-            if (-pos + gridSize/2 < playerBounds.x)
+            if (-pos + gridSize/2 < -playerBounds.x)
                 return position = TonePosition.WAITING;
             else if (-playerBounds.x < -pos - gridSize/2)
                 // Just finished playing

@@ -185,7 +185,6 @@ public class SpawnedController : MonoBehaviour
         rankIndex = RANKS.Count - 1;
 
         // Get components
-        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
         endScreen = GetComponent<EndScreen>();
         failScreen = GetComponent<FailScreen>();
         pausePanel = GetComponent<PausePanel>();
@@ -235,6 +234,9 @@ public class SpawnedController : MonoBehaviour
         settings.startColor = gradient;
         settings = particlesNW.main;
         settings.startColor = gradient;
+
+        // Set
+        playerWidth = player.GetComponent<Renderer>().bounds.size.x / 4;
 
         //
         // AUDIO
