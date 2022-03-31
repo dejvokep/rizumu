@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
-  m_Name: bluelagoo
+  m_Script: {fileID: 11500000, guid: 17df9c3bc6130da489b331d87abc5058, type: 3}
+  m_Name: wiretap
   m_EditorClassIdentifier: 
-  name: bluelagoo
-  cost: 5000
-  bought: 0
-  skin: {fileID: 21300000, guid: 8b85d0822a868cc4e8932506ff3eca82, type: 3}
+  name: wiretap
+  collor1: 9053063
+  collor2: 15888673
+  cost: 0
