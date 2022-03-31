@@ -127,6 +127,7 @@ public class SpawnedController : MonoBehaviour
     public float currentTime;
     public float playerWidth;
     public float songLength;
+    public float noteXSize;
 
     // Multipliers
     public float multiplier = MULTIPLIERS[0].multiplier;
@@ -199,7 +200,7 @@ public class SpawnedController : MonoBehaviour
         //
         // OFFSETS
         //
-        // Screen dimensions (/2)
+        // Screen dimensions (1/2)
         Camera cam = Camera.main;
         height = 1f * cam.orthographicSize;
         width = height * cam.aspect;
@@ -209,6 +210,8 @@ public class SpawnedController : MonoBehaviour
         xOffset = (Math.Sin(diagonalRadians)/Math.Cos(diagonalRadians)) * height;
         // Calculate y offset (vertical)
         yOffset = height;
+        // Note size
+        noteXSize = (float) (prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO);
 
         //
         // SKINS
@@ -400,7 +403,7 @@ public class SpawnedController : MonoBehaviour
         int sectorID = (int) sector;
         
         // Full size of the prop (1/2)
-        float xSize = (float) (length / 2 * diagonalSpeed) + ((float) (prefab.GetComponent<SpriteRenderer>().size.x / 2 / Prop.SQRT_OF_TWO));
+        float xSize = (float) (length / 2 * diagonalSpeed / Prop.SQRT_OF_TWO) + noteXSize;
         // Positions (NOTE : ((float) offset + (length / 2 / Prop.SQRT_OF_TWO)))
         double x = xOffset + xSize, y = yOffset + xSize;
 
