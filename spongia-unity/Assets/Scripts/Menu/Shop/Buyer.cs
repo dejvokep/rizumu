@@ -12,12 +12,14 @@ public class Buyer : MonoBehaviour
     public Text textObj;
     public Text NoMoney;
     public GameObject NotEnoughMoney;
+    public string skinType;
 
     public void Buy()
     {
         if(transform.tag=="Selected")
         {
             int Cost = 0;
+            string json;
             Dictionary<string, Dictionary<string, bool>> skinDetails2 = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, bool>>>(File.ReadAllText(Application.persistentDataPath+"/skinInfo.json"));
             Dictionary<string, bool> skinDetails = skinDetails2["player_skins"];
             Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string,object >>(File.ReadAllText(Application.persistentDataPath+"/userdata.json"));
@@ -39,6 +41,8 @@ public class Buyer : MonoBehaviour
                     NotEnoughMoney.GetComponent<NotEnoughMoney>().StartMessage(NoMoney);
                     return;
                 }
+
+                
                 skinDetails[transform.name] = true;
                 foreach (Transform child in transform)
                 {
@@ -46,8 +50,12 @@ public class Buyer : MonoBehaviour
                     {
                         data["sp"] = Int32.Parse(data["sp"].ToString()) - Int32.Parse(child.GetComponent<Text>().text);
                         child.GetComponent<Text>().text = "";
-                        string json2 = JsonConvert.SerializeObject(data, Formatting.Indented);
-                        File.WriteAllText(Application.persistentDataPath+"/userdata.json",json2 );
+                        Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
+                        equipedSkins[skinType] = transform.name;
+                        json = JsonConvert.SerializeObject(equipedSkins, Formatting.Indented);
+                        File.WriteAllText(Application.persistentDataPath+"/activeSkins.json", json); 
+                        json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                        File.WriteAllText(Application.persistentDataPath+"/userdata.json",json);
                     }
                     if (child.name == "Button")
                     {
@@ -61,7 +69,7 @@ public class Buyer : MonoBehaviour
 
                 }
             }
-            string json = JsonConvert.SerializeObject(skinDetails2, Formatting.Indented);
+            json = JsonConvert.SerializeObject(skinDetails2, Formatting.Indented);
             File.WriteAllText(Application.persistentDataPath+"/skinInfo.json", json);
             textObj.GetComponent<Money>().updateFinasec();
             

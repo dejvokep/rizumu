@@ -11,7 +11,9 @@ public class LoadActiveSkins : MonoBehaviour
     
     void Awake()
     {
-        Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Application.persistentDataPath+"/activeSkins.json"));
+        string filePath = Application.persistentDataPath + "/activeSkins.json";
+
+        Dictionary<string, string> equipedSkins = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(filePath));
         transform.GetComponent<Button>().image.sprite = Resources.Load<Sprite>("Skins/"+skinType+"/"+equipedSkins[skinType]);
     }
 
