@@ -9,7 +9,7 @@ public class LoadActiveSkins : MonoBehaviour
     // Start is called before the first frame update
     public string skinType;
     
-    void Awake()
+    void Start()
     {
         string filePath = Application.persistentDataPath + "/activeSkins.json";
 

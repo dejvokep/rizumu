@@ -15,4 +15,4 @@ MonoBehaviour:
   name: copper
   collor1: 12032145
   collor2: 9728363
-  cost: 0
+  cost: 1000

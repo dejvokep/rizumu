@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: purple sky
   m_EditorClassIdentifier: 
   name: purple sky
-  cost: 1814684
+  cost: 700
   bought: 0
   skin: {fileID: 21300000, guid: 135f905466c948943a49c15fee9f8427, type: 3}

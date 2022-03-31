@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: wiretap
   m_EditorClassIdentifier: 
   name: wiretap
-  cost: 400
+  cost: 300
   bought: 0
   skin: {fileID: 21300000, guid: 1122b14ad1b7fbc49b12503781895b36, type: 3}

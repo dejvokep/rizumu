@@ -15,4 +15,4 @@ MonoBehaviour:
   name: harvey
   collor1: 2048055
   collor2: 10089160
-  cost: 0
+  cost: 1000
