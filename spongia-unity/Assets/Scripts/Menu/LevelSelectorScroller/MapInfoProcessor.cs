@@ -6,41 +6,63 @@ using UnityEngine.UI;
 
 public class MapInfoProcessor : MonoBehaviour
 {
+    private string mapID;
+
     public GameObject mapImage;
+    [Space]
+    public Vector2 imageToScreen = new Vector2(0.655f, 0.73f);
+    [Space]
+    public Text mapNameSongAuthorLabel;
+    public Text mapDifficultyLabel;
+    public Text userHighscoreLabel;
 
-    private bool isSelected = false;
 
-    private bool wasScrolling = false;
+    void Start()
+    {
+        
+    }
 
+    // Update is called once per frame
     void Update()
     {
-        if (!isSelected)
+        if (mapID != ScrollUnitButton.selectedMapID && ScrollUnitButton.selectedMapID != null)
         {
-            if (ScrollUnitButton.selectedMapID != null)
+            mapID = ScrollUnitButton.selectedMapID;
+
+            // mapImage Setup
+            mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
+            mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
+
+            float viewAspectRation = (imageToScreen.x*Screen.currentResolution.width)/(imageToScreen.y*Screen.currentResolution.height);
+            if (ScrollPopulator.mapsSpritesAspectRatio[mapID] >= viewAspectRation)
             {
-                string mapID = ScrollUnitButton.selectedMapID;
-
-                mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
-                mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
-
-                isSelected = true;
+                mapImage.GetComponent<AspectRatioFitter>().aspectMode = UnityEngine.UI.AspectRatioFitter.AspectMode.HeightControlsWidth;
+                mapImage.GetComponent<RectTransform>().sizeDelta = new Vector2(0, imageToScreen.y * Screen.currentResolution.height);
             }
-            return;
+            else
+            {
+                mapImage.GetComponent<AspectRatioFitter>().aspectMode = UnityEngine.UI.AspectRatioFitter.AspectMode.WidthControlsHeight;
+                mapImage.GetComponent<RectTransform>().sizeDelta = new Vector2(imageToScreen.x * Screen.currentResolution.width, 0);
+            }
+
+            // Populate Labels
+            mapNameSongAuthorLabel.text = $"{ScrollPopulator.mapsInfo[mapID].song_name} - {ScrollPopulator.mapsInfo[mapID].song_author}";
+
+            mapDifficultyLabel.text = $"Difficulty: {ScrollPopulator.mapsInfo[mapID].difficulty}★";
+
+            
+            userHighscoreLabel.text = "Highscore: 0";
+            if (UserDataReader.userData != null)
+                try
+                {
+                    userHighscoreLabel.text = $"Highscore: {UserDataReader.userData.highscores[mapID].score}";
+                }
+                catch (Exception)
+                {
+                    
+                }
         }
-    }
-
-    public void fadeIn()
-    {
-        string mapID = ScrollUnitButton.selectedMapID;
-
-        mapImage.GetComponent<Image>().sprite = ScrollPopulator.mapsSprites[mapID];
-        mapImage.GetComponent<AspectRatioFitter>().aspectRatio = ScrollPopulator.mapsSpritesAspectRatio[mapID];
-        
-        mapImage.GetComponent<Animator>().SetBool("isScrolling", false);
-    }
-
-    public void fadeOut()
-    {
-        mapImage.GetComponent<Animator>().SetBool("isScrolling", true);
+        else if (ScrollPopulator.mapsID[0] != null && ScrollPopulator.mapsID[0] != "" && mapID == null)
+            ScrollUnitButton.selectedMapID = ScrollPopulator.mapsID[0];
     }
 }

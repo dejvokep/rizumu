@@ -1,23 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using System;
-using static Sector;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class FailScreen : MonoBehaviour
 {
 
-    // Constants
-    private const float FADE_DURATION = 0.5f;
-
-    // UI elements
     public GameObject gamePanel, player, panel;
-
-    // Internals
+    
     private CanvasGroup canvasGroup, gamePanelGroup;
     private SpriteRenderer playerRenderer;
-    private SpawnedController controller;
+
+    private const float FADE_DURATION = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,10 +18,8 @@ public class FailScreen : MonoBehaviour
         canvasGroup = panel.GetComponent<CanvasGroup>();
         gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
         playerRenderer = player.GetComponent<SpriteRenderer>();
-        controller = gameObject.GetComponent<SpawnedController>();
     }
 
-    // Shows the panel
     public void Show() {
         // Activate
         panel.SetActive(true);
@@ -36,14 +27,11 @@ public class FailScreen : MonoBehaviour
         StartCoroutine(Fade(true));
     }
 
-    // Hides the panel
     public void Hide() {
         // Animate
         StartCoroutine(Fade(false));
-        EventSystem.current.SetSelectedGameObject(null);
     }
-    
-    // Fades the panel (and other game components)
+
     private IEnumerator Fade(bool fadeIn) {
         // Speed
         float speed = 1f / FADE_DURATION;
@@ -55,8 +43,6 @@ public class FailScreen : MonoBehaviour
             canvasGroup.alpha = alpha;
             gamePanelGroup.alpha = 1-alpha;
             playerRenderer.color = new Color32(255, 255, 255, (byte) (255*(1-alpha)));
-            foreach (Sector sector in Enum.GetValues(typeof(Sector)))
-                controller.sectors[sector].Fade(1-alpha);
             yield return true;
         }
 

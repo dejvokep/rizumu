@@ -3,34 +3,38 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Shadow : MonoBehaviour
 {
-    
     public Vector2 ShadowOffset;
     public Material ShadowMaterial;
+
     SpriteRenderer spriteRenderer;
     GameObject shadowGameobject;
 
-    void Start() {
-        // Renderer
+    void Start()
+    {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Create a new gameobject to be used as drop shadow
+        //create a new gameobject to be used as drop shadow
         shadowGameobject = new GameObject("Shadow");
-        // Create a new SpriteRenderer for Shadow object
+
+        //create a new SpriteRenderer for Shadow gameobject
         SpriteRenderer shadowSpriteRenderer = shadowGameobject.AddComponent<SpriteRenderer>();
 
-        // Set the shadow gameobject's sprite to the original sprite
+        //set the shadow gameobject's sprite to the original sprite
         shadowSpriteRenderer.sprite = spriteRenderer.sprite;
-        // Set the shadow gameobject's material to the shadow material we created
+        //set the shadow gameobject's material to the shadow material we created
         shadowSpriteRenderer.material = ShadowMaterial;
 
-        // Update the sorting layer of the shadow to always lie behind the sprite
+        //update the sorting layer of the shadow to always lie behind the sprite
         shadowSpriteRenderer.sortingLayerName = spriteRenderer.sortingLayerName;
         shadowSpriteRenderer.sortingOrder = spriteRenderer.sortingOrder - 1;
+        Debug.Log("Created shadow.");
     }
 
-    void LateUpdate() {
-        // Update the position and rotation of the sprite's shadow with moving sprite
+    void LateUpdate()
+    {
+        //update the position and rotation of the sprite's shadow with moving sprite
         shadowGameobject.transform.localPosition = transform.localPosition + (Vector3)ShadowOffset;
         shadowGameobject.transform.localRotation = transform.localRotation;
+        Debug.Log("Updated shadow position to: " + (transform.localPosition + (Vector3)ShadowOffset));
     }
 }

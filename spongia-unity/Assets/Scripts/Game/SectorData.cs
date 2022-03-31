@@ -6,38 +6,32 @@ using System;
 public class SectorData
 {
 
-    // Constants
+    // Controller
+    public SpawnedController controller;
+
+    private int focusedIndex = -1;
+    private int despawnOffset = 0;
+    public List<Prop> screen = new List<Prop>();
+    
     public const float THRESHOLD_GOOD = 0.05F;
     public const float THRESHOLD_AVERAGE = 0.1F;
     public const float THRESHOLD_BAD = 0.2F;
     public const float THRESHOLD_MISS = 0.4F;
 
-    // Controller
-    public SpawnedController controller;
-
-    // Internals
-    private int focusedIndex = -1;
-    private int despawnOffset = 0;
-    public List<Prop> screen = new List<Prop>();
     private Sector sector;
-    private bool failed = false;
 
     public SectorData(SpawnedController c, Sector sector) {
+        // Set
         controller = c;
         this.sector = sector;
     }
 
-    // Adds the prop to the sector
     public void Spawn(Prop prop) {
+        // Add prop
         screen.Add(prop);
     }
 
-    // Updates props
     public void Update(float time) {
-        // If failed
-        if (failed)
-            return;
-        
         // Keys
         List<Prop> props = new List<Prop>(screen);
         // For each prop
@@ -80,21 +74,30 @@ public class SectorData
                     }
                     break;
             }
+            /*// Remove
+            if (prop.GetComponent<Prop>().Move()) {
+                // Destroy
+                Destroy(prop);
+                // Remove
+                active[sector].RemoveAt(0);
+            }*/
         }
     }
 
-    // Fades the sector
-    public void Fade(float alpha) {
-        foreach (Prop prop in screen)
-            prop.renderer.color = new Color32(255, 255, 255, (byte) (255*alpha));
-    }
-
-    // Fails the sector
     public void Failed() {
-        failed = true;
+        // For each prop
+        foreach (Prop prop in screen) {
+            // If finished
+            if (prop.position == TonePosition.FINISHED)
+                continue;
+                
+            // Apply gravity
+            prop.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1;
+            // Set sorting order in layer
+            prop.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        }
     }
 
-    // Resets this sector
     public void Reset() {
         // For each prop
         foreach (Prop prop in screen)
@@ -105,7 +108,6 @@ public class SectorData
         // Reset indexes
         focusedIndex = -1;
         despawnOffset = 0;
-        failed = false;
     }
 
     // -2: 0 score, 0 combo

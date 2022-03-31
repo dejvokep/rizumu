@@ -17,9 +17,4 @@ public class ScrollUnitButton : MonoBehaviour
         else
             selectedMapID = this.name;
     }
-
-    public void setActivedCell()
-    {
-        transform.parent.GetComponent<ScrollController>().setActivedCell(gameObject);
-    }
 }

@@ -2,32 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System;
 
 public class PausePanel : MonoBehaviour
 {
 
-    // Constants
-    private const float ANIMATION_RATE = 5;
-
-    // UI elements
-    public GameObject gamePanel, player, resumeCountdownObject, panel;
-    public Text songTitle;
-
-    // Internals
     private SpawnedController controller;
     private CanvasGroup canvasGroup, gamePanelGroup, targetGroup;
     private SpriteRenderer playerRenderer;
+
+    private float ANIMATION_RATE = 5;
+
     private float alpha = 0, targetAlpha = 0;
     private bool pendingCountdown = false;
     private const int resumeCountdownLength = 3;
     private float resumeCountdown = 0;
+
+    public GameObject gamePanel, player, resumeCountdownObject, panel;
     private Text resumeCountdownText;
+
     private bool paused = false;
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         controller = GameObject.Find("SpawnedController").GetComponent<SpawnedController>();
         canvasGroup = panel.GetComponent<CanvasGroup>();
         gamePanelGroup = gamePanel.GetComponent<CanvasGroup>();
@@ -36,7 +34,8 @@ public class PausePanel : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         // If the countdown is pending
         if (pendingCountdown) {
             // Decrease
@@ -74,28 +73,25 @@ public class PausePanel : MonoBehaviour
         // If escape is down
         if (Input.GetKeyDown("escape")) {
             // If was paused
-            if (paused)
+            if (paused) {
                 Resume();
-            else
+            } else {
                 Pause();
+            }
         }
     }
 
-    // Hides the panel
     public void Hide() {
         targetAlpha = 0;
         paused = false;
     }
 
-    // Pauses
     public void Pause() {
         // If paused
         if (paused)
             return;
         // Paused
         paused = true;
-        
-        songTitle.text = controller.songName + " (" + Math.Max((int) (controller.currentTime/controller.songLength*100), 0) + "%)";
         // Open the menu
         panel.SetActive(true);
         // Pause
@@ -110,7 +106,6 @@ public class PausePanel : MonoBehaviour
         resumeCountdownObject.SetActive(false);
     }
 
-    // Resumes
     public void Resume() {
         // If not paused
         if (!paused)
@@ -129,10 +124,8 @@ public class PausePanel : MonoBehaviour
         resumeCountdownObject.SetActive(true);
         // Set the text
         resumeCountdownText.text = "Resuming in " + ((int) resumeCountdown) + "...";
-        EventSystem.current.SetSelectedGameObject(null);
     }
 
-    // Animates the panel
     private void animate() {
         float diff = Time.deltaTime * ANIMATION_RATE;
         alpha = alpha < targetAlpha ?
