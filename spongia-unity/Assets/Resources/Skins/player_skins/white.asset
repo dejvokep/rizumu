@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
   m_Name: white
   m_EditorClassIdentifier: 
-  name: 
+  name: white
   cost: 0
   bought: 0
-  skin: {fileID: 0}
+  skin: {fileID: 21300000, guid: 4472a2f1a76a533489a885777ce96ba0, type: 3}

@@ -19022,6 +19022,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4f0dea9a2c05034293b70eecbb1c91f, type: 2}
   - {fileID: 11400000, guid: 3d4c60dc126c602468c39b79e16a6110, type: 2}
   - {fileID: 11400000, guid: 75fb831661dcce049a1e6a22a56ac64f, type: 2}
+  - {fileID: 11400000, guid: 703888e646232044f9e1835f58ad0311, type: 2}
+  - {fileID: 11400000, guid: f32fc761d3876d84f9b52c4b9ee9b423, type: 2}
+  - {fileID: 11400000, guid: 2a858a182d8a6dd4aa2581582e3889db, type: 2}
+  - {fileID: 11400000, guid: 6d48b05eb21a0a9428d459a70f223a64, type: 2}
   Scroll: {fileID: 586634142}
   Template: {fileID: 2071264722}
 --- !u!224 &710369480
@@ -45734,6 +45738,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0949706c8905ec9478f1b665c657fdc8, type: 2}
   - {fileID: 11400000, guid: 73dbaee0c5c934f47a0b95ad541dd18c, type: 2}
   - {fileID: 11400000, guid: 60cab29dd4dac8744b7b2b9fc2d5a673, type: 2}
+  - {fileID: 11400000, guid: 6e1719d1da292a947b59e3a9fc30b483, type: 2}
   Scroll: {fileID: 1386566676}
   Template: {fileID: 669732810}
 --- !u!224 &1137392962
@@ -51963,6 +51968,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884e17551540e824e85e93b12cde593f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollPlayer: {fileID: 710369478}
+  ScrollNote: {fileID: 2058784831}
+  ScrollParticle: {fileID: 1137392960}
 --- !u!114 &1430252219
 MonoBehaviour:
   m_ObjectHideFlags: 0

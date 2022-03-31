@@ -83,10 +83,10 @@ public class CreateSkinInfo : MonoBehaviour
             json = JsonConvert.SerializeObject(SkinInfo, Formatting.Indented);
             print(json);
             File.WriteAllText(skinInfoPath, json);
-            ScrollPlayer.GetComponent<PlayerChooser>().ChoosePlayer();
-            ScrollNote.GetComponent<NoteChooser>().NotePlayer();
-            ScrollParticle.GetComponent<particleChooser>().NotePlayer();
             
         }
+        ScrollPlayer.GetComponent<PlayerChooser>().ChoosePlayer();
+        ScrollNote.GetComponent<NoteChooser>().NotePlayer();
+        ScrollParticle.GetComponent<particleChooser>().NotePlayer();
     }
 }
