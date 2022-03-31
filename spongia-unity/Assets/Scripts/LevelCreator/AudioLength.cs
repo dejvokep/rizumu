@@ -108,7 +108,7 @@ public class AudioLength : MonoBehaviour
         spawned.tag=s.ToString() ;
         spawned.transform.Translate (5.6f, 0f, 0f);
         CurrentMap[spawned.GetInstanceID()]=new List<float>{m_AudioSource.time-5.45f,s,float.Parse(SpeedInput.text),0.5f,m_AudioSource.time-5.45f,m_AudioSource.time};
-        spawned.GetComponent<SpriteRenderer>().sortingOrder = s+1 ;
+        spawned.GetComponent<SpriteRenderer>().sortingOrder = s;
         TargetForLengthChange=spawned;
         stlacenie=false;
     }
