@@ -9,14 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663445cdc36f3f448b012ac655bc20db, type: 3}
-  m_Name: Default
+  m_Script: {fileID: 11500000, guid: 17df9c3bc6130da489b331d87abc5058, type: 3}
+  m_Name: mango
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   name: mango
-=======
-  name: Default
->>>>>>> shop
-  cost: 150
-  bought: 0
-  skin: {fileID: 21300000, guid: f95e295fab6a6504aba38738ca5ee196, type: 3}
+  collor1: 16769625
+  collor2: 16754513
+  cost: 0
