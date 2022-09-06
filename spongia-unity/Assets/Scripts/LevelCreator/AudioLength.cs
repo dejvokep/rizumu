@@ -165,7 +165,7 @@ public class AudioLength : MonoBehaviour
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // The key
-            string key = keyboardKeys[sector];
+            KeyCode key = (KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]);
             // If pressed
             if (Input.GetKeyDown(key))
                 Stlacenie((int) sector);
