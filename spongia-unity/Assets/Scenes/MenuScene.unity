@@ -346,12 +346,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_Text
-      value: If you don't like the default key binds, you can always change them
-        in the Settings menu
+      value: You can always change your key binds in the settings, if you aren't
+        comfortable with the defaults
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_FontData.m_Alignment
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_FontData.m_HorizontalOverflow
@@ -7122,7 +7126,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b0fe6e46d792e234c9767b58d6e2236e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: def428c3a9e389f47bd842f129b60afe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19481,12 +19485,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_Text
-      value: Hit the key assigned to the sector as soon as you see a note hit the
-        square in the middle
+      value: Hit the key assigned to the corresponding sector just as a note hits
+        the square in the middle and release the key as soon as the note disappears
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_FontData.m_Alignment
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8236517239505145995, guid: 2d1db37da4c5fc946acc5ab06a13eafe, type: 3}
       propertyPath: m_FontData.m_HorizontalOverflow
