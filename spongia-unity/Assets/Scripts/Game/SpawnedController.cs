@@ -566,7 +566,7 @@ public class SpawnedController : MonoBehaviour
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // If pressed
-            if (Input.GetKeyDown(keyboardKeys[sector])) {
+            if (Input.GetKeyDown((KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]))) {
                 // Score
                 int score = sectors[sector].HandlePress(currentTime);
                 // If not -2
@@ -576,7 +576,7 @@ public class SpawnedController : MonoBehaviour
 
                 // Handle
                 HandleScore(sector, score, true);
-            } else if (Input.GetKeyUp(keyboardKeys[sector])) {
+            } else if (Input.GetKeyUp((KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]))) {
                 // Score
                 int score = sectors[sector].HandleRelease(currentTime);
                 // If not -2

@@ -243,10 +243,10 @@ public class SettingsMenu : MonoBehaviour
             {
                 if (e.keyCode != KeyCode.Escape)
                 {
-                    curSettings.keyboardKeys[GetSectorIndexBySectorName(currentKey.name)] = e.keyCode.ToString().ToLower();
+                    curSettings.keyboardKeys[GetSectorIndexBySectorName(currentKey.name)] = e.keyCode.ToString();
                     Debug.Log(indexToSector(GetSectorIndexBySectorName(currentKey.name)));
                     Debug.Log(curSettings.keyboardKeys[GetSectorIndexBySectorName(currentKey.name)]);
-                    controlButtonsHolder.transform.GetChild(GetSectorIndexBySectorName(currentKey.name)).GetChild(0).GetComponent<Text>().text = e.keyCode.ToString().ToUpper();
+                    controlButtonsHolder.transform.GetChild(GetSectorIndexBySectorName(currentKey.name)).GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
 
                     currentKey.GetComponent<Image>().color = new Color32((byte) 255, (byte) 255, (byte) 255, (byte) (255));
                     currentKey = null;
@@ -314,9 +314,9 @@ public class SettingsMenu : MonoBehaviour
     private void updateKeys()
     {
         SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
-        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyboardKeys[0].ToLower();
-        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keyboardKeys[1].ToLower();
-        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keyboardKeys[2].ToLower();
-        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyboardKeys[3].ToLower();
+        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyboardKeys[0];
+        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keyboardKeys[1];
+        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keyboardKeys[2];
+        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyboardKeys[3];
     }
 }
