@@ -120,8 +120,6 @@ public class SpawnedController : MonoBehaviour
 
     // Currently active (spawned) props
     public Dictionary<Sector, SectorData> sectors;
-    // Keyboard keys by sector (managed by settings menu)
-    public static Dictionary<Sector, string> keyboardKeys;
 
     // Timing and others
     public float currentTime;
@@ -566,7 +564,7 @@ public class SpawnedController : MonoBehaviour
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // If pressed
-            if (Input.GetKeyDown((KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]))) {
+            if (Input.GetKeyDown(SettingsMenu.KeyboardKeys[sector])) {
                 // Score
                 int score = sectors[sector].HandlePress(currentTime);
                 // If not -2
@@ -576,7 +574,7 @@ public class SpawnedController : MonoBehaviour
 
                 // Handle
                 HandleScore(sector, score, true);
-            } else if (Input.GetKeyUp((KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]))) {
+            } else if (Input.GetKeyUp(SettingsMenu.KeyboardKeys[sector])) {
                 // Score
                 int score = sectors[sector].HandleRelease(currentTime);
                 // If not -2

@@ -27,10 +27,10 @@ public class SaveSettings
         volume = -30f;
 
         keyboardKeys = new List<string>();
-        keyboardKeys.Add("U");
-        keyboardKeys.Add("H");
-        keyboardKeys.Add("F");
-        keyboardKeys.Add("R");
+        keyboardKeys.Add("u");
+        keyboardKeys.Add("h");
+        keyboardKeys.Add("f");
+        keyboardKeys.Add("r");
     }
 
     public string ToJson()

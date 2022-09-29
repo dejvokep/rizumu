@@ -57,7 +57,7 @@ public class AudioLength : MonoBehaviour
     public static string audioPath, imagePath;
 
 
-    private Dictionary<Sector, string> keyboardKeys;
+    // private Dictionary<Sector, string> keyboardKeys;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +66,7 @@ public class AudioLength : MonoBehaviour
         audioPath = "";
         imagePath = "";
         // Assign keys
-        if (SpawnedController.keyboardKeys != null)
+        /*if (SpawnedController.keyboardKeys != null)
             keyboardKeys = SpawnedController.keyboardKeys;
         else {
             keyboardKeys = new Dictionary<Sector, string>();
@@ -74,7 +74,7 @@ public class AudioLength : MonoBehaviour
             keyboardKeys[Sector.SOUTH_EAST] = "k";
             keyboardKeys[Sector.SOUTH_WEST] = "j";
             keyboardKeys[Sector.NORTH_WEST] = "d";
-        }
+        }*/
 
         // Reset
         SpeedInput.text="1";
@@ -165,7 +165,7 @@ public class AudioLength : MonoBehaviour
         // For each sector
         foreach (Sector sector in Enum.GetValues(typeof(Sector))) {
             // The key
-            KeyCode key = (KeyCode) System.Enum.Parse(typeof(KeyCode), keyboardKeys[sector]);
+            KeyCode key = SettingsMenu.KeyboardKeys[sector];
             // If pressed
             if (Input.GetKeyDown(key))
                 Stlacenie((int) sector);

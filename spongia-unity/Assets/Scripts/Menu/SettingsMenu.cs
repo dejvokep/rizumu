@@ -41,6 +41,8 @@ public class SettingsMenu : MonoBehaviour
 
     public static float audioVolume = -30;
 
+    public static Dictionary<Sector, KeyCode> KeyboardKeys;
+
     public void SaveJsonData()
     {
         updateKeys();
@@ -313,10 +315,10 @@ public class SettingsMenu : MonoBehaviour
 
     private void updateKeys()
     {
-        SpawnedController.keyboardKeys = new Dictionary<Sector, string>();
-        SpawnedController.keyboardKeys[Sector.NORTH_EAST] = curSettings.keyboardKeys[0];
-        SpawnedController.keyboardKeys[Sector.SOUTH_EAST] = curSettings.keyboardKeys[1];
-        SpawnedController.keyboardKeys[Sector.SOUTH_WEST] = curSettings.keyboardKeys[2];
-        SpawnedController.keyboardKeys[Sector.NORTH_WEST] = curSettings.keyboardKeys[3];
+        KeyboardKeys = new Dictionary<Sector, KeyCode>();
+        KeyboardKeys[Sector.NORTH_EAST] = (KeyCode)System.Enum.Parse(typeof(KeyCode), curSettings.keyboardKeys[0]);
+        KeyboardKeys[Sector.SOUTH_EAST] = (KeyCode)System.Enum.Parse(typeof(KeyCode), curSettings.keyboardKeys[1]);
+        KeyboardKeys[Sector.SOUTH_WEST] = (KeyCode)System.Enum.Parse(typeof(KeyCode), curSettings.keyboardKeys[2]);
+        KeyboardKeys[Sector.NORTH_WEST] = (KeyCode)System.Enum.Parse(typeof(KeyCode), curSettings.keyboardKeys[3]);
     }
 }
